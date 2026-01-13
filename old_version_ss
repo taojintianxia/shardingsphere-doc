@@ -1,62 +1,82 @@
-commit 1149470df170cd4a3c70979a0cdc251c67a8c206
+commit e3938e40bcc1c1ac6c22f94db1dace92d4784830
 Author: Ling Hengqian <linghengqian@outlook.com>
-Date:   Mon Jan 12 22:11:22 2026 +0800
+Date:   Tue Jan 13 19:34:35 2026 +0800
 
-    Remove documentation for older versions of testcontainers-java (#37719)
+    Remove support for DerbyNetworkServer and EmbeddedDerby (#37718)
 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-index b78da45ef71..288160cad3f 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-@@ -77,8 +77,7 @@ newgrp docker
+diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
+index b1b499b4be5..733ae7aa624 100644
+--- a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
++++ b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
+@@ -11,31 +11,13 @@ Apache ShardingSphere 为不同的运行模式提供了不同的元数据持久
  
- sudo tee /etc/docker/daemon.json <<EOF
- {
--  "log-driver": "local",
--  "min-api-version": "1.24"
-+  "log-driver": "local"
- }
- EOF
+ ### 数据库持久化
  
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-index 0ce86a929a9..4cc3c4dfcbd 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-@@ -79,8 +79,7 @@ newgrp docker
+-`provider` 的可选值为 H2，MySQL，EmbeddedDerby，DerbyNetworkServer，HSQLDB。
++`provider` 的可选值为 H2，MySQL 和 HSQLDB。
+ 由于第三方的 Vulnerability Report 时常误报 H2 Database，避免在 ShardingSphere Standalone Mode 使用 H2 Database 可能是一种选择。
+ 讨论 `provider` 不为默认值 `H2` 的情况。
  
- sudo tee /etc/docker/daemon.json <<EOF
- {
--  "log-driver": "local",
--  "min-api-version": "1.24"
-+  "log-driver": "local"
- }
- EOF
+ 1. 若 `provider` 设置为 `MySQL`，则要求存在已就绪的 MySQL Server。classpath 应包含 `com.mysql:mysql-connector-j:9.0.0` 的 Maven 依赖。
+-2. 若 `provider` 设置为 `EmbeddedDerby`，则 Derby 数据库引擎将在与应用程序相同的 JVM 内运行。
+-classpath 应包含 `org.apache.derby:derby:10.17.1.0` 和 `org.apache.derby:derbytools:10.17.1.0` 的 Maven 依赖，
+-且要求编译或运行下游项目的 JDK 版本大于或等于 JDK19。可能的配置如下。
  
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-index c08c5d9eaef..4e28f95a846 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-@@ -163,8 +163,7 @@ newgrp docker
+-```yaml
+-mode:
+-  type: Standalone
+-  repository:
+-    type: JDBC
+-    props:
+-      provider: EmbeddedDerby
+-      jdbc_url: jdbc:derby:memory:config;create=true
+-      username:
+-```
+-
+-3. 若 `provider` 设置为 `DerbyNetworkServer`，则要求存在已就绪的 Derby Network Server。
+-Derby Network Server 不存在可用的 Docker Image，用户可能需要手动启动 Derby Network Server。
+-classpath 应包含 `org.apache.derby:derbyclient:10.17.1.0` 和 `org.apache.derby:derbytools:10.17.1.0` 的 Maven 依赖，
+-且要求编译或运行下游项目的 JDK 版本大于或等于 JDK19。
+-4. 若 `provider` 设置为 `HSQLDB`，则要求存在已就绪的采用 Server Modes 的 HyperSQL，或以 in-process database 的方式创建数据库。
++2. 若 `provider` 设置为 `HSQLDB`，则要求存在已就绪的采用 Server Modes 的 HyperSQL，或以 in-process database 的方式创建数据库。
+ classpath 应包含 `classifier` 为 `jdk8` 的 `org.hsqldb:hsqldb:2.7.3` 的 Maven 依赖。
+ 采用 Server Modes 的 HyperSQL 不存在可用的 Docker Image，用户可能需要手动启动 Server Modes 的 HyperSQL。
+ 若使用 mem: protocol 的 HyperSQL，则可能的配置如下，
+diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
+index 530d0cabccf..770acd63c35 100644
+--- a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
++++ b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
+@@ -11,31 +11,13 @@ Apache ShardingSphere provides different metadata persistence methods for differ
  
- sudo tee /etc/docker/daemon.json <<EOF
- {
--  "log-driver": "local",
--  "min-api-version": "1.24"
-+  "log-driver": "local"
- }
- EOF
+ ### Database Repository
  
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-index efeaa08b849..34bf73ab48c 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-@@ -167,8 +167,7 @@ newgrp docker
+-The optional values of `provider` are H2, MySQL, EmbeddedDerby, DerbyNetworkServer and HSQLDB.
++The optional values of `provider` are H2, MySQL and HSQLDB.
+ Since third-party Vulnerability Reports often misreport H2 Database, avoiding the use of H2 Database in ShardingSphere Standalone Mode may be an option.
+ Discuss the case where `provider` is not the default value `H2`.
  
- sudo tee /etc/docker/daemon.json <<EOF
- {
--  "log-driver": "local",
--  "min-api-version": "1.24"
-+  "log-driver": "local"
- }
- EOF
+ 1. If `provider` is set to `MySQL`, a ready MySQL Server is required. The classpath should contain the Maven dependency of `com.mysql:mysql-connector-j:9.0.0`.
+-2. If `provider` is set to `EmbeddedDerby`, the Derby database engine will run in the same JVM as the application.
+-   The classpath should contain Maven dependencies of `org.apache.derby:derby:10.17.1.0` and `org.apache.derby:derbytools:10.17.1.0`, 
+-   and the JDK version required to compile or run the downstream project is greater than or equal to JDK19. Possible configurations are as follows.
  
+-```yaml
+-mode:
+-  type: Standalone
+-  repository:
+-    type: JDBC
+-    props:
+-      provider: EmbeddedDerby
+-      jdbc_url: jdbc:derby:memory:config;create=true
+-      username:
+-```
+-
+-3. If `provider` is set to `DerbyNetworkServer`, a ready Derby Network Server is required.
+-   There is no available Docker Image for Derby Network Server, and users may need to start Derby Network Server manually.
+-   The classpath should contain Maven dependencies of `org.apache.derby:derbyclient:10.17.1.0` and `org.apache.derby:derbytools:10.17.1.0`, 
+-   and the JDK version required to compile or run the downstream project is greater than or equal to JDK19.
+-4. If `provider` is set to `HSQLDB`, a ready HyperSQL using Server Modes is required, or a database is created as an in-process database.
++2. If `provider` is set to `HSQLDB`, a ready HyperSQL using Server Modes is required, or a database is created as an in-process database.
+    The classpath should contain the Maven dependency of `org.hsqldb:hsqldb:2.7.3` with `classifier` as `jdk8`.
+    There is no available Docker Image for HyperSQL using Server Modes, and users may need to manually start HyperSQL using Server Modes.
+    If HyperSQL using mem: protocol is used, the possible configuration is as follows,
