@@ -1,32 +1,38 @@
-commit 8ba775730fd5b30391bde518bda7ad2db2f88770
-Author: Raigor <raigor.jiang@gmail.com>
-Date:   Fri Jan 23 15:11:52 2026 +0800
+commit 554f07f72054ff7bc313bd391d6774ad0c33bc9f
+Author: Hongsheng Zhong <zhonghongsheng@apache.org>
+Date:   Fri Jan 23 19:33:10 2026 +0800
 
-    Fix dead link for graalvm espresso (#37819)
+    Fix openGauss replication privilege in nightly E2E (#37824)
+    
+    * Add test_user replication privilege in pg_hba.conf for openGauss docker conf
+    
+    * Comment CDCE2EIT TimeZone.setDefault
+    
+    * Update dead link in CDC usage doc
 
-diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/expr.cn.md b/docs/document/content/user-manual/common-config/builtin-algorithm/expr.cn.md
-index a106396feb8..3b88e83b04c 100644
---- a/docs/document/content/user-manual/common-config/builtin-algorithm/expr.cn.md
-+++ b/docs/document/content/user-manual/common-config/builtin-algorithm/expr.cn.md
-@@ -77,7 +77,7 @@ weight = 10
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.cn.md
+index 80bc4db2552..b7c1280ed76 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.cn.md
+@@ -203,7 +203,7 @@ public final class Bootstrap {
  
- 此为可选实现，你需要在自有项目的 `pom.xml` 主动声明如下依赖。并且请确保自有项目通过 OpenJDK 21+ 或其下游发行版编译。
+ > CDCClient.await 是阻塞主线程，非必需的步骤，用其他方式也可以，只要保证 CDC 线程一直在工作就行。
  
--由于 https://www.graalvm.org/jdk21/reference-manual/java-on-truffle/faq/#does-java-running-on-truffle-run-on-hotspot-too 的限制，
-+由于 https://www.graalvm.org/jdk21/reference-manual/espresso/faq/#does-java-running-on-truffle-run-on-hotspot-too 的限制，
- 当此模块在非 GraalVM Native Image 的环境中被使用时，仅在 System Property `os.arch` 为 `amd64` 的 Linux 上就绪。
+-如果需要更复杂数据消费的实现，例如写入到数据库，可以参考 [DataSourceRecordConsumer](https://github.com/apache/shardingsphere/blob/master/test/e2e/operation/pipeline/src/test/java/org/apache/shardingsphere/test/e2e/data/pipeline/cases/cdc/DataSourceRecordConsumer.java)
++如果需要更复杂数据消费的实现，例如写入到数据库，可以参考 `DataSourceRecordConsumer.java`。
  
- Truffle 与 JDK 的向后兼容性矩阵位于 https://medium.com/graalvm/40027a59c401 。
-diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/expr.en.md b/docs/document/content/user-manual/common-config/builtin-algorithm/expr.en.md
-index be7e83fd271..c3bd1f23b70 100644
---- a/docs/document/content/user-manual/common-config/builtin-algorithm/expr.en.md
-+++ b/docs/document/content/user-manual/common-config/builtin-algorithm/expr.en.md
-@@ -88,7 +88,7 @@ Example:
- This is an optional implementation. You need to actively declare the following dependencies in the `pom.xml` of your own project. 
- And please make sure your own projects are compiled with OpenJDK 21+ or its downstream distribution.
+ #### 写入数据
  
--Due to the limitation of https://www.graalvm.org/jdk21/reference-manual/java-on-truffle/faq/#does-java-running-on-truffle-run-on-hotspot-too,
-+Due to the limitation of https://www.graalvm.org/jdk21/reference-manual/espresso/faq/#does-java-running-on-truffle-run-on-hotspot-too,
- when this module is used in a non-GraalVM Native Image environment, it is only ready on Linux with System Property `os.arch` set to `amd64`.
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.en.md b/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.en.md
+index 42c8eb76121..e0100136246 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/cdc/usage.en.md
+@@ -203,7 +203,7 @@ There are mainly 4 steps
  
- Truffle's backward compatibility matrix with the JDK is located at https://medium.com/graalvm/40027a59c401 .
+ > CDCClient.await is to block the main thread, it is not a necessary step, other methods can also be used, as long as the CDC thread is always working.
+ 
+-If you need more complex data consumption implementation, such as writing to the database, you can refer to [DataSourceRecordConsumer](https://github.com/apache/shardingsphere/blob/master/test/e2e/operation/pipeline/src/test/java/org/apache/shardingsphere/test/e2e/data/pipeline/cases/cdc/DataSourceRecordConsumer.java)
++If you need more complex data consumption implementation, such as writing to the database, you can refer to `DataSourceRecordConsumer.java`.
+ 
+ #### Write Data
+ 
