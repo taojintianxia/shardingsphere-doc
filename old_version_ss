@@ -1,114 +1,32 @@
-commit 5e61d1d9bb1a65adc5218116fa3e9fedd0a1a001
+commit 9a2e14f943b11c0240509783329185c885cbf12f
 Author: Ling Hengqian <linghengqian@outlook.com>
-Date:   Fri Feb 6 09:09:49 2026 +0800
+Date:   Fri Feb 6 19:06:49 2026 +0800
 
-    Remove specializations for Docker Engine v28 on Windows Server 2025 (#37966)
+    Fixes the build of fully statically linked GraalVM Native Images (#37967)
 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-index b0169df0527..ce2160888c3 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-@@ -120,13 +120,13 @@ wsl --install
- 并设置使用 `dockerd(moby)` 的 `Container Engine`。
- 
- ```shell
--[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
- winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
- # 打开新的 PowerShell 7 终端
- rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
- 
- @'
- {
-+  "min-api-version": "1.41",
-   "features": {
-     "containerd-snapshotter": true
-   },
-@@ -148,7 +148,6 @@ rdctl start --application.start-in-background --container-engine.name=moby --kub
- 可在 PowerShell 7 执行如下命令，
- 
- ```shell
--[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
- iex "& { $(irm https://raw.githubusercontent.com/microsoft/Windows-Containers/refs/heads/Main/helpful_tools/Install-DockerCE/uninstall-docker-ce.ps1) } -Force"
- winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
- # 打开新的 PowerShell 7 终端
-@@ -156,6 +155,7 @@ rdctl start --application.start-in-background --container-engine.name=moby --kub
- 
- @'
- {
-+  "min-api-version": "1.41",
-   "features": {
-     "containerd-snapshotter": true
-   },
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-index adcc85c2cd9..ea0b179f027 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-@@ -125,13 +125,13 @@ After enabling WSL2, download and install `rancher-sandbox/rancher-desktop` usin
- and configure it to use the `dockerd(moby)` `Container Engine`.
- 
- ```shell
--[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
- winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
- # Open a new PowerShell 7 terminal
- rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
- 
- @'
- {
-+  "min-api-version": "1.41",
-   "features": {
-     "containerd-snapshotter": true
-   },
-@@ -153,7 +153,6 @@ they will need to uninstall Docker Engine using the script provided by Microsoft
- You can execute the following command in PowerShell 7:
- 
- ```shell
--[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
- iex "& { $(irm https://raw.githubusercontent.com/microsoft/Windows-Containers/refs/heads/Main/helpful_tools/Install-DockerCE/uninstall-docker-ce.ps1) } -Force"
- winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
- # Open a new PowerShell 7 terminal
-@@ -161,6 +160,7 @@ rdctl start --application.start-in-background --container-engine.name=moby --kub
- 
- @'
- {
-+  "min-api-version": "1.41",
-   "features": {
-     "containerd-snapshotter": true
-   },
 diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-index 33bf3db5c99..1078c1e29a6 100644
+index 1078c1e29a6..c29508761ee 100644
 --- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
 +++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-@@ -199,13 +199,13 @@ wsl --install
- 并设置使用 `dockerd(moby)` 的 `Container Engine`。
+@@ -298,7 +298,7 @@ services:
  
- ```shell
--[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
- winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
- # 打开新的 PowerShell 7 终端
- rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+ ##### 静态编译所需的本地工具链
  
- @'
- {
-+  "min-api-version": "1.41",
-   "features": {
-     "containerd-snapshotter": true
-   },
+-开发者如需构建 `大部分静态链接的 GraalVM Native Image` 或 `完全静态链接的 GraalVM Native Image`，
++开发者如需构建 `完全静态链接的 GraalVM Native Image`，
+ 则需要按 https://www.graalvm.org/latest/reference-manual/native-image/guides/build-static-executables/ 要求，从源代码构建 musl。
+ 
+ #### 构建动态链接的 GraalVM Native Image
 diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-index 6371ef85660..a6404b54970 100644
+index a6404b54970..099d07f4a9d 100644
 --- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
 +++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-@@ -203,13 +203,13 @@ After enabling WSL2, download and install `rancher-sandbox/rancher-desktop` usin
- and configure `dockerd(moby)` to use the `Container Engine`.
+@@ -301,7 +301,7 @@ However, it is not necessary to install Container Runtime.
  
- ```shell
--[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
- winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
- # Open a new PowerShell 7 terminal
- rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+ ##### Native toolchain for static compilation
  
- @'
- {
-+  "min-api-version": "1.41",
-   "features": {
-     "containerd-snapshotter": true
-   },
+-Developers who want to build a `mostly statically linked GraalVM Native Image` or a `fully statically linked GraalVM Native Image`,
++Developers who want to build a `fully statically linked GraalVM Native Image`,
+ will need to build musl from source as described in https://www.graalvm.org/latest/reference-manual/native-image/guides/build-static-executables/ .
+ 
+ #### Build a dynamically linked GraalVM Native Image
