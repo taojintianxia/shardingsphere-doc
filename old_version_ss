@@ -1,74 +1,114 @@
-commit 2059ef637160885d6da5f8c773bc070a4cc2d701
-Author: Hongsheng Zhong <zhonghongsheng@apache.org>
-Date:   Mon Feb 2 16:51:48 2026 +0800
+commit 5e61d1d9bb1a65adc5218116fa3e9fedd0a1a001
+Author: Ling Hengqian <linghengqian@outlook.com>
+Date:   Fri Feb 6 09:09:49 2026 +0800
 
-    Refactor pipeline modules: follow code inspection (#37935)
-    
-    * Non-distinguishable logging calls
-    
-    * Unstable API Usage
-    
-    * Extract long code in method
-    
-    * Refactor PipelineMetaDataNodeWatcher.getInstance
-    
-    * Refactor TestDecodingPlugin.getColumnName
-    
-    * Method parameter always has the same value
-    
-    * Redundant 'throws' clause
-    
-    * Remove unused PrepareJobWithCheckPrivilegeFailedException
-    
-    * Remove unused PrepareJobWithInvalidSourceDataSourceException
-    
-    * Remove unused PrepareJobWithoutEnoughPrivilegeException
-    
-    * Remove unused PrepareJobWithoutUserException
-    
-    * Explicit type can be replaced with '<>'
-    
-    * @NotNull/@Nullable problems
-    
-    * Constant values
-    
-    * Nullability and data flow problems
-    
-    * Result of method call ignored
-    
-    * Unused assignment
-    
-    * AutoCloseable used without 'try'-with-resources
-    
-    * Style
+    Remove specializations for Docker Engine v28 on Windows Server 2025 (#37966)
 
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.cn.md b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-index 4c69c618015..d7da4c93448 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-@@ -132,10 +132,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 18103       | 42S02     | Can not get meta data for table '%s' when split by range.                      |
- | 18104       | HY000     | Can not split by unique key '%s' for table '%s'.                               |
- | 18105       | HY000     | Target table '%s' is not empty.                                                |
--| 18106       | 01007     | Source data source lacks '%s' privilege(s).                                    |
--| 18107       | HY000     | Source data source required '%s = %s', now is '%s'.                            |
--| 18108       | 42S02     | User '%s' does exist.                                                          |
--| 18109       | 08000     | Check privileges failed on source data source.                                 |
- | 18110       | HY000     | Importer job write data failed.                                                |
- | 18111       | 08000     | Get binlog position failed by job '%s'.                                        |
- | 18112       | HY000     | Can not find consistency check job of '%s'.                                    |
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.en.md b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-index 20f4d2ebe3c..07d42ae7c07 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.en.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-@@ -132,10 +132,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 18103       | 42S02     | Can not get meta data for table '%s' when split by range.                      |
- | 18104       | HY000     | Can not split by unique key '%s' for table '%s'.                               |
- | 18105       | HY000     | Target table '%s' is not empty.                                                |
--| 18106       | 01007     | Source data source lacks '%s' privilege(s).                                    |
--| 18107       | HY000     | Source data source required '%s = %s', now is '%s'.                            |
--| 18108       | 42S02     | User '%s' does exist.                                                          |
--| 18109       | 08000     | Check privileges failed on source data source.                                 |
- | 18110       | HY000     | Importer job write data failed.                                                |
- | 18111       | 08000     | Get binlog position failed by job '%s'.                                        |
- | 18112       | HY000     | Can not find consistency check job of '%s'.                                    |
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
+index b0169df0527..ce2160888c3 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
+@@ -120,13 +120,13 @@ wsl --install
+ 并设置使用 `dockerd(moby)` 的 `Container Engine`。
+ 
+ ```shell
+-[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
+ winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
+ # 打开新的 PowerShell 7 终端
+ rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+ 
+ @'
+ {
++  "min-api-version": "1.41",
+   "features": {
+     "containerd-snapshotter": true
+   },
+@@ -148,7 +148,6 @@ rdctl start --application.start-in-background --container-engine.name=moby --kub
+ 可在 PowerShell 7 执行如下命令，
+ 
+ ```shell
+-[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
+ iex "& { $(irm https://raw.githubusercontent.com/microsoft/Windows-Containers/refs/heads/Main/helpful_tools/Install-DockerCE/uninstall-docker-ce.ps1) } -Force"
+ winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
+ # 打开新的 PowerShell 7 终端
+@@ -156,6 +155,7 @@ rdctl start --application.start-in-background --container-engine.name=moby --kub
+ 
+ @'
+ {
++  "min-api-version": "1.41",
+   "features": {
+     "containerd-snapshotter": true
+   },
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
+index adcc85c2cd9..ea0b179f027 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
+@@ -125,13 +125,13 @@ After enabling WSL2, download and install `rancher-sandbox/rancher-desktop` usin
+ and configure it to use the `dockerd(moby)` `Container Engine`.
+ 
+ ```shell
+-[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
+ winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
+ # Open a new PowerShell 7 terminal
+ rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+ 
+ @'
+ {
++  "min-api-version": "1.41",
+   "features": {
+     "containerd-snapshotter": true
+   },
+@@ -153,7 +153,6 @@ they will need to uninstall Docker Engine using the script provided by Microsoft
+ You can execute the following command in PowerShell 7:
+ 
+ ```shell
+-[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
+ iex "& { $(irm https://raw.githubusercontent.com/microsoft/Windows-Containers/refs/heads/Main/helpful_tools/Install-DockerCE/uninstall-docker-ce.ps1) } -Force"
+ winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
+ # Open a new PowerShell 7 terminal
+@@ -161,6 +160,7 @@ rdctl start --application.start-in-background --container-engine.name=moby --kub
+ 
+ @'
+ {
++  "min-api-version": "1.41",
+   "features": {
+     "containerd-snapshotter": true
+   },
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
+index 33bf3db5c99..1078c1e29a6 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
+@@ -199,13 +199,13 @@ wsl --install
+ 并设置使用 `dockerd(moby)` 的 `Container Engine`。
+ 
+ ```shell
+-[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
+ winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
+ # 打开新的 PowerShell 7 终端
+ rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+ 
+ @'
+ {
++  "min-api-version": "1.41",
+   "features": {
+     "containerd-snapshotter": true
+   },
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
+index 6371ef85660..a6404b54970 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
+@@ -203,13 +203,13 @@ After enabling WSL2, download and install `rancher-sandbox/rancher-desktop` usin
+ and configure `dockerd(moby)` to use the `Container Engine`.
+ 
+ ```shell
+-[Environment]::SetEnvironmentVariable('DOCKER_API_VERSION','1.44','Machine')
+ winget install --id SUSE.RancherDesktop --source winget --skip-dependencies
+ # Open a new PowerShell 7 terminal
+ rdctl start --application.start-in-background --container-engine.name=moby --kubernetes.enabled=false
+ 
+ @'
+ {
++  "min-api-version": "1.41",
+   "features": {
+     "containerd-snapshotter": true
+   },
