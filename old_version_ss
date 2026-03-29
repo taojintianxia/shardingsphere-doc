@@ -1,474 +1,256 @@
-commit 8376c595486a4ce458872e1cb26425c7e29801ba
+commit 893c1f4db901968b22814969ea243df79d9f3419
 Author: Raigor <raigor.jiang@gmail.com>
-Date:   Sun Mar 29 11:48:14 2026 +0800
+Date:   Sun Mar 29 23:16:06 2026 +0800
 
-    Update DistSQL docs for sharding key generator (#38577)
+    Support specifying an existing key generator in sharding RDL (#38578)
 
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator.cn.md
-new file mode 100644
-index 00000000000..37ec921a34c
---- /dev/null
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator.cn.md
-@@ -0,0 +1,75 @@
-++++
-+title = "ALTER SHARDING KEY GENERATOR"
-+weight = 9
-++++
-+
-+## 描述
-+
-+`ALTER SHARDING KEY GENERATOR` 语法用于修改当前所选逻辑库中的独立分布式主键生成器。
-+
-+### 语法定义
-+
-+{{< tabs >}}
-+{{% tab name="语法" %}}
-+```sql
-+AlterShardingKeyGenerator ::=
-+  'ALTER' 'SHARDING' 'KEY' 'GENERATOR' keyGeneratorName '(' algorithmDefinition ')'
-+
-+algorithmDefinition ::=
-+  'TYPE' '(' 'NAME' '=' algorithmType (',' propertiesDefinition)? ')'
-+
-+propertiesDefinition ::=
-+  'PROPERTIES' '(' key '=' value (',' key '=' value)* ')'
-+
-+key ::=
-+  string
-+
-+value ::=
-+  literal
-+
-+keyGeneratorName ::=
-+  identifier
-+
-+algorithmType ::=
-+  string
-+```
-+{{% /tab %}}
-+{{% tab name="铁路图" %}}
-+<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
-+{{% /tab %}}
-+{{< /tabs >}}
-+
-+### 补充说明
-+
-+- `keyGeneratorName` 为需要修改的分布式主键生成器名称；
-+- `algorithmDefinition` 用于定义新的主键生成器算法及其参数；
-+- 若指定的分布式主键生成器不存在，将提示缺失对应规则；
-+- `algorithmType` 为主键生成算法类型，详细信息请参考[分布式主键](/cn/user-manual/common-config/builtin-algorithm/keygen/)。
-+
-+### 示例
-+
-+- 修改分布式主键生成器
-+
-+```sql
-+ALTER SHARDING KEY GENERATOR snowflake_generator (
-+TYPE(NAME="UUID")
-+);
-+```
-+
-+- 修改分布式主键生成器并指定属性
-+
-+```sql
-+ALTER SHARDING KEY GENERATOR snowflake_generator (
-+TYPE(NAME="SNOWFLAKE",PROPERTIES("worker-id"=2))
-+);
-+```
-+
-+### 保留字
-+
-+`ALTER`、`SHARDING`、`KEY`、`GENERATOR`、`TYPE`、`NAME`、`PROPERTIES`
-+
-+### 相关链接
-+
-+- [保留字](/cn/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
-+- [CREATE SHARDING KEY GENERATOR](/cn/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator/)
-+- [SHOW SHARDING KEY GENERATOR](/cn/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator/)
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator.en.md
-new file mode 100644
-index 00000000000..36e26600c6b
---- /dev/null
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator.en.md
-@@ -0,0 +1,75 @@
-++++
-+title = "ALTER SHARDING KEY GENERATOR"
-+weight = 9
-++++
-+
-+## Description
-+
-+The `ALTER SHARDING KEY GENERATOR` syntax is used to alter an independent sharding key generator in the currently selected database.
-+
-+### Syntax
-+
-+{{< tabs >}}
-+{{% tab name="Grammar" %}}
-+```sql
-+AlterShardingKeyGenerator ::=
-+  'ALTER' 'SHARDING' 'KEY' 'GENERATOR' keyGeneratorName '(' algorithmDefinition ')'
-+
-+algorithmDefinition ::=
-+  'TYPE' '(' 'NAME' '=' algorithmType (',' propertiesDefinition)? ')'
-+
-+propertiesDefinition ::=
-+  'PROPERTIES' '(' key '=' value (',' key '=' value)* ')'
-+
-+key ::=
-+  string
-+
-+value ::=
-+  literal
-+
-+keyGeneratorName ::=
-+  identifier
-+
-+algorithmType ::=
-+  string
-+```
-+{{% /tab %}}
-+{{% tab name="Railroad diagram" %}}
-+<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
-+{{% /tab %}}
-+{{< /tabs >}}
-+
-+### Supplement
-+
-+- `keyGeneratorName` is the name of the sharding key generator to be altered;
-+- `algorithmDefinition` defines the new key generator algorithm and its properties;
-+- If the specified sharding key generator does not exist, a missing rule error will be reported;
-+- `algorithmType` is the key generation algorithm type. For details, refer to [Distributed Primary Key](/en/user-manual/common-config/builtin-algorithm/keygen/).
-+
-+### Example
-+
-+- Alter a sharding key generator
-+
-+```sql
-+ALTER SHARDING KEY GENERATOR snowflake_generator (
-+TYPE(NAME="UUID")
-+);
-+```
-+
-+- Alter a sharding key generator with properties
-+
-+```sql
-+ALTER SHARDING KEY GENERATOR snowflake_generator (
-+TYPE(NAME="SNOWFLAKE",PROPERTIES("worker-id"=2))
-+);
-+```
-+
-+### Reserved word
-+
-+`ALTER`, `SHARDING`, `KEY`, `GENERATOR`, `TYPE`, `NAME`, `PROPERTIES`
-+
-+### Related links
-+
-+- [Reserved word](/en/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
-+- [CREATE SHARDING KEY GENERATOR](/en/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator/)
-+- [SHOW SHARDING KEY GENERATOR](/en/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator/)
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator.cn.md
-new file mode 100644
-index 00000000000..f3ef08da0ba
---- /dev/null
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator.cn.md
-@@ -0,0 +1,78 @@
-++++
-+title = "CREATE SHARDING KEY GENERATOR"
-+weight = 8
-++++
-+
-+## 描述
-+
-+`CREATE SHARDING KEY GENERATOR` 语法用于为当前所选逻辑库创建独立的分布式主键生成器。
-+
-+### 语法定义
-+
-+{{< tabs >}}
-+{{% tab name="语法" %}}
-+```sql
-+CreateShardingKeyGenerator ::=
-+  'CREATE' 'SHARDING' 'KEY' 'GENERATOR' ifNotExists? keyGeneratorName '(' algorithmDefinition ')'
-+
-+ifNotExists ::=
-+  'IF' 'NOT' 'EXISTS'
-+
-+algorithmDefinition ::=
-+  'TYPE' '(' 'NAME' '=' algorithmType (',' propertiesDefinition)? ')'
-+
-+propertiesDefinition ::=
-+  'PROPERTIES' '(' key '=' value (',' key '=' value)* ')'
-+
-+key ::=
-+  string
-+
-+value ::=
-+  literal
-+
-+keyGeneratorName ::=
-+  identifier
-+
-+algorithmType ::=
-+  string
-+```
-+{{% /tab %}}
-+{{% tab name="铁路图" %}}
-+<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
-+{{% /tab %}}
-+{{< /tabs >}}
-+
-+### 补充说明
-+
-+- `keyGeneratorName` 为独立分布式主键生成器名称；
-+- `algorithmDefinition` 用于定义主键生成器算法及其参数；
-+- `algorithmType` 为主键生成算法类型，详细信息请参考[分布式主键](/cn/user-manual/common-config/builtin-algorithm/keygen/)；
-+- `ifNotExists` 子句用于避免出现 `Duplicate sharding key generator` 错误。
-+
-+### 示例
-+
-+- 创建分布式主键生成器
-+
-+```sql
-+CREATE SHARDING KEY GENERATOR snowflake_generator (
-+TYPE(NAME="SNOWFLAKE",PROPERTIES("worker-id"=1))
-+);
-+```
-+
-+- 使用 `ifNotExists` 子句创建分布式主键生成器
-+
-+```sql
-+CREATE SHARDING KEY GENERATOR IF NOT EXISTS snowflake_generator (
-+TYPE(NAME="SNOWFLAKE")
-+);
-+```
-+
-+### 保留字
-+
-+`CREATE`、`SHARDING`、`KEY`、`GENERATOR`、`IF`、`NOT`、`EXISTS`、`TYPE`、`NAME`、`PROPERTIES`
-+
-+### 相关链接
-+
-+- [保留字](/cn/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
-+- [ALTER SHARDING KEY GENERATOR](/cn/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator/)
-+- [SHOW SHARDING KEY GENERATOR](/cn/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator/)
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator.en.md
-new file mode 100644
-index 00000000000..32ed2abb8e9
---- /dev/null
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator.en.md
-@@ -0,0 +1,78 @@
-++++
-+title = "CREATE SHARDING KEY GENERATOR"
-+weight = 8
-++++
-+
-+## Description
-+
-+The `CREATE SHARDING KEY GENERATOR` syntax is used to create an independent sharding key generator for the currently selected database.
-+
-+### Syntax
-+
-+{{< tabs >}}
-+{{% tab name="Grammar" %}}
-+```sql
-+CreateShardingKeyGenerator ::=
-+  'CREATE' 'SHARDING' 'KEY' 'GENERATOR' ifNotExists? keyGeneratorName '(' algorithmDefinition ')'
-+
-+ifNotExists ::=
-+  'IF' 'NOT' 'EXISTS'
-+
-+algorithmDefinition ::=
-+  'TYPE' '(' 'NAME' '=' algorithmType (',' propertiesDefinition)? ')'
-+
-+propertiesDefinition ::=
-+  'PROPERTIES' '(' key '=' value (',' key '=' value)* ')'
-+
-+key ::=
-+  string
-+
-+value ::=
-+  literal
-+
-+keyGeneratorName ::=
-+  identifier
-+
-+algorithmType ::=
-+  string
-+```
-+{{% /tab %}}
-+{{% tab name="Railroad diagram" %}}
-+<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
-+{{% /tab %}}
-+{{< /tabs >}}
-+
-+### Supplement
-+
-+- `keyGeneratorName` is the name of the independent sharding key generator;
-+- `algorithmDefinition` defines the key generator algorithm and its properties;
-+- `algorithmType` is the key generation algorithm type. For details, refer to [Distributed Primary Key](/en/user-manual/common-config/builtin-algorithm/keygen/);
-+- `ifNotExists` clause is used to avoid `Duplicate sharding key generator` error.
-+
-+### Example
-+
-+- Create a sharding key generator
-+
-+```sql
-+CREATE SHARDING KEY GENERATOR snowflake_generator (
-+TYPE(NAME="SNOWFLAKE",PROPERTIES("worker-id"=1))
-+);
-+```
-+
-+- Create a sharding key generator with `ifNotExists` clause
-+
-+```sql
-+CREATE SHARDING KEY GENERATOR IF NOT EXISTS snowflake_generator (
-+TYPE(NAME="SNOWFLAKE")
-+);
-+```
-+
-+### Reserved word
-+
-+`CREATE`, `SHARDING`, `KEY`, `GENERATOR`, `IF`, `NOT`, `EXISTS`, `TYPE`, `NAME`, `PROPERTIES`
-+
-+### Related links
-+
-+- [Reserved word](/en/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
-+- [ALTER SHARDING KEY GENERATOR](/en/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-key-generator/)
-+- [SHOW SHARDING KEY GENERATOR](/en/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator/)
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.cn.md
-index da42bf49155..76a3a82959e 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.cn.md
-@@ -1,11 +1,11 @@
- +++
--title = "SHOW SHARDING KEY GENERATORS"
-+title = "SHOW SHARDING KEY GENERATOR"
- weight = 5
- +++
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.cn.md
+index f7505e480b8..88783b428b0 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.cn.md
+@@ -25,7 +25,11 @@ strategyDefinition ::=
+   'TYPE' '=' strategyType ',' ('SHARDING_COLUMN' | 'SHARDING_COLUMNS') '=' columnName ',' algorithmDefinition
  
- ### 描述
- 
--`SHOW SHARDING KEY GENERATORS` 语法用于查询指定逻辑库的分布式主键生成器。
-+`SHOW SHARDING KEY GENERATOR` 语法用于查询指定逻辑库的分布式主键生成器。
- 
- ### 语法
- 
-@@ -13,7 +13,10 @@ weight = 5
- {{% tab name="语法" %}}
- ```sql
- ShowShardingKeyGenerators::=
--  'SHOW' 'SHARDING' 'KEY' 'GENERATORS' ('FROM' databaseName)?
-+  'SHOW' 'SHARDING' 'KEY' ('GENERATOR' keyGeneratorName | 'GENERATORS') ('FROM' databaseName)?
+ keyGenerateStrategyDefinition ::= 
+-  'KEY_GENERATE_STRATEGY' '(' 'COLUMN' '=' columnName ',' algorithmDefinition ')' 
++  'COLUMN' '=' columnName ',' keyGenerateAlgorithmDefinition
 +
-+keyGeneratorName ::=
-+  identifier
++keyGenerateAlgorithmDefinition ::=
++  algorithmDefinition
++  | 'GENERATOR' '=' keyGeneratorName
  
- databaseName ::=
+ auditStrategyDefinition ::= 
+   'AUDIT_STRATEGY' '(' algorithmDefinition (',' algorithmDefinition)* ')'
+@@ -54,6 +58,9 @@ storageUnitName ::=
+ columnName ::=
    identifier
-@@ -27,6 +30,8 @@ databaseName ::=
- ### 补充说明
  
- - 未指定 `databaseName` 时，默认是当前使用的 `DATABASE`。 如果也未使用 `DATABASE` 则会提示 `No database selected`。
-+- 使用 `SHOW SHARDING KEY GENERATORS` 查询全部分布式主键生成器；
-+- 使用 `SHOW SHARDING KEY GENERATOR keyGeneratorName` 查询指定名称的分布式主键生成器。
++keyGeneratorName ::=
++  identifier
++
+ strategyType ::=
+   string
  
- ### 返回值说明
+@@ -83,6 +90,9 @@ algorithmType ::=
+ - 自动生成的主键策略命名规则为 `tableName` _ `strategyType`；
+ - `KEY_GENERATE_STRATEGY`
+   用于指定主键生成策略，为可选项，关于主键生成策略可参考[分布式主键](/cn/user-manual/common-config/builtin-algorithm/keygen/)。
++- `KEY_GENERATE_STRATEGY` 支持两种主键生成器定义方式：
++    - 使用 `TYPE(NAME=..., PROPERTIES(...))` 内联定义主键生成算法；
++    - 使用 `GENERATOR=keyGeneratorName` 引用已经存在的独立 `SHARDING KEY GENERATOR`；
+ - `AUDIT_STRATEGY`
+   用于指定分配审计生成策略，为可选项，关于分片审计生成策略可参考[分片审计](/cn/user-manual/common-config/builtin-algorithm/audit/)。
  
-@@ -70,11 +75,27 @@ mysql> SHOW SHARDING KEY GENERATORS;
- 1 row in set (0.00 sec)
+@@ -111,9 +121,20 @@ AUDIT_STRATEGY(TYPE(NAME="dml_sharding_conditions"),ALLOW_HINT_DISABLE=true)
+ );
  ```
  
-+- 查询指定名称的分布式主键生成器
++#### 3.引用已存在的主键生成器
 +
 +```sql
-+SHOW SHARDING KEY GENERATOR snowflake_key_generator;
-+```
-+
-+```sql
-+mysql> SHOW SHARDING KEY GENERATOR snowflake_key_generator;
-++-------------------------+-----------+-------+
-+| name                    | type      | props |
-++-------------------------+-----------+-------+
-+| snowflake_key_generator | snowflake |       |
-++-------------------------+-----------+-------+
-+1 row in set (0.00 sec)
++ALTER SHARDING TABLE RULE t_order (
++STORAGE_UNITS(ds_0,ds_1),
++SHARDING_COLUMN=order_id,TYPE(NAME="hash_mod",PROPERTIES("sharding-count"="4")),
++KEY_GENERATE_STRATEGY(COLUMN=another_id,GENERATOR=snowflake_generator),
++AUDIT_STRATEGY(TYPE(NAME="dml_sharding_conditions"),ALLOW_HINT_DISABLE=true)
++);
 +```
 +
  ### 保留字
  
--`SHOW`、`SHARDING`、`KEY`、`GENERATORS`、`FROM`
-+`SHOW`、`SHARDING`、`KEY`、`GENERATOR`、`GENERATORS`、`FROM`
+-`ALTER`、`SHARDING`、`TABLE`、`RULE`、`DATANODES`、`DATABASE_STRATEGY`、`TABLE_STRATEGY`、`KEY_GENERATE_STRATEGY`、`STORAGE_UNITS`、`SHARDING_COLUMN`、`TYPE`、`SHARDING_COLUMN`、`KEY_GENERATOR`、`SHARDING_ALGORITHM`、`COLUMN`、`NAME`、`PROPERTIES`、`AUDIT_STRATEGY`、`AUDITORS`、`ALLOW_HINT_DISABLE`
++`ALTER`、`SHARDING`、`TABLE`、`RULE`、`DATANODES`、`DATABASE_STRATEGY`、`TABLE_STRATEGY`、`KEY_GENERATE_STRATEGY`、`STORAGE_UNITS`、`SHARDING_COLUMN`、`TYPE`、`SHARDING_COLUMN`、`GENERATOR`、`SHARDING_ALGORITHM`、`COLUMN`、`NAME`、`PROPERTIES`、`AUDIT_STRATEGY`、`AUDITORS`、`ALLOW_HINT_DISABLE`
  
  ### 相关链接
  
- - [保留字](/cn/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
--
-+- [CREATE SHARDING KEY GENERATOR](/cn/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator/)
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.en.md
-index f06b72aa4e6..1070995c539 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-key-generator.en.md
-@@ -1,11 +1,11 @@
- +++
--title = "SHOW SHARDING KEY GENERATORS"
-+title = "SHOW SHARDING KEY GENERATOR"
- weight = 5
- +++
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.en.md
+index 11eafa36535..08067bd0fed 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/alter-sharding-table-rule.en.md
+@@ -25,7 +25,11 @@ strategyDefinition ::=
+   'TYPE' '=' strategyType ',' ('SHARDING_COLUMN' | 'SHARDING_COLUMNS') '=' columnName ',' algorithmDefinition
  
- ### Description
- 
--`SHOW SHARDING KEY GENERATORS` syntax is used to query sharding key generators in specified database.
-+`SHOW SHARDING KEY GENERATOR` syntax is used to query sharding key generators in specified database.
- 
- ### Syntax
- 
-@@ -13,7 +13,10 @@ weight = 5
- {{% tab name="Grammar" %}}
- ```sql
- ShowShardingKeyGenerators::=
--  'SHOW' 'SHARDING' 'KEY' 'GENERATORS' ('FROM' databaseName)?
-+  'SHOW' 'SHARDING' 'KEY' ('GENERATOR' keyGeneratorName | 'GENERATORS') ('FROM' databaseName)?
+ keyGenerateStrategyDefinition ::= 
+-  'KEY_GENERATE_STRATEGY' '(' 'COLUMN' '=' columnName ',' algorithmDefinition ')' 
++  'COLUMN' '=' columnName ',' keyGenerateAlgorithmDefinition
 +
++keyGenerateAlgorithmDefinition ::=
++  algorithmDefinition
++  | 'GENERATOR' '=' keyGeneratorName
+ 
+ auditStrategyDefinition ::= 
+   'AUDIT_STRATEGY' '(' algorithmDefinition (',' algorithmDefinition)* ')'
+@@ -54,6 +58,9 @@ storageUnitName ::=
+ columnName ::=
+   identifier
+ 
 +keyGeneratorName ::=
 +  identifier
++
+ strategyType ::=
+   string
  
- databaseName ::=
-   identifier
-@@ -27,6 +30,8 @@ databaseName ::=
- ### Supplement
- 
- - When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.
-+- Use `SHOW SHARDING KEY GENERATORS` to query all sharding key generators.
-+- Use `SHOW SHARDING KEY GENERATOR keyGeneratorName` to query the specified sharding key generator.
- 
- ### Return value description
- 
-@@ -70,11 +75,27 @@ mysql> SHOW SHARDING KEY GENERATORS;
- 1 row in set (0.00 sec)
+@@ -92,6 +99,9 @@ algorithmType ::=
+ - `KEY_GENERATE_STRATEGY` is used to specify the primary key generation strategy, which is optional. For the primary key
+   generation strategy, please refer
+   to [Distributed Primary Key](/en/user-manual/common-config/builtin-algorithm/keygen/).
++- `KEY_GENERATE_STRATEGY` supports two key generator definition styles:
++    - Define the key generation algorithm inline with `TYPE(NAME=..., PROPERTIES(...))`;
++    - Reference an existing independent `SHARDING KEY GENERATOR` with `GENERATOR=keyGeneratorName`;
+ - `AUDIT_STRATEGY` is used to specify the sharding audit strategy, which is optional. For the sharding audit
+   generation strategy, please refer
+   to [Sharding Audit](/en/user-manual/common-config/builtin-algorithm/audit/).
+@@ -121,9 +131,20 @@ AUDIT_STRATEGY(TYPE(NAME="dml_sharding_conditions"),ALLOW_HINT_DISABLE=true)
+ );
  ```
  
-+- Query the specified sharding key generator
++#### 3.Reference an existing key generator
 +
 +```sql
-+SHOW SHARDING KEY GENERATOR snowflake_key_generator;
-+```
-+
-+```sql
-+mysql> SHOW SHARDING KEY GENERATOR snowflake_key_generator;
-++-------------------------+-----------+-------+
-+| name                    | type      | props |
-++-------------------------+-----------+-------+
-+| snowflake_key_generator | snowflake |       |
-++-------------------------+-----------+-------+
-+1 row in set (0.00 sec)
++ALTER SHARDING TABLE RULE t_order (
++STORAGE_UNITS(ds_0,ds_1),
++SHARDING_COLUMN=order_id,TYPE(NAME="hash_mod",PROPERTIES("sharding-count"="4")),
++KEY_GENERATE_STRATEGY(COLUMN=another_id,GENERATOR=snowflake_generator),
++AUDIT_STRATEGY(TYPE(NAME="dml_sharding_conditions"),ALLOW_HINT_DISABLE=true)
++);
 +```
 +
  ### Reserved word
  
--`SHOW`, `SHARDING`, `KEY`, `GENERATORS`, `FROM`
-+`SHOW`, `SHARDING`, `KEY`, `GENERATOR`, `GENERATORS`, `FROM`
+-`ALTER`, `SHARDING`, `TABLE`, `RULE`, `DATANODES`, `DATABASE_STRATEGY`, `TABLE_STRATEGY`, `KEY_GENERATE_STRATEGY`, `STORAGE_UNITS`, `SHARDING_COLUMN`, `TYPE`, `SHARDING_COLUMN`, `KEY_GENERATOR`, `SHARDING_ALGORITHM`, `COLUMN`, `NAME`, `PROPERTIES`, `AUDIT_STRATEGY`, `AUDITORS`, `ALLOW_HINT_DISABLE`
++`ALTER`, `SHARDING`, `TABLE`, `RULE`, `DATANODES`, `DATABASE_STRATEGY`, `TABLE_STRATEGY`, `KEY_GENERATE_STRATEGY`, `STORAGE_UNITS`, `SHARDING_COLUMN`, `TYPE`, `SHARDING_COLUMN`, `GENERATOR`, `SHARDING_ALGORITHM`, `COLUMN`, `NAME`, `PROPERTIES`, `AUDIT_STRATEGY`, `AUDITORS`, `ALLOW_HINT_DISABLE`
  
  ### Related links
  
- - [Reserved word](/en/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
--
-+- [CREATE SHARDING KEY GENERATOR](/en/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-key-generator/)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.cn.md
+index 661c39f1bbf..8c49097ef10 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.cn.md
+@@ -28,7 +28,11 @@ strategyDefinition ::=
+   'TYPE' '=' strategyType ',' ('SHARDING_COLUMN' | 'SHARDING_COLUMNS') '=' columnName ',' algorithmDefinition
+ 
+ keyGenerateStrategyDefinition ::= 
+-  'KEY_GENERATE_STRATEGY' '(' 'COLUMN' '=' columnName ',' algorithmDefinition ')' 
++  'COLUMN' '=' columnName ',' keyGenerateAlgorithmDefinition
++
++keyGenerateAlgorithmDefinition ::=
++  algorithmDefinition
++  | 'GENERATOR' '=' keyGeneratorName
+ 
+ auditStrategyDefinition ::= 
+   'AUDIT_STRATEGY' '(' algorithmDefinition (',' algorithmDefinition)* ')'
+@@ -57,6 +61,9 @@ storageUnitName ::=
+ columnName ::=
+   identifier
+ 
++keyGeneratorName ::=
++  identifier
++
+ strategyType ::=
+   string
+ 
+@@ -86,6 +93,9 @@ algorithmType ::=
+ - 自动生成的主键策略命名规则为 `tableName` _ `strategyType`；
+ - `KEY_GENERATE_STRATEGY`
+   用于指定主键生成策略，为可选项，关于主键生成策略可参考[分布式主键](/cn/user-manual/common-config/builtin-algorithm/keygen/)；
++- `KEY_GENERATE_STRATEGY` 支持两种主键生成器定义方式：
++    - 使用 `TYPE(NAME=..., PROPERTIES(...))` 内联定义主键生成算法；
++    - 使用 `GENERATOR=keyGeneratorName` 引用已经存在的独立 `SHARDING KEY GENERATOR`；
+ - `AUDIT_STRATEGY`
+   用于指定分配审计生成策略，为可选项，关于分片审计生成策略可参考[分片审计](/cn/user-manual/common-config/builtin-algorithm/audit/)；
+ - `ifNotExists` 子句用于避免出现 `Duplicate sharding rule` 错误。
+@@ -115,7 +125,18 @@ AUDIT_STRATEGY (TYPE(NAME="DML_SHARDING_CONDITIONS"),ALLOW_HINT_DISABLE=true)
+ );
+ ```
+ 
+-#### 3.使用 `ifNotExists` 子句创建分片规则
++#### 3.引用已存在的主键生成器
++
++```sql
++CREATE SHARDING TABLE RULE t_order (
++STORAGE_UNITS(ds_0,ds_1),
++SHARDING_COLUMN=order_id,TYPE(NAME="hash_mod",PROPERTIES("sharding-count"="4")),
++KEY_GENERATE_STRATEGY(COLUMN=another_id,GENERATOR=snowflake_generator),
++AUDIT_STRATEGY (TYPE(NAME="DML_SHARDING_CONDITIONS"),ALLOW_HINT_DISABLE=true)
++);
++```
++
++#### 4.使用 `ifNotExists` 子句创建分片规则
+ 
+ - 标准分片规则
+ 
+@@ -142,7 +163,7 @@ AUDIT_STRATEGY (TYPE(NAME="DML_SHARDING_CONDITIONS"),ALLOW_HINT_DISABLE=true)
+ 
+ ### 保留字
+ 
+-`CREATE`、`SHARDING`、`TABLE`、`RULE`、`DATANODES`、`DATABASE_STRATEGY`、`TABLE_STRATEGY`、`KEY_GENERATE_STRATEGY`、`STORAGE_UNITS`、`SHARDING_COLUMN`、`TYPE`、`SHARDING_COLUMN`、`KEY_GENERATOR`、`SHARDING_ALGORITHM`、`COLUMN`、`NAME`、`PROPERTIES`、`AUDIT_STRATEGY`、`AUDITORS`、`ALLOW_HINT_DISABLE`
++`CREATE`、`SHARDING`、`TABLE`、`RULE`、`DATANODES`、`DATABASE_STRATEGY`、`TABLE_STRATEGY`、`KEY_GENERATE_STRATEGY`、`STORAGE_UNITS`、`SHARDING_COLUMN`、`TYPE`、`SHARDING_COLUMN`、`GENERATOR`、`SHARDING_ALGORITHM`、`COLUMN`、`NAME`、`PROPERTIES`、`AUDIT_STRATEGY`、`AUDITORS`、`ALLOW_HINT_DISABLE`
+ 
+ ### 相关链接
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.en.md
+index c280f743fad..3401ae3afdc 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/sharding/create-sharding-table-rule.en.md
+@@ -28,7 +28,11 @@ strategyDefinition ::=
+   'TYPE' '=' strategyType ',' ('SHARDING_COLUMN' | 'SHARDING_COLUMNS') '=' columnName ',' algorithmDefinition
+ 
+ keyGenerateStrategyDefinition ::= 
+-  'KEY_GENERATE_STRATEGY' '(' 'COLUMN' '=' columnName ',' algorithmDefinition ')' 
++  'COLUMN' '=' columnName ',' keyGenerateAlgorithmDefinition
++
++keyGenerateAlgorithmDefinition ::=
++  algorithmDefinition
++  | 'GENERATOR' '=' keyGeneratorName
+ 
+ auditStrategyDefinition ::= 
+   'AUDIT_STRATEGY' '(' algorithmDefinition (',' algorithmDefinition)* ')'
+@@ -57,6 +61,9 @@ storageUnitName ::=
+ columnName ::=
+   identifier
+ 
++keyGeneratorName ::=
++  identifier
++
+ strategyType ::=
+   string
+ 
+@@ -95,6 +102,9 @@ algorithmType ::=
+ - `KEY_GENERATE_STRATEGY` is used to specify the primary key generation strategy, which is optional. For the primary key
+   generation strategy, please refer
+   to [Distributed Primary Key](/en/user-manual/common-config/builtin-algorithm/keygen/);
++- `KEY_GENERATE_STRATEGY` supports two key generator definition styles:
++    - Define the key generation algorithm inline with `TYPE(NAME=..., PROPERTIES(...))`;
++    - Reference an existing independent `SHARDING KEY GENERATOR` with `GENERATOR=keyGeneratorName`;
+ - `AUDIT_STRATEGY` is used to specify the sharding audit strategy, which is optional. For the sharding audit
+   generation strategy, please refer
+   to [Sharding Audit](/en/user-manual/common-config/builtin-algorithm/audit/);
+@@ -125,7 +135,18 @@ AUDIT_STRATEGY (TYPE(NAME="DML_SHARDING_CONDITIONS"),ALLOW_HINT_DISABLE=true)
+ );
+ ```
+ 
+-#### 3.Create sharding rule with `ifNotExists` clause
++#### 3.Reference an existing key generator
++
++```sql
++CREATE SHARDING TABLE RULE t_order (
++STORAGE_UNITS(ds_0,ds_1),
++SHARDING_COLUMN=order_id,TYPE(NAME="hash_mod",PROPERTIES("sharding-count"="4")),
++KEY_GENERATE_STRATEGY(COLUMN=another_id,GENERATOR=snowflake_generator),
++AUDIT_STRATEGY (TYPE(NAME="DML_SHARDING_CONDITIONS"),ALLOW_HINT_DISABLE=true)
++);
++```
++
++#### 4.Create sharding rule with `ifNotExists` clause
+ 
+ - Standard sharding table rule
+ 
+@@ -151,7 +172,7 @@ AUDIT_STRATEGY (TYPE(NAME="DML_SHARDING_CONDITIONS"),ALLOW_HINT_DISABLE=true)
+ 
+ ### Reserved word
+ 
+-`CREATE`, `SHARDING`, `TABLE`, `RULE`, `DATANODES`, `DATABASE_STRATEGY`, `TABLE_STRATEGY`, `KEY_GENERATE_STRATEGY`, `STORAGE_UNITS`, `SHARDING_COLUMN`, `TYPE`, `SHARDING_COLUMN`, `KEY_GENERATOR`, `SHARDING_ALGORITHM`, `COLUMN`, `NAME`, `PROPERTIES`, `AUDIT_STRATEGY`, `AUDITORS`, `ALLOW_HINT_DISABLE`
++`CREATE`, `SHARDING`, `TABLE`, `RULE`, `DATANODES`, `DATABASE_STRATEGY`, `TABLE_STRATEGY`, `KEY_GENERATE_STRATEGY`, `STORAGE_UNITS`, `SHARDING_COLUMN`, `TYPE`, `SHARDING_COLUMN`, `GENERATOR`, `SHARDING_ALGORITHM`, `COLUMN`, `NAME`, `PROPERTIES`, `AUDIT_STRATEGY`, `AUDITORS`, `ALLOW_HINT_DISABLE`
+ 
+ ### Related links
+ 
