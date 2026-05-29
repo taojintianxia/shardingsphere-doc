@@ -1,133 +1,382 @@
-commit 0de7fa09452db46caf605c1f6dc74c435efa2ed4
+commit 9d52622e70cc0814e62573cf699e943593919c44
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Fri May 29 18:04:06 2026 +0800
+Date:   Fri May 29 19:04:29 2026 +0800
 
-    Harden runtime configuration and diagnostics (#38752)
+    Clarify MCP runtime database boundaries (#38753)
     
-    - require username and driverClassName for runtime database entries
-    - allow omitted password for no-password ShardingSphere-Proxy accounts
-    - remove demo-looking runtime config and empty-driver guidance from docs and distribution config
-    - keep HTTP origin rejection responses generic and log safe server-side categories
-    - add safe metadata empty-state and runtime connection diagnostic categories
-    - route packaged console logs to stderr for stdio protocol safety
+    Document how ShardingSphere-MCP capabilities differ when runtimeDatabases targets ShardingSphere-Proxy versus a physical database. Clarify Proxy-only encrypt and mask workflows, databaseType semantics, and Proxy-visible metadata limitations.
 
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/capabilities.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/capabilities.cn.md
+index f0464fa99d1..a475850683c 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/capabilities.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/capabilities.cn.md
+@@ -17,13 +17,21 @@ weight = 2
+ | `completion/complete` | 获取资源、提示或参数的补全候选。 |
+ | `resources/read` 读取 `shardingsphere://capabilities` | 读取 ShardingSphere 领域能力目录。 |
+ 
++## 能力可用性说明
++
++ShardingSphere-MCP 的协议表面是统一的，但运行时可用性取决于 `runtimeDatabases` 的连接目标。
++
++- 连接 ShardingSphere-Proxy 时，逻辑元数据、逻辑 SQL、DistSQL、加密或脱敏规则以及算法插件能力可用，但物理元数据以 Proxy 暴露结果为准。
++- 连接真实数据库时，通用 JDBC 元数据和 SQL 执行能力可用；ShardingSphere 规则、算法插件和依赖 DistSQL 的工作流不适用。
++- 客户端应优先读取 `shardingsphere://runtime` 和 `shardingsphere://databases/{database}/capabilities` 判断当前数据库能力，不应假设所有资源和工具在所有连接目标下等价。
++
+ ## 静态资源
+ 
+ | 资源 | 用途 |
+ | --- | --- |
+ | `shardingsphere://capabilities` | 查看资源、资源模板、工具、提示、补全、工作流关系和副作用提示。 |
+-| `shardingsphere://runtime` | 查看当前传输方式、运行状态和已配置逻辑库摘要。 |
+-| `shardingsphere://databases` | 列出当前 MCP Server 可以访问的 ShardingSphere 逻辑库。 |
++| `shardingsphere://runtime` | 查看当前传输方式、运行状态和已配置运行时数据库摘要。 |
++| `shardingsphere://databases` | 列出当前 MCP Server 可以访问的运行时数据库；连接 Proxy 时对应 ShardingSphere 逻辑库。 |
+ | `shardingsphere://features/encrypt/algorithms` | 列出当前 ShardingSphere-Proxy 可见的数据加密算法插件。 |
+ | `shardingsphere://features/mask/algorithms` | 列出当前 ShardingSphere-Proxy 可见的数据脱敏算法插件。 |
+ 
+@@ -31,18 +39,18 @@ weight = 2
+ 
+ | 资源模板 | 用途 |
+ | --- | --- |
+-| `shardingsphere://databases/{database}` | 读取一个逻辑库的详情和元数据摘要。 |
+-| `shardingsphere://databases/{database}/capabilities` | 读取一个逻辑库的 SQL、事务、schema 和元数据对象能力。 |
+-| `shardingsphere://databases/{database}/schemas` | 列出一个逻辑库中的 schema 或 namespace。 |
++| `shardingsphere://databases/{database}` | 读取一个运行时数据库的详情和元数据摘要。 |
++| `shardingsphere://databases/{database}/capabilities` | 读取一个运行时数据库的 SQL、事务、schema 和元数据对象能力。 |
++| `shardingsphere://databases/{database}/schemas` | 列出一个运行时数据库中的 schema 或 namespace。 |
+ | `shardingsphere://databases/{database}/schemas/{schema}` | 读取一个 schema 或 namespace 的详情。 |
+ | `shardingsphere://databases/{database}/schemas/{schema}/sequences` | 列出一个 schema 中的 sequence。 |
+ | `shardingsphere://databases/{database}/schemas/{schema}/sequences/{sequence}` | 读取一个 sequence 的详情。 |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables` | 列出一个 schema 中的逻辑表。 |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}` | 读取一个逻辑表的详情。 |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns` | 列出一个逻辑表的列。 |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns/{column}` | 读取一个逻辑表列的详情。 |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes` | 列出一个逻辑表的索引。 |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes/{index}` | 读取一个逻辑表索引的详情。 |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables` | 列出一个 schema 中的表。 |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}` | 读取一个表的详情。 |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns` | 列出一个表的列。 |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns/{column}` | 读取一个表列的详情。 |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes` | 列出一个表的索引。 |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes/{index}` | 读取一个表索引的详情。 |
+ | `shardingsphere://databases/{database}/schemas/{schema}/views` | 列出一个 schema 中的视图。 |
+ | `shardingsphere://databases/{database}/schemas/{schema}/views/{view}` | 读取一个视图的详情。 |
+ | `shardingsphere://databases/{database}/schemas/{schema}/views/{view}/columns` | 列出一个视图的列。 |
+@@ -57,19 +65,19 @@ weight = 2
+ 
+ | 工具 | 用途 | 副作用 |
+ | --- | --- | --- |
+-| `database_gateway_search_metadata` | 按名称片段和对象类型搜索逻辑库元数据，并返回后续资源读取提示。 | 无。 |
++| `database_gateway_search_metadata` | 按名称片段和对象类型搜索运行时数据库元数据，并返回后续资源读取提示。 | 无。 |
+ | `database_gateway_execute_query` | 执行一个已判定为查询类的 `SELECT` 或 `EXPLAIN ANALYZE`。 | 无；拒绝 DML、DDL、DCL、事务控制、savepoint 和其他有副作用 SQL。 |
+ | `database_gateway_execute_update` | 预览或执行一个可能修改数据、元数据、规则或事务状态的 SQL。 | 有；必须显式传入 `execution_mode=preview` 或 `execution_mode=execute`。 |
+ | `database_gateway_apply_workflow` | 预览、执行或导出已规划工作流的人工执行包。 | 取决于 `execution_mode`；`preview` 和 `manual-only` 不修改运行时状态。 |
+ | `database_gateway_validate_workflow` | 根据可见元数据和生成产物校验计划或执行结果。 | 无。 |
+-| `database_gateway_plan_encrypt_rule` | 规划数据加密规则变更，生成可审查的 DDL、DistSQL、索引计划和校验步骤。 | 无；只生成计划。 |
+-| `database_gateway_plan_mask_rule` | 规划数据脱敏规则变更，生成可审查的 DistSQL 和校验步骤。 | 无；只生成计划。 |
++| `database_gateway_plan_encrypt_rule` | 规划 Proxy 逻辑库的数据加密规则变更，生成可审查的 DDL、DistSQL、索引计划和校验步骤。 | 无；只生成计划。 |
++| `database_gateway_plan_mask_rule` | 规划 Proxy 逻辑库的数据脱敏规则变更，生成可审查的 DistSQL 和校验步骤。 | 无；只生成计划。 |
+ 
+ ## 提示
+ 
+ | 提示 | 用途 |
+ | --- | --- |
+-| `inspect_metadata` | 引导模型读取逻辑库元数据，再选择搜索工具或详情资源。 |
++| `inspect_metadata` | 引导模型读取数据库元数据，再选择搜索工具或详情资源。 |
+ | `safe_sql_execution` | 引导模型区分只读查询和有副作用 SQL，并选择正确 SQL 工具。 |
+ | `recover_workflow` | 引导模型在工作流失败或 `plan_id` 不可用时恢复或重新规划。 |
+ | `plan_encrypt_rule` | 引导模型在规划数据加密规则前读取逻辑元数据、可用算法和已有规则。 |
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/capabilities.en.md b/docs/document/content/user-manual/shardingsphere-mcp/capabilities.en.md
+index d8a5b1cc529..b3447eb7748 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/capabilities.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/capabilities.en.md
+@@ -17,13 +17,21 @@ The runtime source of truth is `shardingsphere://capabilities` plus the official
+ | `completion/complete` | Get completion candidates for resources, prompts, or arguments. |
+ | `resources/read` with `shardingsphere://capabilities` | Read the ShardingSphere domain capability catalog. |
+ 
++## Capability Availability
++
++ShardingSphere-MCP exposes one protocol surface, but runtime availability depends on the target configured in `runtimeDatabases`.
++
++- When connected to ShardingSphere-Proxy, logical metadata, logical SQL, DistSQL, encryption or masking rules, and algorithm plugin capabilities are available. Physical metadata still follows what Proxy exposes.
++- When connected to a physical database, general JDBC metadata and SQL execution capabilities are available. ShardingSphere rules, algorithm plugins, and workflows that depend on DistSQL do not apply.
++- Clients should read `shardingsphere://runtime` and `shardingsphere://databases/{database}/capabilities` before assuming that every resource or tool behaves the same for every connection target.
++
+ ## Static resources
+ 
+ | Resource | Purpose |
+ | --- | --- |
+ | `shardingsphere://capabilities` | Read resources, resource templates, tools, prompts, completions, workflow relationships, and side-effect notes. |
+-| `shardingsphere://runtime` | Read the current transport, runtime status, and configured logical database summary. |
+-| `shardingsphere://databases` | List ShardingSphere logical databases reachable by the current MCP Server. |
++| `shardingsphere://runtime` | Read the current transport, runtime status, and configured runtime database summary. |
++| `shardingsphere://databases` | List runtime databases reachable by the current MCP Server. When connected to Proxy, they correspond to ShardingSphere logical databases. |
+ | `shardingsphere://features/encrypt/algorithms` | List data encryption algorithm plugins visible from the current ShardingSphere-Proxy runtime. |
+ | `shardingsphere://features/mask/algorithms` | List data masking algorithm plugins visible from the current ShardingSphere-Proxy runtime. |
+ 
+@@ -31,18 +39,18 @@ The runtime source of truth is `shardingsphere://capabilities` plus the official
+ 
+ | Resource template | Purpose |
+ | --- | --- |
+-| `shardingsphere://databases/{database}` | Read one logical database and its metadata summary. |
+-| `shardingsphere://databases/{database}/capabilities` | Read SQL, transaction, schema, and metadata-object capabilities for one logical database. |
+-| `shardingsphere://databases/{database}/schemas` | List schemas or namespaces inside one logical database. |
++| `shardingsphere://databases/{database}` | Read one runtime database and its metadata summary. |
++| `shardingsphere://databases/{database}/capabilities` | Read SQL, transaction, schema, and metadata-object capabilities for one runtime database. |
++| `shardingsphere://databases/{database}/schemas` | List schemas or namespaces inside one runtime database. |
+ | `shardingsphere://databases/{database}/schemas/{schema}` | Read one schema or namespace. |
+ | `shardingsphere://databases/{database}/schemas/{schema}/sequences` | List sequences in one schema. |
+ | `shardingsphere://databases/{database}/schemas/{schema}/sequences/{sequence}` | Read one sequence. |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables` | List logical tables in one schema. |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}` | Read one logical table. |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns` | List columns for one logical table. |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns/{column}` | Read one logical table column. |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes` | List indexes for one logical table. |
+-| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes/{index}` | Read one logical table index. |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables` | List tables in one schema. |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}` | Read one table. |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns` | List columns for one table. |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/columns/{column}` | Read one table column. |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes` | List indexes for one table. |
++| `shardingsphere://databases/{database}/schemas/{schema}/tables/{table}/indexes/{index}` | Read one table index. |
+ | `shardingsphere://databases/{database}/schemas/{schema}/views` | List views in one schema. |
+ | `shardingsphere://databases/{database}/schemas/{schema}/views/{view}` | Read one view. |
+ | `shardingsphere://databases/{database}/schemas/{schema}/views/{view}/columns` | List columns for one view. |
+@@ -57,19 +65,19 @@ The runtime source of truth is `shardingsphere://capabilities` plus the official
+ 
+ | Tool | Purpose | Side effects |
+ | --- | --- | --- |
+-| `database_gateway_search_metadata` | Search logical metadata by name fragment and object type, and return resource hints for follow-up reads. | None. |
++| `database_gateway_search_metadata` | Search runtime database metadata by name fragment and object type, and return resource hints for follow-up reads. | None. |
+ | `database_gateway_execute_query` | Execute exactly one classifier-approved `SELECT` or `EXPLAIN ANALYZE` statement. | None; rejects DML, DDL, DCL, transaction control, savepoints, and other side-effecting SQL. |
+ | `database_gateway_execute_update` | Preview or execute one SQL statement that may mutate data, metadata, rules, or transaction state. | Yes; requires explicit `execution_mode=preview` or `execution_mode=execute`. |
+ | `database_gateway_apply_workflow` | Preview, execute, or export a manual package for a planned workflow. | Depends on `execution_mode`; `preview` and `manual-only` do not change runtime state. |
+ | `database_gateway_validate_workflow` | Validate a planned or applied workflow against visible metadata and generated artifacts. | None. |
+-| `database_gateway_plan_encrypt_rule` | Plan data encryption rule changes and generate reviewable DDL, DistSQL, index plans, and validation steps. | None; creates a plan only. |
+-| `database_gateway_plan_mask_rule` | Plan data masking rule changes and generate reviewable DistSQL and validation steps. | None; creates a plan only. |
++| `database_gateway_plan_encrypt_rule` | Plan data encryption rule changes for Proxy logical databases and generate reviewable DDL, DistSQL, index plans, and validation steps. | None; creates a plan only. |
++| `database_gateway_plan_mask_rule` | Plan data masking rule changes for Proxy logical databases and generate reviewable DistSQL and validation steps. | None; creates a plan only. |
+ 
+ ## Prompts
+ 
+ | Prompt | Purpose |
+ | --- | --- |
+-| `inspect_metadata` | Guide the model to read logical metadata before choosing a search tool or detail resource. |
++| `inspect_metadata` | Guide the model to read database metadata before choosing a search tool or detail resource. |
+ | `safe_sql_execution` | Guide the model to choose the correct SQL tool for read-only queries or side-effecting SQL. |
+ | `recover_workflow` | Guide the model to recover or re-plan after workflow failure or unavailable `plan_id`. |
+ | `plan_encrypt_rule` | Guide the model to read logical metadata, available algorithms, and existing rules before planning data encryption. |
 diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
-index 7c7d80d57ae..567d8d946d2 100644
+index 567d8d946d2..98ebd510e01 100644
 --- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
 +++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
-@@ -60,9 +60,9 @@ runtimeDatabases:
+@@ -58,18 +58,53 @@ runtimeDatabases:
+ 
+ | 字段 | 是否必填 | 说明 |
  | --- | --- | --- |
- | `databaseType` | 是 | 数据库类型，例如 `MySQL` 或 `PostgreSQL`。 |
- | `jdbcUrl` | 是 | MCP Server 连接逻辑库的 JDBC URL。 |
--| `username` | 是 | 连接逻辑库的用户名；无用户名时写空字符串 `""`。 |
--| `password` | 是 | 连接逻辑库的密码；无密码时写空字符串 `""`。 |
--| `driverClassName` | 是 | JDBC 驱动类名；如果 JDBC 4 驱动可自动注册且不需要显式覆盖，写空字符串 `""`。 |
-+| `username` | 是 | 连接 ShardingSphere-Proxy 逻辑库的用户名。 |
-+| `password` | 否 | 连接 ShardingSphere-Proxy 逻辑库的密码；无密码账号可以省略或写空字符串 `""`。 |
-+| `driverClassName` | 是 | JDBC 驱动类名，例如 MySQL 驱动使用 `com.mysql.cj.jdbc.Driver`。 |
+-| `databaseType` | 是 | 数据库类型，例如 `MySQL` 或 `PostgreSQL`。 |
+-| `jdbcUrl` | 是 | MCP Server 连接逻辑库的 JDBC URL。 |
+-| `username` | 是 | 连接 ShardingSphere-Proxy 逻辑库的用户名。 |
+-| `password` | 否 | 连接 ShardingSphere-Proxy 逻辑库的密码；无密码账号可以省略或写空字符串 `""`。 |
++| `databaseType` | 是 | 连接端点的数据库协议或方言类型，例如 `MySQL` 或 `PostgreSQL`。它用于选择 JDBC 元数据和能力判断逻辑，不表示连接目标一定是真实数据库或 ShardingSphere-Proxy。 |
++| `jdbcUrl` | 是 | MCP Server 连接运行时数据库的 JDBC URL；使用 ShardingSphere 规则能力时应指向 Proxy 逻辑库。 |
++| `username` | 是 | 连接运行时数据库的用户名，通常是 ShardingSphere-Proxy 逻辑库用户名。 |
++| `password` | 否 | 连接运行时数据库的密码；无密码账号可以省略或写空字符串 `""`。 |
+ | `driverClassName` | 是 | JDBC 驱动类名，例如 MySQL 驱动使用 `com.mysql.cj.jdbc.Driver`。 |
  
  注意事项：
  
+-- MCP 资源暴露的是 ShardingSphere 逻辑库，不是底层物理存储单元。
+-- Schema、table、view、index 和 sequence 等元数据依赖目标数据库的 JDBC 元数据。
++- 连接 ShardingSphere-Proxy 时，MCP 资源暴露的是 ShardingSphere 逻辑库，不是底层物理存储单元。
++- 连接真实数据库时，MCP 资源反映该 JDBC 目标的元数据，不代表 ShardingSphere 规则状态。
++- Schema、table、view、index 和 sequence 等元数据依赖目标数据库的 JDBC 元数据；Proxy 和真实数据库的可见结果可能不同。
+ - 如果目标 JDBC 驱动没有随发行包提供，请把驱动 jar 放入 `plugins/`。
+ 
++## 连接目标与能力边界
++
++`runtimeDatabases` 当前可以配置任意可用的 JDBC URL。不同连接目标的语义不同，能力边界也不同。
++
++### 连接 ShardingSphere-Proxy 逻辑库
++
++这是使用 ShardingSphere 规则能力时的推荐连接方式。该模式面向 Proxy 暴露的逻辑库和逻辑 SQL 视图，适合使用以下能力：
++
++- 读取 ShardingSphere 逻辑库、逻辑表和逻辑列元数据。
++- 查询 Proxy 可见的加密、脱敏算法插件。
++- 查询、规划、应用和校验加密或脱敏规则。
++- 通过 Proxy 执行逻辑 SQL 和工作流生成的 DistSQL。
++
++该模式受 Proxy 能力限制：
++
++- JDBC 元数据、`information_schema`、索引、sequence 和列类型信息以 Proxy 暴露结果为准，不等同于完整底层物理库元数据。
++- 物理列、物理索引和多存储节点一致性不作为 MCP 自动确认的稳定契约。
++- 可用 DistSQL、规则类型和算法插件取决于 Proxy 版本、已安装插件和当前账号权限。
++- 物理 DDL 产物应先审查；只有 Proxy 能安全路由并执行时才适合自动应用。
++
++### 连接真实数据库
++
++该模式只适合把 MCP 作为通用 JDBC 元数据和 SQL 入口使用，适合以下能力：
++
++- 浏览 database、schema、table、view、column、index 和 sequence 等 JDBC 元数据。
++- 搜索元数据。
++- 执行通用只读查询，或在明确授权后执行普通 DML、DDL、DCL。
++
++该模式不提供 ShardingSphere 规则能力：
++
++- 不能发现 Proxy 中可见的加密或脱敏算法插件。
++- 不能查询、规划、应用或校验 ShardingSphere 加密、脱敏规则。
++- 不能使用依赖 DistSQL 的工作流能力；真实数据库通常不识别 ShardingSphere DistSQL。
++
+ ## 插件目录
+ 
+ 发行包默认把 MCP Server 依赖和内置 MCP 功能插件 jar 放入 `lib/`。
 diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
-index c74f20597c1..15f9340ae65 100644
+index 15f9340ae65..ec765581a9d 100644
 --- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
 +++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
-@@ -60,9 +60,9 @@ runtimeDatabases:
+@@ -58,18 +58,53 @@ runtimeDatabases:
+ 
+ | Field | Required | Description |
  | --- | --- | --- |
- | `databaseType` | Yes | Database type, such as `MySQL` or `PostgreSQL`. |
- | `jdbcUrl` | Yes | JDBC URL used by the MCP Server to connect to the logical database. |
--| `username` | Yes | Username for the logical database; use an empty string `""` when no username is needed. |
--| `password` | Yes | Password for the logical database; use an empty string `""` when no password is needed. |
--| `driverClassName` | Yes | JDBC driver class name; use an empty string `""` when a JDBC 4 driver auto-registers and no explicit override is needed. |
-+| `username` | Yes | Username for the ShardingSphere-Proxy logical database. |
-+| `password` | No | Password for the ShardingSphere-Proxy logical database. Omit it or use an empty string `""` for a no-password account. |
-+| `driverClassName` | Yes | JDBC driver class name, such as `com.mysql.cj.jdbc.Driver` for the MySQL driver. |
+-| `databaseType` | Yes | Database type, such as `MySQL` or `PostgreSQL`. |
+-| `jdbcUrl` | Yes | JDBC URL used by the MCP Server to connect to the logical database. |
+-| `username` | Yes | Username for the ShardingSphere-Proxy logical database. |
+-| `password` | No | Password for the ShardingSphere-Proxy logical database. Omit it or use an empty string `""` for a no-password account. |
++| `databaseType` | Yes | Database protocol or dialect type of the connection endpoint, such as `MySQL` or `PostgreSQL`. It selects JDBC metadata and capability logic; it does not mean the endpoint is necessarily a physical database or ShardingSphere-Proxy. |
++| `jdbcUrl` | Yes | JDBC URL used by the MCP Server to connect to the runtime database. Point it to a Proxy logical database when using ShardingSphere rule capabilities. |
++| `username` | Yes | Username for the runtime database, usually the ShardingSphere-Proxy logical database username. |
++| `password` | No | Password for the runtime database. Omit it or use an empty string `""` for a no-password account. |
+ | `driverClassName` | Yes | JDBC driver class name, such as `com.mysql.cj.jdbc.Driver` for the MySQL driver. |
  
  Notes:
  
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
-index 1a8eec2d36a..cfc68dd0046 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
-@@ -44,6 +44,7 @@ runtimeDatabases:
- ```
+-- MCP resources expose ShardingSphere logical databases, not physical storage units.
+-- Schema, table, view, index, and sequence metadata depends on target JDBC metadata.
++- When the target is ShardingSphere-Proxy, MCP resources expose ShardingSphere logical databases, not physical storage units.
++- When the target is a physical database, MCP resources reflect metadata from that JDBC target and do not represent ShardingSphere rule state.
++- Schema, table, view, index, and sequence metadata depends on target JDBC metadata. Proxy-visible metadata and physical database metadata may differ.
+ - If the target JDBC driver is not packaged, copy the driver jar under `plugins/`.
  
- 将 `<logic-database>`、`<proxy-host>`、`<proxy-port>`、`<proxy-username>` 和 `<proxy-password>` 替换为 ShardingSphere-Proxy 的实际连接信息。
-+如果 Proxy 账号无密码，可以省略 `password`，或把它写成空字符串 `""`。
- 如果目标数据库驱动没有随发行包提供，请在启动前把对应 JDBC 驱动 jar 放入 `plugins/`。
++## Connection Targets and Capability Boundaries
++
++`runtimeDatabases` currently accepts any reachable JDBC URL. Different targets have different semantics and capability boundaries.
++
++### Connecting to a ShardingSphere-Proxy logical database
++
++This is the recommended target when using ShardingSphere rule capabilities. In this mode, MCP works against the logical database and logical SQL view exposed by Proxy, and is suitable for these capabilities:
++
++- Reading ShardingSphere logical database, table, and column metadata.
++- Listing encryption and masking algorithm plugins visible from Proxy.
++- Querying, planning, applying, and validating encryption or masking rules.
++- Executing logical SQL and workflow-generated DistSQL through Proxy.
++
++This mode is constrained by Proxy capabilities:
++
++- JDBC metadata, `information_schema`, indexes, sequences, and column type information follow what Proxy exposes. They are not equivalent to a complete physical database catalog.
++- Physical columns, physical indexes, and consistency across multiple storage nodes are not stable contracts that MCP can automatically confirm.
++- Available DistSQL statements, rule types, and algorithm plugins depend on the Proxy version, installed plugins, and current account privileges.
++- Physical DDL artifacts should be reviewed first. They are suitable for automatic execution only when Proxy can route and execute them safely.
++
++### Connecting to a physical database
++
++This mode is suitable only when MCP is used as a general JDBC metadata and SQL entry point, including these capabilities:
++
++- Browsing JDBC metadata for databases, schemas, tables, views, columns, indexes, and sequences.
++- Searching metadata.
++- Executing general read-only queries, or ordinary DML, DDL, and DCL after explicit authorization.
++
++This mode does not provide ShardingSphere rule capabilities:
++
++- It cannot discover encryption or masking algorithm plugins visible from Proxy.
++- It cannot query, plan, apply, or validate ShardingSphere encryption or masking rules.
++- It cannot use workflows that depend on DistSQL. Physical databases usually do not understand ShardingSphere DistSQL.
++
+ ## Plugin directory
  
- ## 启动 HTTP MCP Server
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
-index 0b1c60dd48c..e162f6d7c28 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
-@@ -44,6 +44,7 @@ runtimeDatabases:
- ```
+ The packaged distribution keeps MCP Server dependencies and built-in MCP feature plugin jars under `lib/`.
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.cn.md
+index 6cad99ed204..192da323d92 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.cn.md
+@@ -10,7 +10,8 @@ weight = 1
  
- Replace `<logic-database>`, `<proxy-host>`, `<proxy-port>`, `<proxy-username>`, and `<proxy-password>` with the actual ShardingSphere-Proxy connection information.
-+For a no-password Proxy account, omit `password` or set it to an empty string `""`.
- If the target database driver is not packaged, copy the corresponding JDBC driver jar to `plugins/` before startup.
+ - 当前版本只支持连接 ShardingSphere-Proxy 暴露的逻辑库。
+ - `runtimeDatabases` 应指向 Proxy 逻辑库，而不是底层物理存储库。
+-- 目标逻辑表和逻辑列应能通过 JDBC 元数据发现。
++- 直连真实数据库时，本功能不适用；真实数据库通常不识别 ShardingSphere 加密 DistSQL，也不能暴露 Proxy 中可见的加密算法插件和规则状态。
++- 目标逻辑表和逻辑列应能通过 Proxy 暴露的 JDBC 元数据发现；这些信息不保证等同于底层物理库的完整元数据。
+ - 当前功能插件不处理存量数据迁移或回填。
  
- ## Start the HTTP MCP Server
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-index 7c7c0e614f4..001f79e00a4 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-@@ -10,20 +10,20 @@ weight = 7
+ ## 可调用能力
+@@ -160,6 +161,7 @@ weight = 1
+ ## 限制
  
- | 现象 | 可能原因 | 处理方式 | 是否需要代码改进 |
- | --- | --- | --- | --- |
--| 启动失败 | JDK、配置路径、YAML 字段或必填字段不正确。 | 查看终端错误和 `logs/mcp.log`。 | 部分需要：字段可省略能力待优化。 |
-+| 启动失败 | JDK、配置路径、YAML 字段或必填字段不正确。 | 查看终端错误和 `logs/mcp.log`。 | 通常不需要。 |
- | HTTP 无法连接 | 端口、端点路径、传输方式或绑定地址不正确。 | 检查 `port`、`endpointPath`、`bindHost` 和客户端 URL。 | 通常不需要。 |
--| HTTP 返回 403 | 请求 `Origin` 与绑定地址安全策略不匹配。 | 本机调试用回环地址；远程访问走受控网关。 | 可以改进：错误响应可给出更明确提示。 |
-+| HTTP 返回 403 | 请求 `Origin` 与绑定地址安全策略不匹配。 | 本机调试用回环地址；远程访问走受控网关；详细原因看服务端日志。 | 通常不需要。 |
- | 会话请求失败 | 未初始化、缺少会话头，或复用已关闭会话。 | 先调用 `initialize`，后续请求持续携带响应头。 | 通常不需要。 |
--| STDIO 没有响应 | 被当成人工交互 Shell，或 stdout 被日志污染。 | 由 MCP 客户端拉起进程；诊断信息看 stderr 或日志。 | 可以改进：继续保护 stdout。 |
--| 逻辑库或元数据为空 | 配置、驱动或权限不正确。 | 确认连接 Proxy 逻辑库，并检查驱动和权限。 | 可以改进：空结果可给出诊断。 |
--| JDBC 驱动错误 | 驱动不在类路径，或 `driverClassName` 不正确。 | 把驱动 jar 放入 `plugins/`，或加入嵌入式运行时类路径。 | 部分需要：字段可省略能力待优化。 |
-+| STDIO 没有响应 | 被当成人工交互 Shell，或客户端未按 MCP stdio 协议发送 JSON-RPC。 | 由 MCP 客户端拉起进程；诊断信息看 stderr 或日志。 | 通常不需要。 |
-+| 逻辑库或元数据为空 | 未配置逻辑库、逻辑库名称不正确、连接失败、权限不足，或目标范围确实为空。 | 先读 `shardingsphere://runtime`，再看资源返回的 `empty_state` 和 `recovery`。 | 通常不需要。 |
-+| JDBC 驱动错误 | 驱动不在类路径，或 `driverClassName` 不正确。 | 把驱动 jar 放入 `plugins/`，并确认 `driverClassName` 非空且类名正确。 | 通常不需要。 |
- | SQL 工具调用失败 | 工具选错、多语句被拒绝或参数超限。 | 查询用 `execute_query`；有副作用 SQL 用 `execute_update` 并先预览。 | 通常不需要；错误消息可增强。 |
- | 工作流失败 | `plan_id`、会话、执行模式或人工执行步骤不正确。 | 同一会话内复用 `plan_id`；先预览；人工执行后再校验。 | 通常不需要。 |
- | 敏感输入无法传递 | 补问要求密钥或凭证。 | 由客户端或运维侧取值，再通过受保护 MCP 调用传入。 | 如需服务端解析密钥引用，需要改代码。 |
+ - 仅支持 ShardingSphere-Proxy 逻辑库。
++- 物理派生列、物理索引和列类型推断以 Proxy 可见信息为准，执行前应审查生成的 DDL。
+ - `drop` 只删除规则，不自动清理物理派生列和索引。
+ - 不处理存量数据迁移或回填。
+ - 不提供自动回滚能力。
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.en.md b/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.en.md
+index 392e5394f0b..c64f423488c 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/features/encrypt.en.md
+@@ -10,7 +10,8 @@ It does not implement encryption algorithms inside the MCP Server. It generates
  
- 补充说明：
+ - The current version supports logical databases exposed by ShardingSphere-Proxy only.
+ - `runtimeDatabases` should point to Proxy logical databases, not physical storage databases.
+-- The target logical table and column should be discoverable through JDBC metadata.
++- This feature does not apply to direct physical database connections. A physical database usually does not understand ShardingSphere encryption DistSQL and cannot expose Proxy-visible encryption algorithm plugins or rule state.
++- The target logical table and column should be discoverable through JDBC metadata exposed by Proxy. This metadata should not be treated as a complete physical database catalog.
+ - This feature does not handle existing data migration or backfill.
  
--- `username`、`password` 和 `driverClassName` 目前必须显式写出；不需要值时写 `""`。
-+- `username` 和 `driverClassName` 必须显式写出且不能为空；无密码账号可以省略 `password` 或写 `""`。
- - `MCP-Session-Id` 和 `MCP-Protocol-Version` 来自 `initialize` 响应头，关闭会话后不能复用。
- - 使用 `manual-only` 后，应先人工执行返回的 SQL 或 DistSQL，再调用校验工具。
- - 人工执行包中的密钥占位符应由执行人员在受控环境替换。
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-index 33163f1c957..fa767b9a9b2 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-@@ -10,20 +10,20 @@ For feature-specific business rule issues, see the corresponding feature plugin
+ ## Public Surface
+@@ -160,6 +161,7 @@ It generates `DROP ENCRYPT RULE` only when no encryption column remains on the t
+ ## Limitations
  
- | Symptom | Possible cause | Action | Needs code improvement |
- | --- | --- | --- | --- |
--| Startup failure | JDK, config path, YAML field, or required field is wrong. | Inspect terminal output and `logs/mcp.log`. | Partially: optional field support can be improved. |
-+| Startup failure | JDK, config path, YAML field, or required field is wrong. | Inspect terminal output and `logs/mcp.log`. | Usually no. |
- | HTTP connection failure | Port, endpoint path, transport type, or bind address is wrong. | Check `port`, `endpointPath`, `bindHost`, and client URL. | Usually no. |
--| HTTP 403 response | Request `Origin` does not match the bind-address policy. | Use loopback locally; use a controlled gateway for remote access. | Yes: error response can give clearer hints. |
-+| HTTP 403 response | Request `Origin` does not match the bind-address policy. | Use loopback locally; use a controlled gateway for remote access; inspect server logs for the safe reason category. | Usually no. |
- | Session request failure | Session was not initialized, headers are missing, or a closed session is reused. | Call `initialize` first and keep sending the response headers. | Usually no. |
--| No response in STDIO mode | STDIO is used as a shell, or stdout is polluted by logs. | Let an MCP client launch the process; read stderr or logs for diagnostics. | Yes: keep protecting stdout. |
--| Logical database or metadata is empty | Config, driver, or permission is wrong. | Confirm Proxy logical database, driver, and permissions. | Yes: empty results can include diagnostics. |
--| JDBC driver error | Driver is not on classpath, or `driverClassName` is wrong. | Put the driver jar under `plugins/`, or add it to the embedded runtime classpath. | Partially: optional field support can be improved. |
-+| No response in STDIO mode | STDIO is used as a shell, or the client does not send JSON-RPC over MCP stdio. | Let an MCP client launch the process; read stderr or logs for diagnostics. | Usually no. |
-+| Logical database or metadata is empty | No logical database is configured, the logical database name is wrong, connection failed, permission is insufficient, or the target scope is empty. | Read `shardingsphere://runtime`, then inspect `empty_state` and `recovery` in resource responses. | Usually no. |
-+| JDBC driver error | Driver is not on classpath, or `driverClassName` is wrong. | Put the driver jar under `plugins/`, and keep `driverClassName` non-empty and correct. | Usually no. |
- | SQL tool call failure | Wrong tool, multiple statements, or argument out of range. | Use `execute_query` for queries; use `execute_update` with preview for side effects. | Usually no; messages can improve. |
- | Workflow failure | `plan_id`, session, execution mode, or manual step is wrong. | Reuse `plan_id` in one session; preview first; validate after manual execution. | Usually no. |
- | Secret input cannot be passed safely | A clarification asks for a key or credential. | Resolve it outside the server, then pass it through a protected MCP call. | Server-side secret references require code changes. |
+ - Supports ShardingSphere-Proxy logical databases only.
++- Physical derived columns, physical indexes, and column type inference are based on what Proxy exposes. Review generated DDL before applying it.
+ - `drop` removes rules only; physical derived columns and indexes still require manual cleanup.
+ - Does not handle existing data migration or backfill.
+ - Does not provide automatic rollback.
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/features/mask.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/features/mask.cn.md
+index f92930ab781..532645e5a98 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/features/mask.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/features/mask.cn.md
+@@ -10,7 +10,8 @@ weight = 2
  
- Additional notes:
+ - 当前版本只支持连接 ShardingSphere-Proxy 暴露的逻辑库。
+ - `runtimeDatabases` 应指向 Proxy 逻辑库，而不是底层物理存储库。
+-- 目标逻辑表和逻辑列应能通过 JDBC 元数据发现。
++- 直连真实数据库时，本功能不适用；真实数据库通常不识别 ShardingSphere 脱敏 DistSQL，也不能暴露 Proxy 中可见的脱敏算法插件和规则状态。
++- 目标逻辑表和逻辑列应能通过 Proxy 暴露的 JDBC 元数据发现；这些信息不保证等同于底层物理库的完整元数据。
  
--- `username`, `password`, and `driverClassName` must currently be declared explicitly; use `""` when no value is needed.
-+- `username` and `driverClassName` must be declared explicitly and cannot be empty; a no-password account can omit `password` or use `""`.
- - `MCP-Session-Id` and `MCP-Protocol-Version` come from the `initialize` response headers and cannot be reused after close.
- - After `manual-only`, execute the returned SQL or DistSQL manually before calling validation.
- - Secret placeholders in manual packages should be replaced by operators in a controlled environment.
+ ## 可调用能力
+ 
+@@ -152,5 +153,6 @@ weight = 2
+ ## 限制
+ 
+ - 仅支持 ShardingSphere-Proxy 逻辑库。
++- 逻辑列和规则校验以 Proxy 可见信息为准；直连真实数据库只能执行普通 SQL，不代表脱敏规则状态。
+ - 不提供自动回滚能力。
+ - 规划输入只接受标准未加引号的逻辑标识符。
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/features/mask.en.md b/docs/document/content/user-manual/shardingsphere-mcp/features/mask.en.md
+index 306bbc6ad46..56265629c9c 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/features/mask.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/features/mask.en.md
+@@ -10,7 +10,8 @@ Mask rules apply directly to logical columns and do not generate physical derive
+ 
+ - The current version supports logical databases exposed by ShardingSphere-Proxy only.
+ - `runtimeDatabases` should point to Proxy logical databases, not physical storage databases.
+-- The target logical table and column should be discoverable through JDBC metadata.
++- This feature does not apply to direct physical database connections. A physical database usually does not understand ShardingSphere masking DistSQL and cannot expose Proxy-visible masking algorithm plugins or rule state.
++- The target logical table and column should be discoverable through JDBC metadata exposed by Proxy. This metadata should not be treated as a complete physical database catalog.
+ 
+ ## Public Surface
+ 
+@@ -152,5 +153,6 @@ It generates `DROP MASK RULE` only when no mask column remains on the target tab
+ ## Limitations
+ 
+ - Supports ShardingSphere-Proxy logical databases only.
++- Logical column and rule validation are based on what Proxy exposes. Direct physical database connections can execute ordinary SQL only and do not represent masking rule state.
+ - Does not provide automatic rollback.
+ - Planning input accepts only standard unquoted logical identifiers.
