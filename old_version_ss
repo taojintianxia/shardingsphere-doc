@@ -1,93 +1,80 @@
-commit 18aea739e4b8a0b7bcc00e22eaacac2cfe2d5aeb
+commit 004143cfe1195a22f2095545518213223d73e9e3
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Tue Jun 2 17:22:30 2026 +0800
+Date:   Tue Jun 2 21:22:12 2026 +0800
 
-    Refine ShardingSphere-MCP overview (#38775)
+    Align MCP workflow names (#38778)
     
-    Briefly introduce MCP with a link to the official documentation,
-    clarify how users work with ShardingSphere-MCP from AI clients, and
-    explain reviewable governance change plans.
-    
-    Align the overview structure with the current ShardingSphere-MCP menu
-    names and feature plugin pages in both Chinese and English.
+    Rename MCP workflow files to follow the existing action naming order.
+    Update workflow display names, job identifiers, cache/artifact prefixes,
+    and documentation references for the MCP E2E and release workflows.
 
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
-index fed1625e464..422a1aef1b3 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
-@@ -6,14 +6,17 @@ chapter = true
- +++
+diff --git a/docs/community/content/involved/release/shardingsphere.cn.md b/docs/community/content/involved/release/shardingsphere.cn.md
+index 9ed64cef53d..b59286de577 100644
+--- a/docs/community/content/involved/release/shardingsphere.cn.md
++++ b/docs/community/content/involved/release/shardingsphere.cn.md
+@@ -605,7 +605,7 @@ docker logout
  
- ShardingSphere-MCP 是 Apache ShardingSphere 的 MCP Server，可以独立启动。
--它把 ShardingSphere 逻辑库接入支持 MCP 的客户端，使用户能够通过自然语言查看元数据、执行受控 SQL 查询，并规划可审查的治理变更。
-+MCP 是连接 AI 应用与外部数据源和工具的开放协议，协议说明参见 [MCP 官方文档](https://modelcontextprotocol.io/docs/learn/architecture)。
-+
-+用户在支持 MCP 的大模型客户端中描述数据库任务后，可以通过 ShardingSphere-MCP 查看 ShardingSphere 逻辑库元数据、执行受控 SQL 查询，并生成可审查的治理变更计划。
-+治理变更计划用于描述数据加密、数据脱敏等规则变更的目标对象、影响范围和待执行语句，便于用户在执行前审查。
+ 3.8 ShardingSphere MCP 发布
  
- ShardingSphere-MCP 的配置以数据库为核心：先配置 MCP Server 可以连接的 ShardingSphere 逻辑库，再在客户端中描述要完成的数据库任务。
+-ShardingSphere MCP 通过仓库中的 [`.github/workflows/mcp-release.yml`](https://github.com/apache/shardingsphere/blob/master/.github/workflows/mcp-release.yml) workflow 发布。
++ShardingSphere MCP 通过仓库中的 [`.github/workflows/release-mcp.yml`](https://github.com/apache/shardingsphere/blob/master/.github/workflows/release-mcp.yml) workflow 发布。
+ 该 workflow 会构建 MCP 发行包、把 `ghcr.io/apache/shardingsphere-mcp:${RELEASE.VERSION}` 推送到 GHCR，
+ 稳定版额外更新 `latest`，然后通过 GitHub OIDC 把 `mcp/server.json` 发布到官方 MCP Registry。
  
--## 通过自然语言使用 MCP
-+## 在大模型客户端中使用
+@@ -617,7 +617,7 @@ ShardingSphere MCP 通过仓库中的 [`.github/workflows/mcp-release.yml`](http
  
- ShardingSphere-MCP 面向支持 MCP 的客户端、IDE 插件和 Agent 平台使用。
--完成客户端集成后，用户可以在客户端对话中直接描述数据库任务。
-+完成客户端集成后，用户可以在客户端对话中通过自然语言描述数据库任务。
+ GitHub release 发布后：
  
- 常见任务示例：
+-- 等待 `MCP - Release` workflow 成功完成
++- 等待 `Release - MCP` workflow 成功完成
+ - 确认 [GitHub Packages](https://github.com/apache/shardingsphere/pkgs/container/shardingsphere-mcp) 中存在 `ghcr.io/apache/shardingsphere-mcp:${RELEASE.VERSION}`
+ - 通过下面的命令确认官方 MCP Registry 已返回该 server 的 metadata：
  
-@@ -28,9 +31,12 @@ ShardingSphere-MCP 面向支持 MCP 的客户端、IDE 插件和 Agent 平台使
- ## 文档结构
+diff --git a/docs/community/content/involved/release/shardingsphere.en.md b/docs/community/content/involved/release/shardingsphere.en.md
+index 836fbb7ed13..fd3eb04ca83 100644
+--- a/docs/community/content/involved/release/shardingsphere.en.md
++++ b/docs/community/content/involved/release/shardingsphere.en.md
+@@ -610,7 +610,7 @@ docker logout
  
- - 快速开始：构建发行包，配置一个可连接的逻辑库，启动 HTTP MCP Server，并验证基础任务。
--- 功能介绍：说明 MCP Server 可以完成的数据库任务、可读取的信息和使用边界。
-+- 能力清单：说明 MCP Server 可以完成的数据库任务、可读取的信息和使用边界。
- - 配置说明：说明传输方式、`runtimeDatabases`、插件目录和启动参数。
- - 客户端集成：说明如何通过 HTTP 或 STDIO 把 MCP Server 接入客户端，以及集成后的使用方式。
--- 功能插件：说明官方 MCP 功能插件能力，以及插件变更的审查、执行和校验流程。
- - 部署说明：说明发行包、OCI 镜像和安全部署建议。
- - 常见问题：排查 MCP Server、连接、配置、元数据和 SQL 执行的通用问题。
-+- 功能插件：说明官方 MCP 功能插件能力，以及插件变更的审查、执行和校验流程。
-+  - 插件工作流：说明插件变更任务的确认、预览、执行和校验流程。
-+  - 数据加密：说明如何通过 MCP 功能插件规划、执行和校验数据加密规则变更。
-+  - 数据脱敏：说明如何通过 MCP 功能插件规划、执行和校验数据脱敏规则变更。
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md b/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
-index 4aa21734364..665aa298bc2 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
-@@ -6,14 +6,17 @@ chapter = true
- +++
+ 3.8 ShardingSphere MCP publication
  
- ShardingSphere-MCP is the MCP Server for Apache ShardingSphere. It can run independently.
--It connects ShardingSphere logical databases to MCP-capable clients, so users can inspect metadata, run controlled SQL queries, and plan reviewable governance changes through natural language.
-+MCP is an open protocol for connecting AI applications to external data sources and tools. For protocol details, see the [official MCP documentation](https://modelcontextprotocol.io/docs/learn/architecture).
-+
-+After users describe database tasks in an MCP-capable AI client, ShardingSphere-MCP can inspect ShardingSphere logical database metadata, run controlled SQL queries, and generate reviewable governance change plans.
-+Governance change plans describe the target objects, impact scope, and statements to be executed for rule changes such as data encryption and data masking, so users can review them before execution.
+-ShardingSphere MCP is published through the repository workflow [`.github/workflows/mcp-release.yml`](https://github.com/apache/shardingsphere/blob/master/.github/workflows/mcp-release.yml).
++ShardingSphere MCP is published through the repository workflow [`.github/workflows/release-mcp.yml`](https://github.com/apache/shardingsphere/blob/master/.github/workflows/release-mcp.yml).
+ The workflow builds the MCP distribution, pushes `ghcr.io/apache/shardingsphere-mcp:${RELEASE.VERSION}` to GHCR,
+ pushes `latest` for stable releases, and then publishes `mcp/server.json` to the official MCP Registry through GitHub OIDC.
  
- ShardingSphere-MCP configuration starts from databases: configure the ShardingSphere logical databases that the MCP Server can connect to, then describe database tasks in the client.
+@@ -622,7 +622,7 @@ Edit release version and release notes, select `Set as the latest release`, clic
  
--## Use MCP through natural language
-+## Use in AI Clients
+ After the GitHub release is published:
  
- ShardingSphere-MCP is designed for MCP-capable clients, IDE extensions, and agent platforms.
--After client integration, users can describe database tasks directly in the client conversation.
-+After client integration, users can describe database tasks in natural language in the client conversation.
+-- wait for the `MCP - Release` workflow to finish successfully
++- wait for the `Release - MCP` workflow to finish successfully
+ - confirm [GitHub Packages](https://github.com/apache/shardingsphere/pkgs/container/shardingsphere-mcp) contains `ghcr.io/apache/shardingsphere-mcp:${RELEASE.VERSION}`
+ - confirm the official MCP Registry returns the published metadata:
  
- Common task examples:
+diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
+index 37bfda3795f..0031d7fa1fd 100644
+--- a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
++++ b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
+@@ -97,7 +97,7 @@ test/e2e/mcp/target/llm-e2e/
  
-@@ -28,9 +31,12 @@ Tasks with side effects should create or preview a plan first, then run only aft
- ## Structure
+ GitHub Actions 入口：
  
- - Quick Start: build the distribution, configure a reachable logical database, start the HTTP MCP Server, and verify basic tasks.
--- Capabilities: understand the database tasks, readable information, and usage boundaries provided by the MCP Server.
-+- Capability Catalog: understand the database tasks, readable information, and usage boundaries provided by the MCP Server.
- - Configuration: configure transport, `runtimeDatabases`, plugin directories, and launch parameters.
- - Client Integration: connect the MCP Server to a client through HTTP or STDIO, and understand how to use it after integration.
--- Feature Plugins: use official MCP feature plugins and understand how to review, apply, and validate plugin changes.
- - Deployment: deploy the binary distribution and OCI image safely.
- - Troubleshooting: diagnose common MCP Server, connection, configuration, metadata, and SQL execution issues.
-+- Feature Plugins: use official MCP feature plugins and understand how to review, apply, and validate plugin changes.
-+  - Plugin Workflows: understand confirmation, preview, execution, and validation for plugin change tasks.
-+  - Data Encryption: plan, apply, and validate data encryption rule changes through MCP feature plugins.
-+  - Data Masking: plan, apply, and validate data masking rule changes through MCP feature plugins.
+-- `.github/workflows/mcp-e2e.yml`
++- `.github/workflows/e2e-mcp.yml`
+ 
+ 这条 workflow 是 MCP runtime E2E 的必跑入口。
+ 如果超大 PR 因 path filter 限制漏触发，可以使用 `workflow_dispatch` 手动补充 evidence。
+diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
+index 9a73528901f..b9afe93aff5 100644
+--- a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
++++ b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
+@@ -97,7 +97,7 @@ test/e2e/mcp/target/llm-e2e/
+ 
+ GitHub Actions entry points:
+ 
+-- `.github/workflows/mcp-e2e.yml`
++- `.github/workflows/e2e-mcp.yml`
+ 
+ This workflow is the mandatory MCP runtime E2E entry point.
+ If a very large PR misses a path-filter match, use `workflow_dispatch` to add manual evidence.
