@@ -60,6 +60,17 @@ Prerequisites  Proxy is developed in JAVA, and JDK version 1.8 or later is recom
     </item>
     
     <item>
+      <title>Codex</title>
+      <link>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/codex/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/codex/</guid>
+      <description>This page explains how to connect Codex to an already running ShardingSphere-MCP HTTP Server.
+Prerequisites  Start the HTTP MCP Server by following Quick Start. Codex CLI or the Codex IDE extension is available. The Codex environment can reach http://127.0.0.1:18088/mcp, or the actual MCP Server address you configured.  Add the MCP Server Use Codex CLI to add ShardingSphere-MCP:
+codex mcp add shardingsphere --url http://127.0.0.1:18088/mcp Verify that it has been added:</description>
+    </item>
+    
+    <item>
       <title>Core Concept</title>
       <link>https://shardingsphere.apache.org/document/current/en/features/db-gateway/concept/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
@@ -746,6 +757,16 @@ Docker Images are only provided in downstream channels such as GitHub Packages a
 Connection Targets Connecting to ShardingSphere-Proxy Use this mode to inspect ShardingSphere logical database structure, read rule state, run controlled SQL, or create reviewable rule change plans.
 Available tasks include:
  Inspecting logical databases, schemas, tables, views, columns, indexes, and sequences.</description>
+    </item>
+    
+    <item>
+      <title>Claude Code</title>
+      <link>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/claude-code/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/claude-code/</guid>
+      <description>This page explains how to connect Claude Code to an already running ShardingSphere-MCP HTTP Server, or let Claude Code start a local STDIO MCP Server.
+Prerequisites  Prepare the ShardingSphere-MCP distribution and database configuration by following Quick Start. Claude Code CLI is available. For HTTP transport, the Claude Code environment can reach http://127.0.0.1:18088/mcp, or the actual MCP Server address you configured.  Add an HTTP MCP Server Run the following command from the project where you use Claude Code:</description>
     </item>
     
     <item>
@@ -1449,17 +1470,6 @@ Procedure  Configure the transaction type Configure Atomikos  Sample Configure t
 transaction: defaultType: XA providerType: Atomikos  Configure Atomikos Atomikos configuration items can be customized by adding jta.properties to the project&amp;rsquo;s classpath.
 See Atomikos&amp;rsquo;s official documentation for more details.
 Data Recovery xa_tx.log is generated in the logs directory of the project. This is the log required for recovering XA crash.</description>
-    </item>
-    
-    <item>
-      <title>Client Integration</title>
-      <link>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/</guid>
-      <description>Client integration connects ShardingSphere-MCP to MCP-capable AI applications, IDE extensions, or agent platforms. After configuration, users can inspect metadata, run controlled SQL queries, or start database governance tasks through natural language in the application.
-Use client integration when:
- An AI application, IDE extension, or agent platform needs to connect to ShardingSphere. ShardingSphere metadata should be used for query assistance, structure understanding, diagnostics, or governance planning. A team needs a unified controlled database access path.</description>
     </item>
     
     <item>

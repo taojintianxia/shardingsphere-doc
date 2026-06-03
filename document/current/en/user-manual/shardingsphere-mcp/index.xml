@@ -43,17 +43,6 @@ transport: type: STDIO    Configuration item Description     transport.type Tran
     </item>
     
     <item>
-      <title>Client Integration</title>
-      <link>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/client-integration/</guid>
-      <description>Client integration connects ShardingSphere-MCP to MCP-capable AI applications, IDE extensions, or agent platforms. After configuration, users can inspect metadata, run controlled SQL queries, or start database governance tasks through natural language in the application.
-Use client integration when:
- An AI application, IDE extension, or agent platform needs to connect to ShardingSphere. ShardingSphere metadata should be used for query assistance, structure understanding, diagnostics, or governance planning. A team needs a unified controlled database access path.</description>
-    </item>
-    
-    <item>
       <title>Deployment</title>
       <link>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/deployment/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
