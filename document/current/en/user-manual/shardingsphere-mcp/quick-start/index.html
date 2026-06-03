@@ -12,22 +12,22 @@
     <title>Quick Start :: ShardingSphere</title>
 
     
-    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1780476827" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1780476827" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1780482797" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1780482797" rel="stylesheet">
     
-    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1780476827" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1780482797" rel="stylesheet">
     
     
 
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1780476827"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1780482797"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style>
@@ -301,14 +301,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1780476827"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1780476827"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1780482797"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1780482797"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/shardingsphere.apache.org\/document\/current\/\/en";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1780476827"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1780482797"></script>
 
       
     </div>
@@ -9236,10 +9236,10 @@
    
     
       
-        <li data-nav-id="/en/user-manual/shardingsphere-mcp/developer-appendix/" title="Developer Appendix" class="dd-item ">
+        <li data-nav-id="/en/user-manual/shardingsphere-mcp/developer-appendix/" title="Custom Integration Appendix" class="dd-item ">
           <a href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/developer-appendix/">
             <svg  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5375" width="20" height="20"></svg>
-          Developer Appendix
+          Custom Integration Appendix
           
           </a>
       </li>
@@ -10641,16 +10641,13 @@ If the target database driver is not provided with the distribution, put the cor
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-bat" data-lang="bat"><span style="color:#66d9ef">start</span> <span style="color:#e6db74">&#34;ShardingSphere MCP&#34;</span> cmd /c <span style="color:#e6db74">&#34;bin\start.bat &gt; logs\mcp-http.log 2&gt;&amp;1&#34;</span>
 </code></pre></div><p>The default configuration file is <code>conf/mcp-http.yaml</code>, and the default endpoint is <code>http://127.0.0.1:18088/mcp</code>.</p>
 <h2 id="connect-an-ai-application">Connect an AI Application</h2>
-<p>Configure the HTTP MCP Server address in the AI application, IDE extension, or agent platform:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-json" data-lang="json">{
-  <span style="color:#f92672">&#34;mcpServers&#34;</span>: {
-    <span style="color:#f92672">&#34;shardingsphere&#34;</span>: {
-      <span style="color:#f92672">&#34;url&#34;</span>: <span style="color:#e6db74">&#34;http://127.0.0.1:18088/mcp&#34;</span>
-    }
-  }
-}
-</code></pre></div><p>Configuration file locations and field names may differ between AI applications. Follow the documentation of the client you use.
-For more HTTP and STDIO options, see <a href="../client-integration/">Client Integration</a>.</p>
+<p>Choose an MCP-capable AI application, IDE extension, or agent platform, and configure the HTTP MCP Server address started in the previous step.</p>
+<p>Typical client configuration examples:</p>
+<ul>
+<li><a href="../client-integration/codex/">Codex</a></li>
+<li><a href="../client-integration/claude-code/">Claude Code</a></li>
+</ul>
+<p>For other clients, follow their own documentation and use the ShardingSphere-MCP address: <code>http://127.0.0.1:18088/mcp</code>.</p>
 <h2 id="verify-through-natural-language">Verify through Natural Language</h2>
 <p>After configuration, enter the following tasks in the AI application to verify that ShardingSphere-MCP can access the target logical database:</p>
 <ul>
@@ -16785,19 +16782,19 @@ If the AI application cannot connect or cannot see the logical database, see <a 
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1780476827"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1780476827"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1780476827"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1780476827"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1780476827"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1780476827"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1780482797"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1780482797"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1780482797"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1780482797"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1780482797"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1780482797"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1780476827"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1780476827"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1780476827"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1780482797"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1780482797"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1780482797"></script>
     
         
-            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1780476827"></script>
+            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1780482797"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });

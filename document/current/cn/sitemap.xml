@@ -3926,18 +3926,6 @@
                 href="https://shardingsphere.apache.org/document/current/cn/dev-manual/agent/"
                 />
   </url><url>
-    <loc>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-mcp/developer-appendix/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/developer-appendix/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="cn"
-                href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-mcp/developer-appendix/"
-                />
-  </url><url>
     <loc>https://shardingsphere.apache.org/document/current/cn/features/shadow/</loc>
     <xhtml:link
                 rel="alternate"
@@ -3972,6 +3960,18 @@
                 rel="alternate"
                 hreflang="cn"
                 href="https://shardingsphere.apache.org/document/current/cn/user-manual/common-config/builtin-algorithm/mask/"
+                />
+  </url><url>
+    <loc>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-mcp/developer-appendix/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-mcp/developer-appendix/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-mcp/developer-appendix/"
                 />
   </url><url>
     <loc>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/check-migration/</loc>
