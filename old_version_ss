@@ -1,144 +1,80 @@
-commit ecb7c87c9da4e20986e993a3eb303176b5fd4bcd
+commit 8d472d5cae903c923a8f56a9b410888c02eaed83
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Thu Jun 4 10:48:59 2026 +0800
+Date:   Thu Jun 4 14:47:46 2026 +0800
 
-    Run MCP E2E tests by wildcard (#38791)
-    
-    - Replace hardcoded MCP E2E test class list with *E2ETest
-    - Remove MCP-specific enable flags and llm-e2e profile
-    - Use e2e-env.properties with system property overrides for MCP E2E config
-    - Build MCP distribution image before workflow E2E execution
-    - Stabilize LLM resource discovery and MySQL readiness in full Docker E2E
+    Refine MCP troubleshooting guidance (#38799)
 
-diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-index 0031d7fa1fd..b4e099eb7d4 100644
---- a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-+++ b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-@@ -27,6 +27,13 @@ chapter = true
- ./mvnw -pl test/e2e/mcp -am install -DskipTests -DskipITs -Dspotless.skip=true -B -ntp
- ```
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
+index ae6101c8ef9..7e3cf342cc6 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
+@@ -11,11 +11,11 @@ weight = 7
  
-+打包 MCP distribution 并构建本地 distribution image：
-+
-+```bash
-+./mvnw -pl distribution/mcp -am -DskipTests package -B -ntp
-+docker build -f distribution/mcp/Dockerfile -t apache/shardingsphere-mcp-e2e:local distribution/mcp/target
-+```
-+
- ## LLM Runtime
+ | 现象 | 可能原因 | 处理方式 |
+ | --- | --- | --- |
+-| MCP Server 启动失败 | Java 版本、配置文件路径、发行包目录或 YAML 必填字段不正确。 | 查看启动终端和 `logs/mcp.log`；确认使用 Java 21 及以上版本，配置文件存在，发行包 `lib/` 目录完整。 |
++| MCP Server 启动失败 | Java 版本、配置文件路径、发行包目录或 YAML 必填字段不正确。 | 查看启动终端和 `logs/mcp.log`；确认使用 Java 21 及以上版本，配置文件存在，发行包 `lib/` 目录完整，并且 `runtimeDatabases` 至少配置一项运行时数据库。 |
+ | AI 应用无法连接 ShardingSphere-MCP | 传输方式、端口、端点路径、绑定地址或 AI 应用中的 MCP Server 配置不一致。 | 检查 `transport.type`、`port`、`endpointPath`、`bindHost`，并确认 AI 应用使用相同的连接地址。 |
+ | HTTP 远程访问失败或请求被拒绝 | HTTP 绑定地址、Origin 请求头、反向代理、网关转发或会话归属配置不符合安全策略。 | 本机调试使用回环地址；远程访问放在受控网关或反向代理后面；检查网关是否转发了期望的请求头；详细原因看服务端日志。 |
+ | STDIO 模式没有响应 | STDIO 被当作命令行交互入口，或 AI 应用没有正确拉起 MCP 进程。 | 由 AI 应用拉起 ShardingSphere-MCP；诊断信息看 stderr 或 `logs/mcp.log`。 |
+-| 看不到数据库或逻辑库 | `runtimeDatabases` 未配置、名称不正确、连接失败、权限不足，或目标范围确实为空。 | 读取当前可见数据库；如果返回连接错误分类，按下方连接错误分类处理；确认账号拥有元数据读取权限。 |
++| 看不到数据库或逻辑库 | `runtimeDatabases` 中的名称不正确、连接失败、权限不足，或目标范围确实为空。 | 读取当前可见数据库；如果返回连接错误分类，按下方连接错误分类处理；确认账号拥有元数据读取权限。 |
+ | 查不到表、列或索引 | 连接目标不同、模式或命名空间不正确、账号权限不足，或 Proxy 可见逻辑元数据与底层物理库不同。 | 先确认连接的是 ShardingSphere-Proxy 还是数据库直连，再检查模式、命名空间、账号权限和 Proxy 可见元数据。 |
+ | 查询被拒绝 | SQL 不属于只读查询，或包含锁定读、修改数据、修改结构、修改权限、事务控制等副作用。 | 只读任务使用查询语句；涉及副作用的任务先要求预览变更，再确认是否执行。 |
+ | 查询执行失败或结果被截断 | SQL 语法、目标对象、权限、返回行数或超时限制不正确。 | 先查看表结构；缩小查询条件、减少返回列、降低返回行数；必要时调整超时时间。 |
+@@ -25,6 +25,7 @@ weight = 7
+ 补充说明：
  
- MCP LLM lane 默认使用本地 Docker image 承载 OpenAI-compatible endpoint。
-@@ -50,27 +57,24 @@ sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh
+ - `username` 和 `driverClassName` 必须显式写出且不能为空；无密码账号可以省略 `password` 或写 `""`。
++- `runtimeDatabases` 是启动必填项，至少需要配置一项运行时数据库。
+ - 查询默认最多返回 100 行，单次查询最多可请求 5000 行；查询超时最大可请求 300000 毫秒。
+ - 人工执行包中的密钥占位符应由执行人员在受控环境替换。
+ - ShardingSphere-MCP 不直接读取密钥管理系统；如果规则变更需要密钥或凭证，应通过 AI 应用、运维流程或受保护的执行环境传递。
+@@ -63,7 +64,9 @@ weight = 7
+ | 连接预检工具命名 | 现有工具名 `database_gateway_validate_proxy_connectivity` 容易让用户误以为只能校验 Proxy，但实际校验的是已配置的运行时数据库连接。 | 后续改为更中性的名称，例如 `database_gateway_validate_runtime_database` 或 `database_gateway_validate_connectivity`，并同步调整描述符、测试和文档。 |
+ | 运行状态中的错误分类 | 连接错误分类包含 `database_not_visible`，但运行状态资源的安全分类列表尚未完全对齐。 | 后续在运行状态资源中补齐该分类，保证排障分类和运行时状态一致。 |
+ | HTTP 安全错误分类 | Origin 请求头和会话归属不一致时，目前主要通过 HTTP 状态码和日志定位。 | 后续增加稳定、非敏感的错误分类，例如 `origin_not_allowed` 和 `session_attribution_mismatch`，方便 AI 应用和管理员按错误码排查。 |
+-| 空 `runtimeDatabases` 提示 | 未配置运行时数据库时 Server 可以启动，但元数据和 SQL 能力不可用。 | 后续在启动日志或运行状态中给出更明显的配置缺失提示。 |
++| 空 `runtimeDatabases` 启动策略 | 当前启动配置要求 `runtimeDatabases` 非空，缺失或为空会导致启动校验失败。 | 如果后续希望支持先启动 Server 再补充运行时数据库，需要调整 YAML 校验、运行状态、启动日志和文档；如果仍要求非空，则保持当前启动失败行为，并继续让错误信息指向配置修正。 |
++| 查询失败错误分类 | 查询失败可能来自 SQL 语法、对象不存在、权限不足、连接中断或超时，目前用户仍需要结合错误响应和日志判断。 | 后续为查询执行失败补充稳定、非敏感的分类和处理建议，例如语法错误、对象不可见、权限不足和执行超时，并避免暴露原始连接信息或堆栈。 |
++| 元数据不可见错误分类 | 看不到数据库、模式、表、列或索引时，用户需要从配置、权限和连接目标中自行排查。 | 后续在元数据读取和搜索结果中返回更细的可见性分类，例如数据库不可见、模式不可见、对象不可见或权限不足，并给出下一步检查项。 |
+ | 敏感值引用机制 | 规则变更可能需要密钥或凭证，目前由外部受控通道传递。 | 后续如需内置支持，应设计密钥引用或解析机制，而不是让 MCP Server 直接暴露敏感值。 |
  
- ## 运行 MCP Runtime E2E
+ ## 提供给管理员或排障人员的信息
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
+index bd16f696ccf..e4a734221c0 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
+@@ -11,11 +11,11 @@ When troubleshooting, distinguish external environment issues from MCP protectio
  
-+MCP E2E 运行配置集中在 `test/e2e/mcp/src/test/resources/env/e2e-env.properties`。
-+本地运行时可以直接修改该文件，也可以使用同名 `-D` 系统参数覆盖。
-+
- ```bash
--MCP_E2E_TESTS=HttpTransportContractE2ETest,HttpTransportProtocolContractE2ETest,HttpTransportBaselineContractE2ETest
--MCP_E2E_TESTS="${MCP_E2E_TESTS},ProductionMySQLRuntimeE2ETest"
--MCP_E2E_TESTS="${MCP_E2E_TESTS},HttpProductionProxyEncryptWorkflowE2ETest"
--MCP_E2E_TESTS="${MCP_E2E_TESTS},HttpProductionProxyMaskWorkflowE2ETest,LLMUsabilitySuiteE2ETest"
- ./mvnw -pl test/e2e/mcp test -DskipITs -Dspotless.skip=true \
--  -Dtest="${MCP_E2E_TESTS}" \
-+  -Dtest='*E2ETest' \
-   -Dsurefire.failIfNoSpecifiedTests=true \
--  -Dmcp.e2e.contract.enabled=true \
--  -Dmcp.e2e.production.mysql.enabled=true \
--  -Dmcp.e2e.production.stdio.enabled=true \
--  -Dmcp.e2e.llm.enabled=true \
--  -Dmcp.e2e.llm.excludedGroups=
-+  -De2e.run.type=DOCKER \
-+  -Dmcp.e2e.container.image=apache/shardingsphere-mcp-e2e:local
- ```
+ | Symptom | Possible cause | Action |
+ | --- | --- | --- |
+-| MCP Server startup failure | Java version, config file path, distribution directory, or required YAML field is wrong. | Inspect the startup terminal and `logs/mcp.log`; use Java 21 or later, confirm that the config file exists, and ensure that the distribution `lib/` directory is complete. |
++| MCP Server startup failure | Java version, config file path, distribution directory, or required YAML field is wrong. | Inspect the startup terminal and `logs/mcp.log`; use Java 21 or later, confirm that the config file exists, ensure that the distribution `lib/` directory is complete, and configure at least one runtime database in `runtimeDatabases`. |
+ | The AI application cannot connect to ShardingSphere-MCP | Transport type, port, endpoint path, bind address, or the MCP Server configuration in the AI application is inconsistent. | Check `transport.type`, `port`, `endpointPath`, `bindHost`, and the address configured in the AI application. |
+ | Remote HTTP access fails or the HTTP request is rejected | HTTP bind address, Origin header, reverse proxy, gateway forwarding, or session attribution configuration does not satisfy the security policy. | Use loopback for local debugging; place remote access behind a controlled gateway or reverse proxy; check whether the gateway forwards the expected headers; inspect server logs for details. |
+ | No response in STDIO mode | STDIO is used as an interactive command-line entry, or the AI application does not launch the MCP process correctly. | Let the AI application launch ShardingSphere-MCP; inspect stderr or `logs/mcp.log` for diagnostics. |
+-| Databases or logical databases are not visible | `runtimeDatabases` is not configured, the name is wrong, connection failed, privileges are insufficient, or the target scope is empty. | Read the currently visible databases; if a connection failure category is returned, follow the connection failure table below; confirm that the account can read metadata. |
++| Databases or logical databases are not visible | The name in `runtimeDatabases` is wrong, connection failed, privileges are insufficient, or the target scope is empty. | Read the currently visible databases; if a connection failure category is returned, follow the connection failure table below; confirm that the account can read metadata. |
+ | Tables, columns, or indexes cannot be found | The connection target is different, schema or namespace is wrong, account privileges are insufficient, or Proxy-visible logical metadata differs from the underlying physical database. | Confirm whether the target is ShardingSphere-Proxy or a direct database connection, then check schema, namespace, account privileges, and Proxy-visible metadata. |
+ | Query is rejected | The SQL is not read-only, or it contains locking reads, data changes, schema changes, privilege changes, or transaction control. | Use query statements for read-only tasks. For side-effecting tasks, preview the change first and then decide whether to execute it. |
+ | Query execution fails or the result is truncated | SQL syntax, target object, privilege, row limit, or timeout limit is wrong. | Inspect table structure first; narrow the predicate, reduce the projection, request fewer rows, or adjust timeout within the supported range. |
+@@ -25,6 +25,7 @@ When troubleshooting, distinguish external environment issues from MCP protectio
+ Additional notes:
  
- ## 运行 LLM Usability Suite
+ - `username` and `driverClassName` must be declared explicitly and cannot be empty; a no-password account can omit `password` or use `""`.
++- `runtimeDatabases` is required at startup and must contain at least one runtime database.
+ - Queries return at most 100 rows by default. A single query can request at most 5000 rows, and the maximum requested query timeout is 300000 milliseconds.
+ - Secret placeholders in manual packages should be replaced by operators in a controlled environment.
+ - ShardingSphere-MCP does not read key management systems directly. If a rule change needs keys or credentials, pass them through the AI application, operations workflow, or protected execution environment.
+@@ -63,7 +64,9 @@ The following items are documented as known follow-up code improvements. Until t
+ | Connectivity validation tool name | The current tool name `database_gateway_validate_proxy_connectivity` can imply that only Proxy is validated, but the tool actually validates a configured runtime database connection. | Rename it to a more neutral name, such as `database_gateway_validate_runtime_database` or `database_gateway_validate_connectivity`, and update descriptors, tests, and documentation together. |
+ | Error categories in runtime status | The connection failure categories include `database_not_visible`, but the safe category list in the runtime status resource is not fully aligned. | Add this category to the runtime status resource so troubleshooting categories and runtime status stay consistent. |
+ | HTTP security error categories | Origin header and session attribution failures are currently located mainly through HTTP status codes and logs. | Add stable, non-sensitive error categories such as `origin_not_allowed` and `session_attribution_mismatch`, so AI applications and administrators can troubleshoot by category. |
+-| Empty `runtimeDatabases` guidance | The Server can start without configured runtime databases, but metadata and SQL capabilities are unavailable. | Add a clearer warning in startup logs or runtime status when no runtime database is configured. |
++| Empty `runtimeDatabases` startup policy | The current launch configuration requires `runtimeDatabases` to be non-empty. A missing or empty value fails startup validation. | If startup without runtime databases should be supported later, adjust YAML validation, runtime status, startup logs, and documentation together. If the non-empty requirement remains, keep startup failure behavior and continue directing users to fix the configuration. |
++| Query failure error categories | Query failures can come from SQL syntax, invisible objects, insufficient privileges, interrupted connections, or timeout. Users currently need to combine the error response with logs to identify the cause. | Add stable, non-sensitive categories and actions for query execution failures, such as syntax error, object not visible, insufficient privileges, and execution timeout, without exposing raw connection details or stack traces. |
++| Metadata visibility error categories | When databases, schemas, tables, columns, or indexes are not visible, users need to inspect configuration, privileges, and connection target manually. | Return finer-grained visibility categories from metadata read and search results, such as database not visible, schema not visible, object not visible, or insufficient privileges, with the next checks to perform. |
+ | Secret reference mechanism | Rule changes may require keys or credentials, which are currently passed through external protected channels. | If built-in support is required later, design a secret reference or resolver mechanism instead of exposing sensitive values through the MCP Server. |
  
- ```bash
--./mvnw -pl test/e2e/mcp -Pllm-e2e test -DskipITs -Dspotless.skip=true \
-+./mvnw -pl test/e2e/mcp test -DskipITs -Dspotless.skip=true \
-   -Dtest=LLMUsabilitySuiteE2ETest \
--  -Dsurefire.failIfNoSpecifiedTests=true
-+  -Dsurefire.failIfNoSpecifiedTests=true \
-+  -De2e.run.type=DOCKER
- ```
- 
- ## External Debug
-@@ -78,8 +82,9 @@ MCP_E2E_TESTS="${MCP_E2E_TESTS},HttpProductionProxyMaskWorkflowE2ETest,LLMUsabil
- 仅本地调试时，可以连接已经运行的 OpenAI-compatible endpoint：
- 
- ```bash
--./mvnw -pl test/e2e/mcp -Pllm-e2e test -DskipITs -Dspotless.skip=true \
-+./mvnw -pl test/e2e/mcp test -DskipITs -Dspotless.skip=true \
-   -Dtest=LLMUsabilitySuiteE2ETest \
-+  -De2e.run.type=DOCKER \
-   -Dmcp.llm.runtime-mode=external-debug \
-   -Dmcp.llm.base-url=http://127.0.0.1:8080/v1 \
-   -Dsurefire.failIfNoSpecifiedTests=true
-diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-index b9afe93aff5..c7661e40b2c 100644
---- a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-+++ b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-@@ -27,6 +27,13 @@ Install MCP E2E dependency modules into the local repository first:
- ./mvnw -pl test/e2e/mcp -am install -DskipTests -DskipITs -Dspotless.skip=true -B -ntp
- ```
- 
-+Package the MCP distribution and build the local distribution image:
-+
-+```bash
-+./mvnw -pl distribution/mcp -am -DskipTests package -B -ntp
-+docker build -f distribution/mcp/Dockerfile -t apache/shardingsphere-mcp-e2e:local distribution/mcp/target
-+```
-+
- ## LLM Runtime
- 
- The MCP LLM lane uses a local Docker image to host an OpenAI-compatible endpoint.
-@@ -50,27 +57,24 @@ sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh
- 
- ## Run MCP Runtime E2E
- 
-+MCP E2E runtime configuration is centralized in `test/e2e/mcp/src/test/resources/env/e2e-env.properties`.
-+For local runs, edit that file or override the same keys with `-D` system properties.
-+
- ```bash
--MCP_E2E_TESTS=HttpTransportContractE2ETest,HttpTransportProtocolContractE2ETest,HttpTransportBaselineContractE2ETest
--MCP_E2E_TESTS="${MCP_E2E_TESTS},ProductionMySQLRuntimeE2ETest"
--MCP_E2E_TESTS="${MCP_E2E_TESTS},HttpProductionProxyEncryptWorkflowE2ETest"
--MCP_E2E_TESTS="${MCP_E2E_TESTS},HttpProductionProxyMaskWorkflowE2ETest,LLMUsabilitySuiteE2ETest"
- ./mvnw -pl test/e2e/mcp test -DskipITs -Dspotless.skip=true \
--  -Dtest="${MCP_E2E_TESTS}" \
-+  -Dtest='*E2ETest' \
-   -Dsurefire.failIfNoSpecifiedTests=true \
--  -Dmcp.e2e.contract.enabled=true \
--  -Dmcp.e2e.production.mysql.enabled=true \
--  -Dmcp.e2e.production.stdio.enabled=true \
--  -Dmcp.e2e.llm.enabled=true \
--  -Dmcp.e2e.llm.excludedGroups=
-+  -De2e.run.type=DOCKER \
-+  -Dmcp.e2e.container.image=apache/shardingsphere-mcp-e2e:local
- ```
- 
- ## Run LLM Usability Suite
- 
- ```bash
--./mvnw -pl test/e2e/mcp -Pllm-e2e test -DskipITs -Dspotless.skip=true \
-+./mvnw -pl test/e2e/mcp test -DskipITs -Dspotless.skip=true \
-   -Dtest=LLMUsabilitySuiteE2ETest \
--  -Dsurefire.failIfNoSpecifiedTests=true
-+  -Dsurefire.failIfNoSpecifiedTests=true \
-+  -De2e.run.type=DOCKER
- ```
- 
- ## External Debug
-@@ -78,8 +82,9 @@ MCP_E2E_TESTS="${MCP_E2E_TESTS},HttpProductionProxyMaskWorkflowE2ETest,LLMUsabil
- For local debugging only, connect to an already running OpenAI-compatible endpoint:
- 
- ```bash
--./mvnw -pl test/e2e/mcp -Pllm-e2e test -DskipITs -Dspotless.skip=true \
-+./mvnw -pl test/e2e/mcp test -DskipITs -Dspotless.skip=true \
-   -Dtest=LLMUsabilitySuiteE2ETest \
-+  -De2e.run.type=DOCKER \
-   -Dmcp.llm.runtime-mode=external-debug \
-   -Dmcp.llm.base-url=http://127.0.0.1:8080/v1 \
-   -Dsurefire.failIfNoSpecifiedTests=true
+ ## Information for Administrators or Troubleshooters
