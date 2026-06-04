@@ -12,22 +12,22 @@
     <title>Deployment :: ShardingSphere</title>
 
     
-    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1780571769" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1780571769" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1780580051" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1780580051" rel="stylesheet">
     
-    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1780571769" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1780580051" rel="stylesheet">
     
     
 
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1780571769"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1780580051"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style>
@@ -301,14 +301,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1780571769"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1780571769"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1780580051"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1780580051"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/shardingsphere.apache.org\/document\/current\/\/en";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1780571769"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1780580051"></script>
 
       
     </div>
@@ -10660,7 +10660,14 @@
     <li><a href="#standalone-distribution">Standalone distribution</a></li>
     <li><a href="#oci-image">OCI image</a></li>
     <li><a href="#secure-deployment">Secure deployment</a></li>
-    <li><a href="#logs">Logs</a></li>
+    <li><a href="#health-checks">Health Checks</a></li>
+    <li><a href="#basic-observability-entrypoints">Basic Observability Entrypoints</a>
+      <ul>
+        <li><a href="#logs">Logs</a></li>
+        <li><a href="#runtime-status-and-protection-details">Runtime status and protection details</a></li>
+        <li><a href="#minimum-troubleshooting-evidence">Minimum troubleshooting evidence</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
@@ -10731,11 +10738,54 @@ For remote access, place it in a trusted network or behind a reverse proxy or ga
 <li>Avoid exposing the MCP Server directly to remote clients.</li>
 <li>When sessions must be associated with external users or request sources, let a trusted gateway inject session attribution headers. Do not allow clients to forge these headers directly.</li>
 </ul>
-<h2 id="logs">Logs</h2>
+<h2 id="health-checks">Health Checks</h2>
+<p>After deployment, verify that ShardingSphere-MCP is truly usable instead of stopping at “the HTTP port is reachable”:</p>
+<ol>
+<li>
+<p>Service process and endpoint are reachable</p>
+<ul>
+<li>In HTTP mode, confirm that the process has started, the port is listening, and <code>http://&lt;bind-host&gt;:&lt;port&gt;&lt;endpointPath&gt;</code> matches the client configuration.</li>
+<li>In STDIO mode, confirm that the AI application launches the MCP process correctly and does not treat stdin/stdout as an interactive shell.</li>
+</ul>
+</li>
+<li>
+<p>MCP protocol is ready</p>
+<ul>
+<li>Confirm from the AI application that the MCP Server is recognized, or follow the protocol debugging examples in the <a href="../developer-appendix/">Custom Integration Appendix</a> to complete <code>initialize</code> and read capabilities.</li>
+<li>If HTTP responses are reachable but capabilities, resources, or tools cannot be listed, the endpoint is reachable but the MCP protocol is not yet wired correctly.</li>
+</ul>
+</li>
+<li>
+<p>Runtime databases are ready</p>
+<ul>
+<li>Read <code>shardingsphere://runtime</code> and confirm that the transport, runtime database summary, and readiness details are visible.</li>
+<li>Call <code>database_gateway_validate_proxy_connectivity</code>, or run a minimal task such as “Show tables in <code>&lt;logic-database&gt;</code>” from the AI application to confirm that the configured runtime database is usable.</li>
+<li>A running MCP Server process alone does not mean that the target runtime database is ready. Connectivity failures, insufficient privileges, or invisible logical databases can still block tasks.</li>
+</ul>
+</li>
+</ol>
+<h2 id="basic-observability-entrypoints">Basic Observability Entrypoints</h2>
+<h3 id="logs">Logs</h3>
 <ul>
 <li>HTTP mode: inspect the startup terminal and <code>logs/mcp.log</code>.</li>
 <li>STDIO mode: do not use stdout as a log inspection entry; inspect stderr or <code>logs/mcp.log</code> for diagnostics.</li>
 </ul>
+<h3 id="runtime-status-and-protection-details">Runtime status and protection details</h3>
+<ul>
+<li><code>shardingsphere://runtime</code> exposes the current transport, runtime database summary, readiness details, and basic diagnostics.</li>
+<li>Runtime protection details show boundaries such as row limits, query timeout limits, and session-level tool-call protection.</li>
+<li>When a runtime database connection fails, use the returned failure category and recovery guidance to locate the issue. See <a href="../troubleshooting/">Troubleshooting</a> for the full category list.</li>
+</ul>
+<h3 id="minimum-troubleshooting-evidence">Minimum troubleshooting evidence</h3>
+<p>When reporting an issue to an operator or troubleshooter, collect at least:</p>
+<ul>
+<li>The startup command or container run command.</li>
+<li>An MCP configuration summary, with passwords, keys, and tokens removed.</li>
+<li>The transport type, endpoint address, and target logical database names configured under <code>runtimeDatabases</code>.</li>
+<li>The MCP Server configuration summary from the AI application.</li>
+<li>The failed task, returned failure category, and the relevant excerpt from <code>logs/mcp.log</code>.</li>
+</ul>
+<p>For symptom-oriented diagnosis, failure categories, and runtime protection guidance, see <a href="../troubleshooting/">Troubleshooting</a>. For direct MCP protocol debugging, see the <a href="../developer-appendix/">Custom Integration Appendix</a>.</p>
 
 
 <footer class="footline">
@@ -16912,19 +16962,19 @@ For remote access, place it in a trusted network or behind a reverse proxy or ga
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1780571769"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1780571769"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1780571769"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1780571769"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1780571769"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1780571769"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1780580051"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1780580051"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1780580051"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1780580051"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1780580051"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1780580051"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1780571769"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1780571769"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1780571769"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1780580051"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1780580051"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1780580051"></script>
     
         
-            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1780571769"></script>
+            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1780580051"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });
