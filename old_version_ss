@@ -1,191 +1,232 @@
-commit b5aa888dbfb9ca3d1c9c48db3d7b957ee58f2d85
+commit 1e934a2f99e9ff5d9d4d2ebedda05ef8a13e852e
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Thu Jun 4 20:56:22 2026 +0800
+Date:   Thu Jun 4 23:33:37 2026 +0800
 
-    Add MCP deployment health and observability guidance (#38807)
+    Add trusted gateway deployment examples for MCP (#38808)
     
-    Extend the ShardingSphere-MCP deployment guide with post-deployment
-    health checks and basic observability entrypoints, including MCP
-    protocol readiness, runtime database readiness, and minimum
-    troubleshooting evidence.
+    * Add trusted gateway deployment examples for MCP
     
-    Also link quick start, troubleshooting, and the MCP manual index to
-    the updated deployment flow so users can move from startup to health
-    verification and symptom-based diagnosis more directly.
+    Extend the ShardingSphere-MCP deployment guide with platform-agnostic
+    examples for trusted gateway placement, TLS termination, and session
+    attribution header wiring.
+    
+    Document the minimal ShardingSphere-MCP configuration, a reverse proxy
+    example, the expected attribution headers, and the key deployment rules
+    for safe remote exposure.
+    
+    * Add trusted gateway deployment examples for MCP
+    
+    Extend the ShardingSphere-MCP deployment guide with platform-agnostic
+    examples for trusted gateway placement, TLS termination, and session
+    attribution header wiring.
+    
+    Document the minimal ShardingSphere-MCP configuration, a reverse proxy
+    example, the expected attribution headers, and the key deployment rules
+    for safe remote exposure.
 
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
-index 7a00f2741dc..17708cbdbae 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
-@@ -34,7 +34,7 @@ ShardingSphere-MCP 面向支持 MCP 的 AI 应用、IDE 插件和 Agent 平台
- - 能力清单：说明用户可以通过自然语言完成的数据库任务和使用边界。
- - 配置说明：说明传输方式、`runtimeDatabases`、插件目录和启动参数。
- - 客户端集成：说明如何通过 HTTP 或 STDIO 把 MCP Server 接入 AI 应用，并提供 Codex 和 Claude Code 示例。
--- 部署说明：说明发行包、OCI 镜像和安全部署建议。
-+- 部署说明：说明发行包、OCI 镜像、安全部署建议、健康检查和基础运行诊断入口。
- - 常见问题：排查 MCP Server、连接、配置、元数据、查询和变更的通用问题。
- - 功能插件：说明官方 MCP 功能插件能力，以及插件变更的审查、执行和校验流程。
-   - 规则变更流程：说明规则变更任务的确认、预览、执行和校验流程。
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md b/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
-index 0a9347b2a57..736b8374e4e 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
-@@ -34,7 +34,7 @@ Tasks with side effects should create or preview a plan first, then run only aft
- - Capability Catalog: understand the database tasks and usage boundaries that users can access through natural language.
- - Configuration: configure transport, `runtimeDatabases`, plugin directories, and launch parameters.
- - Client Integration: connect the MCP Server to an AI application through HTTP or STDIO, with Codex and Claude Code examples.
--- Deployment: deploy the binary distribution and OCI image safely.
-+- Deployment: deploy the binary distribution and OCI image safely, then verify health and basic runtime diagnostics.
- - Troubleshooting: diagnose common MCP Server, connection, configuration, metadata, query, and change issues.
- - Feature Plugins: use official MCP feature plugins and understand how to review, apply, and validate plugin changes.
-   - Rule Change Flow: understand confirmation, preview, execution, and validation for rule change tasks.
 diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
-index 751dd7e6922..b3f0d53b684 100644
+index b3f0d53b684..a1dfc05a59e 100644
 --- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
 +++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
-@@ -94,7 +94,47 @@ HTTP 绑定建议：
+@@ -94,6 +94,98 @@ HTTP 绑定建议：
  - 面向远程客户端暴露时，避免直接裸露 MCP Server。
  - 需要把会话和外部用户或调用来源关联时，由受信网关注入会话归属请求头；不要允许客户端直接伪造这些请求头。
  
--## 日志
-+## 健康检查
++### 受信网关与 TLS 终止样例
 +
-+部署完成后，建议按以下顺序确认 ShardingSphere-MCP 是否真正可用，而不只停留在“HTTP 端口可达”：
++以下示例使用 Nginx 说明“外层入口负责 HTTPS，ShardingSphere-MCP 继续在受控网络中提供 HTTP”的最小布局。其他反向代理、Ingress、ALB 或 API Gateway 只要满足同样边界，也可以采用相同思路。
 +
-+1. 服务进程与端点可达
++ShardingSphere-MCP 配置示例：
 +
-+   - HTTP 模式确认进程已启动、端口已监听，并且 `http://<bind-host>:<port><endpointPath>` 与客户端配置一致。
-+   - STDIO 模式确认由 AI 应用正确拉起 MCP 进程，不把标准输入输出当作交互式 shell 使用。
++```yaml
++transport:
++  type: STREAMABLE_HTTP
++  http:
++    bindHost: 127.0.0.1
++    port: 18088
++    endpointPath: /mcp
++    sessionAttributionSource:
++      subjectHeader: X-ShardingSphere-MCP-Subject
++      sourceHeader: X-ShardingSphere-MCP-Source
++      attributeHeaderPrefix: X-ShardingSphere-MCP-Attribute-
++```
 +
-+2. MCP 协议已就绪
++Nginx 示例：
 +
-+   - 通过 AI 应用确认 MCP Server 已被识别，或按[自研集成附录](../developer-appendix/)中的协议调试示例完成 `initialize` 和能力读取。
-+   - 如果只能确认 HTTP 返回，但无法读取 capabilities、resources 或 tools，说明端点可达但协议尚未正确接通。
++```nginx
++server {
++  listen 443 ssl http2;
++  server_name mcp.example.com;
 +
-+3. 运行时数据库已就绪
++  ssl_certificate     /etc/nginx/certs/mcp.crt;
++  ssl_certificate_key /etc/nginx/certs/mcp.key;
 +
-+   - 读取 `shardingsphere://runtime`，确认 transport、runtime 数据库摘要和运行状态可见。
-+   - 调用 `database_gateway_validate_proxy_connectivity`，或在 AI 应用中执行“查看 `<logic-database>` 中有哪些表”这类最小任务，确认当前 `runtimeDatabases` 对应的逻辑库可用。
-+   - 仅有 MCP Server 进程启动并不表示目标运行时数据库已经可用；连接失败、权限不足或逻辑库不可见仍会阻断后续任务。
++  location /mcp {
++    proxy_pass http://127.0.0.1:18088/mcp;
++    proxy_http_version 1.1;
++    proxy_pass_request_headers off;
 +
-+## 基础可观测入口
++    proxy_set_header Host $host;
++    proxy_set_header Content-Type $http_content_type;
++    proxy_set_header Accept $http_accept;
++    proxy_set_header MCP-Session-Id $http_mcp_session_id;
++    proxy_set_header MCP-Protocol-Version $http_mcp_protocol_version;
++    proxy_set_header X-Forwarded-Proto https;
++    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++  }
++}
++```
 +
-+### 日志
++这类布局的关键点是：
++
++- TLS 在受信网关终止，MCP 进程本身不直接管理公网证书。
++- ShardingSphere-MCP 继续绑定到本地回环地址或受控内网接口，不直接裸露到公网。
++- 认证、授权、限流和网络访问控制仍由外层网关处理，而不是由内置 HTTP Server 处理。
++
++### 会话归属接线样例
++
++如果外层网关已经能识别调用方身份，可以让网关在转发请求时覆写会话归属请求头，再由 MCP Runtime 绑定到会话上下文。请求头名称与前缀应和[配置说明](../configuration/)中的 `transport.http.sessionAttributionSource` 保持一致。
++
++Nginx 示例：
++
++```nginx
++location /mcp {
++  proxy_pass http://127.0.0.1:18088/mcp;
++  proxy_http_version 1.1;
++  proxy_pass_request_headers off;
++
++  proxy_set_header Host $host;
++  proxy_set_header Content-Type $http_content_type;
++  proxy_set_header Accept $http_accept;
++  proxy_set_header MCP-Session-Id $http_mcp_session_id;
++  proxy_set_header MCP-Protocol-Version $http_mcp_protocol_version;
++  proxy_set_header X-Forwarded-Proto https;
++  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++
++  proxy_set_header X-ShardingSphere-MCP-Subject $remote_user;
++  proxy_set_header X-ShardingSphere-MCP-Source gateway-nginx;
++  proxy_set_header X-ShardingSphere-MCP-Attribute-Environment production;
++}
++```
++
++接线时建议遵循以下原则：
++
++- 对转发到后端的请求头使用白名单，或在注入可信值前剥离或拒绝所有匹配归属请求头名称和前缀的客户端原始请求头。
++- `subjectHeader` 表示外部主体，例如试用账号、正式客户标识或内部调用身份。
++- `sourceHeader` 表示请求来源，例如 `gateway-nginx`、`internal-alb` 或其他受信入口名称。
++- `attributeHeaderPrefix` 可用于注入少量非敏感上下文，例如环境、区域或接入渠道；不要通过这些请求头传递密码、密钥或令牌。
++- 如果当前部署不需要把请求归属绑定到会话上下文，可以省略 `sessionAttributionSource` 配置。
++
++完成接线后，继续按照下文的健康检查步骤确认：
++
++- 网关地址可访问。
++- MCP 协议已就绪。
++- 运行时数据库已就绪。
++- 同一会话内的后续请求不会因为归属请求头变化而失配。
++
+ ## 健康检查
  
- - HTTP 模式：查看启动终端和 `logs/mcp.log`。
- - STDIO 模式：不要把标准输出作为日志查看入口，诊断信息查看 stderr 或 `logs/mcp.log`。
-+
-+### 运行时状态与保护信息
-+
-+- `shardingsphere://runtime` 提供当前 transport、runtime 数据库摘要、运行状态和基础诊断信息。
-+- 运行时保护信息会反映查询行数限制、查询超时和会话级工具调用保护等边界。
-+- 当运行时数据库连接失败时，可结合错误分类和恢复建议定位问题；详细分类说明见[常见问题](../troubleshooting/)。
-+
-+### 最小排障信息
-+
-+需要向管理员或排障人员反馈问题时，至少收集以下信息：
-+
-+- 启动命令或容器运行命令。
-+- MCP 配置文件摘要，注意移除密码、密钥和令牌。
-+- 传输方式、端点地址和 `runtimeDatabases` 中的目标逻辑库名称。
-+- AI 应用中的 MCP Server 配置摘要。
-+- 失败任务、错误分类和 `logs/mcp.log` 中相关日志片段。
-+
-+进一步的症状定位、错误分类和运行时保护说明见[常见问题](../troubleshooting/)；需要直接调试 MCP 协议请求时，见[自研集成附录](../developer-appendix/)。
+ 部署完成后，建议按以下顺序确认 ShardingSphere-MCP 是否真正可用，而不只停留在“HTTP 端口可达”：
 diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
-index a8aaa3662ec..c3f96cbcf38 100644
+index c3f96cbcf38..8574c0a1429 100644
 --- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
 +++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
-@@ -94,7 +94,47 @@ HTTP binding recommendations:
+@@ -94,6 +94,98 @@ HTTP binding recommendations:
  - Avoid exposing the MCP Server directly to remote clients.
  - When sessions must be associated with external users or request sources, let a trusted gateway inject session attribution headers. Do not allow clients to forge these headers directly.
  
--## Logs
-+## Health Checks
++### Trusted gateway and TLS termination example
 +
-+After deployment, verify that ShardingSphere-MCP is truly usable instead of stopping at “the HTTP port is reachable”:
++The following example uses Nginx to illustrate the minimum layout in which the outer entry handles HTTPS while ShardingSphere-MCP continues to serve plain HTTP on a controlled network interface. Other reverse proxies, ingress controllers, ALBs, or API gateways can follow the same boundary.
 +
-+1. Service process and endpoint are reachable
++ShardingSphere-MCP configuration example:
 +
-+   - In HTTP mode, confirm that the process has started, the port is listening, and `http://<bind-host>:<port><endpointPath>` matches the client configuration.
-+   - In STDIO mode, confirm that the AI application launches the MCP process correctly and does not treat stdin/stdout as an interactive shell.
++```yaml
++transport:
++  type: STREAMABLE_HTTP
++  http:
++    bindHost: 127.0.0.1
++    port: 18088
++    endpointPath: /mcp
++    sessionAttributionSource:
++      subjectHeader: X-ShardingSphere-MCP-Subject
++      sourceHeader: X-ShardingSphere-MCP-Source
++      attributeHeaderPrefix: X-ShardingSphere-MCP-Attribute-
++```
 +
-+2. MCP protocol is ready
++Nginx example:
 +
-+   - Confirm from the AI application that the MCP Server is recognized, or follow the protocol debugging examples in the [Custom Integration Appendix](../developer-appendix/) to complete `initialize` and read capabilities.
-+   - If HTTP responses are reachable but capabilities, resources, or tools cannot be listed, the endpoint is reachable but the MCP protocol is not yet wired correctly.
++```nginx
++server {
++  listen 443 ssl http2;
++  server_name mcp.example.com;
 +
-+3. Runtime databases are ready
++  ssl_certificate     /etc/nginx/certs/mcp.crt;
++  ssl_certificate_key /etc/nginx/certs/mcp.key;
 +
-+   - Read `shardingsphere://runtime` and confirm that the transport, runtime database summary, and readiness details are visible.
-+   - Call `database_gateway_validate_proxy_connectivity`, or run a minimal task such as “Show tables in `<logic-database>`” from the AI application to confirm that the configured runtime database is usable.
-+   - A running MCP Server process alone does not mean that the target runtime database is ready. Connectivity failures, insufficient privileges, or invisible logical databases can still block tasks.
++  location /mcp {
++    proxy_pass http://127.0.0.1:18088/mcp;
++    proxy_http_version 1.1;
++    proxy_pass_request_headers off;
 +
-+## Basic Observability Entrypoints
++    proxy_set_header Host $host;
++    proxy_set_header Content-Type $http_content_type;
++    proxy_set_header Accept $http_accept;
++    proxy_set_header MCP-Session-Id $http_mcp_session_id;
++    proxy_set_header MCP-Protocol-Version $http_mcp_protocol_version;
++    proxy_set_header X-Forwarded-Proto https;
++    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++  }
++}
++```
 +
-+### Logs
++The important points of this layout are:
++
++- TLS terminates at the trusted gateway, so the MCP process does not manage public certificates directly.
++- ShardingSphere-MCP continues to bind to loopback or a controlled intranet interface instead of being exposed directly to the public network.
++- Authentication, authorization, rate limiting, and network access control remain the responsibility of the outer gateway, not the built-in HTTP Server.
++
++### Session attribution wiring example
++
++When the outer gateway already identifies the caller, let it overwrite the session attribution headers before forwarding the request. The MCP Runtime then binds the resulting attribution to the session context. Keep the header names and prefix aligned with `transport.http.sessionAttributionSource` in the [Configuration](../configuration/) document.
++
++Nginx example:
++
++```nginx
++location /mcp {
++  proxy_pass http://127.0.0.1:18088/mcp;
++  proxy_http_version 1.1;
++  proxy_pass_request_headers off;
++
++  proxy_set_header Host $host;
++  proxy_set_header Content-Type $http_content_type;
++  proxy_set_header Accept $http_accept;
++  proxy_set_header MCP-Session-Id $http_mcp_session_id;
++  proxy_set_header MCP-Protocol-Version $http_mcp_protocol_version;
++  proxy_set_header X-Forwarded-Proto https;
++  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
++
++  proxy_set_header X-ShardingSphere-MCP-Subject $remote_user;
++  proxy_set_header X-ShardingSphere-MCP-Source gateway-nginx;
++  proxy_set_header X-ShardingSphere-MCP-Attribute-Environment production;
++}
++```
++
++Follow these rules when wiring attribution:
++
++- Use an allow-list for proxied request headers, or strip/reject every client-supplied header that matches the configured attribution header names and prefix before injecting trusted values.
++- `subjectHeader` represents the external subject, such as a trial user, a commercial customer identifier, or an internal caller identity.
++- `sourceHeader` identifies the request source, such as `gateway-nginx`, `internal-alb`, or another trusted ingress name.
++- `attributeHeaderPrefix` can carry a small amount of non-sensitive context such as environment, region, or integration channel; do not pass passwords, keys, or tokens through these headers.
++- If the deployment does not need to bind request attribution into the session context, omit `sessionAttributionSource`.
++
++After wiring the gateway, continue with the health checks below to confirm that:
++
++- The gateway endpoint is reachable.
++- The MCP protocol is ready.
++- Runtime databases are ready.
++- Later requests in the same session do not fail because the attribution headers change.
++
+ ## Health Checks
  
- - HTTP mode: inspect the startup terminal and `logs/mcp.log`.
- - STDIO mode: do not use stdout as a log inspection entry; inspect stderr or `logs/mcp.log` for diagnostics.
-+
-+### Runtime status and protection details
-+
-+- `shardingsphere://runtime` exposes the current transport, runtime database summary, readiness details, and basic diagnostics.
-+- Runtime protection details show boundaries such as row limits, query timeout limits, and session-level tool-call protection.
-+- When a runtime database connection fails, use the returned failure category and recovery guidance to locate the issue. See [Troubleshooting](../troubleshooting/) for the full category list.
-+
-+### Minimum troubleshooting evidence
-+
-+When reporting an issue to an operator or troubleshooter, collect at least:
-+
-+- The startup command or container run command.
-+- An MCP configuration summary, with passwords, keys, and tokens removed.
-+- The transport type, endpoint address, and target logical database names configured under `runtimeDatabases`.
-+- The MCP Server configuration summary from the AI application.
-+- The failed task, returned failure category, and the relevant excerpt from `logs/mcp.log`.
-+
-+For symptom-oriented diagnosis, failure categories, and runtime protection guidance, see [Troubleshooting](../troubleshooting/). For direct MCP protocol debugging, see the [Custom Integration Appendix](../developer-appendix/).
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
-index 194993a88bc..cfd5a6bb0b6 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
-@@ -83,4 +83,5 @@ start "ShardingSphere MCP" cmd /c "bin\start.bat > logs\mcp-http.log 2>&1"
- - “查询 `<table-name>` 前 10 行。”
- 
- 如果可以返回逻辑库、表结构或查询结果，说明 MCP Server 已经可以通过 AI 应用访问目标 ShardingSphere-Proxy 逻辑库。
-+进一步的部署方式、健康检查和基础可观测入口，请参考[部署说明](../deployment/)。
- 如果 AI 应用无法连接或看不到逻辑库，请查看[常见问题](../troubleshooting/)。
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
-index 42514501e6f..6fd6c96bba3 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
-@@ -83,4 +83,5 @@ After configuration, enter the following tasks in the AI application to verify t
- - "Query the first 10 rows from `<table-name>`."
- 
- If the application returns the logical database, table structure, or query results, the MCP Server can access the target ShardingSphere-Proxy logical database through the AI application.
-+For deployment choices, health checks, and basic observability entrypoints, see [Deployment](../deployment/).
- If the AI application cannot connect or cannot see the logical database, see [Troubleshooting](../troubleshooting/).
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-index 41880c146e2..d375dc3718d 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-@@ -6,6 +6,7 @@ weight = 7
- 本页按用户侧现象整理 ShardingSphere-MCP、AI 应用集成、数据库连接、元数据查看、查询和规则变更的排查方法。
- 功能插件的规则规划、执行和校验问题，请查看对应功能插件文档。
- 排查时先区分外部环境和 MCP 保护机制：数据库服务、账号权限、网关转发和 AI 应用配置需要在对应系统处理；MCP 会通过错误分类和运行时保护信息帮助定位问题。
-+如果尚未完成部署后的基础检查，请先参考[部署说明](../deployment/)中的健康检查和基础可观测入口，再继续按本页症状定位。
- 
- ## 问题列表
- 
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-index 9f06e6ea764..3c2d12a4ad6 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-@@ -6,6 +6,7 @@ weight = 7
- This page organizes troubleshooting by user-visible symptoms for ShardingSphere-MCP, AI application integration, database connectivity, metadata inspection, queries, and rule changes.
- For feature-specific rule planning, execution, and validation issues, see the corresponding feature plugin documentation.
- When troubleshooting, distinguish external environment issues from MCP protection behavior. Database service availability, account privileges, gateway forwarding, and AI application configuration must be fixed in their own systems. MCP provides failure categories and runtime protection details to help locate the issue.
-+If you have not completed the basic post-deployment checks yet, start with the health-check and observability entrypoints in [Deployment](../deployment/) before using this symptom-oriented page.
- 
- ## Issue List
- 
+ After deployment, verify that ShardingSphere-MCP is truly usable instead of stopping at “the HTTP port is reachable”:
