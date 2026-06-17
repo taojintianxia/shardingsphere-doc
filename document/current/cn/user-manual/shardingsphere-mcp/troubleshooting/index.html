@@ -12,22 +12,22 @@
     <title>常见问题 :: ShardingSphere</title>
 
     
-    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1781643633" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1781643633" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1781681756" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1781681756" rel="stylesheet">
     
-    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1781643633" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1781681756" rel="stylesheet">
     
     
 
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1781643633"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1781681756"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style>
@@ -301,14 +301,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1781643633"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1781643633"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1781681756"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1781681756"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/shardingsphere.apache.org\/document\/current\/\/cn";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1781643633"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1781681756"></script>
 
       
     </div>
@@ -10908,31 +10908,6 @@
 </thead>
 <tbody>
 <tr>
-<td>连接预检工具命名</td>
-<td>现有工具名 <code>database_gateway_validate_proxy_connectivity</code> 容易让用户误以为只能校验 Proxy，但实际校验的是已配置的运行时数据库连接。</td>
-<td>后续改为更中性的名称，例如 <code>database_gateway_validate_runtime_database</code> 或 <code>database_gateway_validate_connectivity</code>，并同步调整描述符、测试和文档。</td>
-</tr>
-<tr>
-<td>运行状态中的错误分类</td>
-<td>连接错误分类包含 <code>database_not_visible</code>，但运行状态资源的安全分类列表尚未完全对齐。</td>
-<td>后续在运行状态资源中补齐该分类，保证排障分类和运行时状态一致。</td>
-</tr>
-<tr>
-<td>HTTP 安全错误分类</td>
-<td>Origin 请求头和会话归属不一致时，目前主要通过 HTTP 状态码和日志定位。</td>
-<td>后续增加稳定、非敏感的错误分类，例如 <code>origin_not_allowed</code> 和 <code>session_attribution_mismatch</code>，方便 AI 应用和管理员按错误码排查。</td>
-</tr>
-<tr>
-<td>查询失败错误分类</td>
-<td>查询失败可能来自 SQL 语法、对象不存在、权限不足、连接中断或超时，目前用户仍需要结合错误响应和日志判断。</td>
-<td>后续为查询执行失败补充稳定、非敏感的分类和处理建议，例如语法错误、对象不可见、权限不足和执行超时，并避免暴露原始连接信息或堆栈。</td>
-</tr>
-<tr>
-<td>元数据不可见错误分类</td>
-<td>看不到数据库、模式、表、列或索引时，用户需要从配置、权限和连接目标中自行排查。</td>
-<td>后续在元数据读取和搜索结果中返回更细的可见性分类，例如数据库不可见、模式不可见、对象不可见或权限不足，并给出下一步检查项。</td>
-</tr>
-<tr>
 <td>敏感值引用机制</td>
 <td>规则变更可能需要密钥或凭证，目前由外部受控通道传递。</td>
 <td>后续如需内置支持，应设计密钥引用或解析机制，而不是让 MCP Server 直接暴露敏感值。</td>
@@ -17190,19 +17165,19 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1781643633"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1781643633"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1781643633"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1781643633"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1781643633"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1781643633"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1781681756"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1781681756"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1781681756"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1781681756"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1781681756"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1781681756"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1781643633"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1781643633"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1781643633"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1781681756"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1781681756"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1781681756"></script>
     
         
-            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1781643633"></script>
+            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1781681756"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });

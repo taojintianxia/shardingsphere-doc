@@ -1,66 +1,430 @@
-commit 3cfde6a259663ee2727d5f987bf183f0ee1fb855
+commit bfdb1ccf6d75111c74bec46d8da4e0e5f57d0e55
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Wed Jun 17 04:15:44 2026 +0800
+Date:   Wed Jun 17 15:14:32 2026 +0800
 
-    Update MCP troubleshooting follow-up items (#38856)
+    Add stable diagnostic categories (#38858)
     
-    Remove the resolved empty runtimeDatabases startup policy item from the
-    ShardingSphere-MCP troubleshooting follow-up code improvement list.
-    Keep the remaining unresolved improvement items unchanged.
+    * Add stable diagnostic categories
+    
+    - Rename runtime database validation discovery to database_gateway_validate_runtime_database
+    - Keep database_gateway_validate_proxy_connectivity as a hidden compatibility alias
+    - Add non-sensitive categories for runtime status, HTTP security, query failures, and metadata visibility
+    - Return actionable recovery payloads for transport security and query execution errors
+    - Update MCP docs after resolving the first five troubleshooting follow-ups
+    
+    * Add stable diagnostic categories
+    
+    - Rename runtime database validation discovery to database_gateway_validate_runtime_database
+    - Keep database_gateway_validate_proxy_connectivity as a hidden compatibility alias
+    - Add non-sensitive categories for runtime status, HTTP security, query failures, and metadata visibility
+    - Return actionable recovery payloads for transport security and query execution errors
+    - Update MCP docs after resolving the first five troubleshooting follow-ups
+    
+    * Add stable diagnostic categories
+    
+    - Rename runtime database validation discovery to database_gateway_validate_runtime_database
+    - Keep database_gateway_validate_proxy_connectivity as a hidden compatibility alias
+    - Add non-sensitive categories for runtime status, HTTP security, query failures, and metadata visibility
+    - Return actionable recovery payloads for transport security and query execution errors
+    - Update MCP docs after resolving the first five troubleshooting follow-ups
+    
+    * Add stable diagnostic categories
+    
+    - Rename runtime database validation discovery to database_gateway_validate_runtime_database
+    - Keep database_gateway_validate_proxy_connectivity as a hidden compatibility alias
+    - Add non-sensitive categories for runtime status, HTTP security, query failures, and metadata visibility
+    - Return actionable recovery payloads for transport security and query execution errors
+    - Update MCP docs after resolving the first five troubleshooting follow-ups
 
+diff --git a/docs/document/content/reference/mcp/protocol-surface.cn.md b/docs/document/content/reference/mcp/protocol-surface.cn.md
+index 15ff3f751dd..dc10e485f12 100644
+--- a/docs/document/content/reference/mcp/protocol-surface.cn.md
++++ b/docs/document/content/reference/mcp/protocol-surface.cn.md
+@@ -42,7 +42,7 @@ ShardingSphere-MCP 不要求 roots，也不会发送 `sampling/createMessage` 
+ - 可按 `database`、`schema`、`query`、`object_types` 收窄范围。
+ - `object_types` 支持 `database`、`schema`、`table`、`view`、`column`、`index`、`sequence`。
+ 
+-`database_gateway_validate_proxy_connectivity`
++`database_gateway_validate_runtime_database`
+ 
+ - 在正式接入前校验已配置的运行时数据库。
+ - 必填输入为 `database`。
+diff --git a/docs/document/content/reference/mcp/protocol-surface.en.md b/docs/document/content/reference/mcp/protocol-surface.en.md
+index 14b780dab75..6a5e98f4f34 100644
+--- a/docs/document/content/reference/mcp/protocol-surface.en.md
++++ b/docs/document/content/reference/mcp/protocol-surface.en.md
+@@ -42,7 +42,7 @@ ShardingSphere-MCP does not require roots and does not send `sampling/createMess
+ - Narrows scope by `database`, `schema`, `query`, and `object_types`.
+ - `object_types` supports `database`, `schema`, `table`, `view`, `column`, `index`, and `sequence`.
+ 
+-`database_gateway_validate_proxy_connectivity`
++`database_gateway_validate_runtime_database`
+ 
+ - Validates a configured runtime database before formal onboarding.
+ - Required input is `database`.
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.cn.md
+index a87e7735408..8799cd4b2a6 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.cn.md
+@@ -39,7 +39,7 @@ weight = 4
+ - 查看 `<logic-database>` 中有哪些表。
+ - 查询 `<table-name>` 的字段和索引。
+ - 执行一条只读查询，并限制返回 100 行。
+-- 调用 `database_gateway_validate_proxy_connectivity` 对已经配置的 runtime database 进行接入前校验。
++- 调用 `database_gateway_validate_runtime_database` 对已经配置的 runtime database 进行接入前校验。
+ - 规划一个数据加密或数据脱敏规则，先预览不要执行。
+ 
+ 涉及 SQL 执行、规则变更或规则变更计划执行时，应先审查预览内容，再确认执行。自研集成或协议调试场景见[自研集成附录](../developer-appendix/)。
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.en.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.en.md
+index 03f503bf0f8..6bd651596c9 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/_index.en.md
+@@ -39,7 +39,7 @@ After configuration, users describe tasks directly in the conversation. Examples
+ - Show the tables in `<logic-database>`.
+ - Inspect columns and indexes for `<table-name>`.
+ - Run a read-only query and limit the result to 100 rows.
+-- Call `database_gateway_validate_proxy_connectivity` for a configured runtime database.
++- Call `database_gateway_validate_runtime_database` for a configured runtime database.
+ - Plan a data encryption or data masking rule and preview it without execution.
+ 
+ When SQL execution, rule changes, or rule change plan execution is involved, review the preview content before confirming execution. For custom integration or protocol debugging, see the [Custom Integration Appendix](../developer-appendix/).
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.cn.md
+index 51fcc71648e..205eca6903c 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.cn.md
+@@ -9,7 +9,7 @@ weight = 5
+ 
+ - 适合在 Anthropic Messages API 中直接挂接远程 ShardingSphere-MCP，而不单独实现 MCP client。
+ - 适合在 Claude API 请求中按需暴露 ShardingSphere-MCP 的元数据查询、受控查询、规则规划和接入前预检能力。
+-- 接入完成后，可以在 Claude 会话中查看逻辑库中的表、查看表结构，或调用 `database_gateway_validate_proxy_connectivity` 对已经配置的 runtime database 进行接入前校验。
++- 接入完成后，可以在 Claude 会话中查看逻辑库中的表、查看表结构，或调用 `database_gateway_validate_runtime_database` 对已经配置的 runtime database 进行接入前校验。
+ 
+ ## 前置条件
+ 
+@@ -79,7 +79,7 @@ curl https://api.anthropic.com/v1/messages \
+     "database_gateway_search_metadata": {
+       "enabled": true
+     },
+-    "database_gateway_validate_proxy_connectivity": {
++    "database_gateway_validate_runtime_database": {
+       "enabled": true
+     }
+   }
+@@ -97,7 +97,7 @@ curl https://api.anthropic.com/v1/messages \
+ - 在 Claude 会话中执行一条最小验证任务，例如：
+   - 查看 `<logic-database>` 中有哪些表。
+   - 查看 `orders` 表的列和索引。
+-  - 对已经配置的 runtime database 调用 `database_gateway_validate_proxy_connectivity`。
++  - 对已经配置的 runtime database 调用 `database_gateway_validate_runtime_database`。
+ - 如果 Claude 能返回来自 ShardingSphere-MCP 的工具结果，说明接入已经生效。
+ 
+ 如果接入失败，优先检查：
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.en.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.en.md
+index 2bc8613f4f3..6c68cfaaf6e 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/anthropic-mcp-connector.en.md
+@@ -9,7 +9,7 @@ This page explains how to connect an already running ShardingSphere-MCP HTTP Ser
+ 
+ - Use this page when you want to attach a remote ShardingSphere-MCP server directly in the Anthropic Messages API without implementing a separate MCP client.
+ - Use this integration when Claude API requests should expose ShardingSphere-MCP tools for metadata queries, controlled queries, rule planning, and preflight validation.
+-- After integration, Claude can inspect logic databases, inspect table structures, or call `database_gateway_validate_proxy_connectivity` for preflight validation against configured runtime databases.
++- After integration, Claude can inspect logic databases, inspect table structures, or call `database_gateway_validate_runtime_database` for preflight validation against configured runtime databases.
+ 
+ ## Prerequisites
+ 
+@@ -79,7 +79,7 @@ To expose only a subset of tools, use `default_config` and `configs` in the `mcp
+     "database_gateway_search_metadata": {
+       "enabled": true
+     },
+-    "database_gateway_validate_proxy_connectivity": {
++    "database_gateway_validate_runtime_database": {
+       "enabled": true
+     }
+   }
+@@ -97,7 +97,7 @@ Invocation succeeds when:
+ - In a Claude conversation, run a minimal validation task such as:
+   - Show the tables in `<logic-database>`.
+   - Show columns and indexes for the `orders` table.
+-  - Call `database_gateway_validate_proxy_connectivity` for a configured runtime database.
++  - Call `database_gateway_validate_runtime_database` for a configured runtime database.
+ - If Claude returns tool results from ShardingSphere-MCP, the integration is working.
+ 
+ If the integration fails, check these items first:
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md
+index 11bab3b9f48..e6cb1242ed5 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md
+@@ -9,7 +9,7 @@ weight = 4
+ 
+ - 适合在 ChatGPT Web 产品中直接接入远程 ShardingSphere-MCP，而不经过自定义后端代码。
+ - 适合在 ChatGPT 会话里选择一个远程 MCP App，并直接调用 ShardingSphere-MCP 提供的元数据查询、受控查询、规则规划或接入前预检能力。
+-- 接入完成后，可以在 ChatGPT 对话中查看逻辑库中的表、查看表结构，或调用 `database_gateway_validate_proxy_connectivity` 对已经配置的 runtime database 进行接入前校验。
++- 接入完成后，可以在 ChatGPT 对话中查看逻辑库中的表、查看表结构，或调用 `database_gateway_validate_runtime_database` 对已经配置的 runtime database 进行接入前校验。
+ 
+ ## 前置条件
+ 
+@@ -47,7 +47,7 @@ weight = 4
+ - 先执行一条最小验证任务，例如：
+   - 查看 `<logic-database>` 中有哪些表。
+   - 查看 `orders` 表的列和索引。
+-  - 对已经配置的 runtime database 调用 `database_gateway_validate_proxy_connectivity`。
++  - 对已经配置的 runtime database 调用 `database_gateway_validate_runtime_database`。
+ - 如果 ChatGPT 能识别到对应 app，并能按预期调用导入工具，说明接入已经生效。
+ 
+ 如果接入失败，优先检查：
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md
+index 3d8457db588..9cbf57cb100 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md
+@@ -9,7 +9,7 @@ This page explains how to connect an already running ShardingSphere-MCP HTTP Ser
+ 
+ - Use this page when you want to connect a remote ShardingSphere-MCP server directly in the ChatGPT web product without writing backend integration code.
+ - Use this integration when ChatGPT conversations should select a remote MCP app and directly call ShardingSphere-MCP tools for metadata queries, controlled queries, rule planning, or preflight validation.
+-- After integration, ChatGPT can inspect logic databases, inspect table structures, or call `database_gateway_validate_proxy_connectivity` for preflight validation against configured runtime databases.
++- After integration, ChatGPT can inspect logic databases, inspect table structures, or call `database_gateway_validate_runtime_database` for preflight validation against configured runtime databases.
+ 
+ ## Prerequisites
+ 
+@@ -47,7 +47,7 @@ Invocation succeeds when:
+ - Start with a minimal validation task such as:
+   - Show the tables in `<logic-database>`.
+   - Show columns and indexes for the `orders` table.
+-  - Call `database_gateway_validate_proxy_connectivity` for a configured runtime database.
++  - Call `database_gateway_validate_runtime_database` for a configured runtime database.
+ - If ChatGPT recognizes the app and can invoke its imported tools, the integration is working.
+ 
+ If the integration fails, check these items first:
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.cn.md
+index c79aa9cd3f6..80287793161 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.cn.md
+@@ -9,7 +9,7 @@ weight = 2
+ 
+ - 适合在 Claude Code CLI 中接入已经启动的 ShardingSphere-MCP HTTP Server。
+ - 适合在本地开发环境中由 Claude Code 直接拉起 ShardingSphere-MCP STDIO 进程。
+-- 接入完成后，可以在 Claude Code 中查看逻辑库中的表、查看表结构、执行受控只读查询，或调用 `database_gateway_validate_proxy_connectivity` 进行接入前校验。
++- 接入完成后，可以在 Claude Code 中查看逻辑库中的表、查看表结构、执行受控只读查询，或调用 `database_gateway_validate_runtime_database` 进行接入前校验。
+ 
+ ## 前置条件
+ 
+@@ -77,7 +77,7 @@ claude mcp add --transport stdio shardingsphere -- \
+ - 在 Claude Code 对话中执行一条最小验证任务，例如：
+   - 查看 `<logic-database>` 中有哪些表。
+   - 查看 `orders` 表的列和索引。
+-  - 对已经配置的 runtime database 执行 `database_gateway_validate_proxy_connectivity`。
++  - 对已经配置的 runtime database 执行 `database_gateway_validate_runtime_database`。
+ - 如果工具已被列出并能返回查询结果，说明接入已经生效。
+ 
+ ## 注意事项
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.en.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.en.md
+index e3a33faf76e..150f775244a 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/claude-code.en.md
+@@ -9,7 +9,7 @@ This page explains how to connect Claude Code to an already running ShardingSphe
+ 
+ - Use this page when you want to connect an already running ShardingSphere-MCP HTTP Server to Claude Code CLI.
+ - Use this page when you want Claude Code to start ShardingSphere-MCP locally through STDIO in a local development environment.
+-- After integration, Claude Code can inspect logic databases, inspect table structures, run controlled read-only queries, or call `database_gateway_validate_proxy_connectivity` for preflight validation.
++- After integration, Claude Code can inspect logic databases, inspect table structures, run controlled read-only queries, or call `database_gateway_validate_runtime_database` for preflight validation.
+ 
+ ## Prerequisites
+ 
+@@ -77,7 +77,7 @@ Invocation succeeds when:
+ - In a Claude Code conversation, run a minimal validation task such as:
+   - Show the tables in `<logic-database>`.
+   - Show columns and indexes for the `orders` table.
+-  - Run `database_gateway_validate_proxy_connectivity` against a configured runtime database.
++  - Run `database_gateway_validate_runtime_database` against a configured runtime database.
+ - If the tools are listed and the validation query succeeds, the integration is working.
+ 
+ ## Notes
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.cn.md
+index b0e155f1d81..a1ca14ef8dc 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.cn.md
+@@ -9,7 +9,7 @@ weight = 1
+ 
+ - 适合在 Codex CLI 或 Codex IDE 扩展中使用已经启动的 ShardingSphere-MCP HTTP Server。
+ - 适合把数据库元数据查询、只读 SQL 查询、规则规划和接入前预检能力带入 Codex 会话。
+-- 接入完成后，可以在 Codex 中查看逻辑库中的表、查看表结构、执行受控只读查询，或调用 `database_gateway_validate_proxy_connectivity` 进行接入前校验。
++- 接入完成后，可以在 Codex 中查看逻辑库中的表、查看表结构、执行受控只读查询，或调用 `database_gateway_validate_runtime_database` 进行接入前校验。
+ 
+ ## 前置条件
+ 
+@@ -53,7 +53,7 @@ url = "http://127.0.0.1:18088/mcp"
+ - 在 Codex 会话中执行一条最小验证任务，例如：
+   - 查看 `<logic-database>` 中有哪些表。
+   - 查看 `orders` 表的列和索引。
+-  - 对已经配置的 runtime database 执行 `database_gateway_validate_proxy_connectivity`。
++  - 对已经配置的 runtime database 执行 `database_gateway_validate_runtime_database`。
+ - 如果工具列表和查询结果可返回，说明接入已经生效。
+ 
+ ## 注意事项
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.en.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.en.md
+index 65a58a0a7d3..8fe128b44f1 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/codex.en.md
+@@ -9,7 +9,7 @@ This page explains how to connect Codex to an already running ShardingSphere-MCP
+ 
+ - Use this page when you want to connect an already running ShardingSphere-MCP HTTP Server to Codex CLI or the Codex IDE extension.
+ - Use this integration when Codex sessions need database metadata queries, controlled read-only SQL queries, rule planning, or preflight validation.
+-- After integration, Codex can inspect logic databases, inspect table structures, run controlled read-only queries, or call `database_gateway_validate_proxy_connectivity` for preflight validation.
++- After integration, Codex can inspect logic databases, inspect table structures, run controlled read-only queries, or call `database_gateway_validate_runtime_database` for preflight validation.
+ 
+ ## Prerequisites
+ 
+@@ -53,7 +53,7 @@ Invocation succeeds when:
+ - In a Codex session, run a minimal validation task such as:
+   - Show the tables in `<logic-database>`.
+   - Show columns and indexes for the `orders` table.
+-  - Run `database_gateway_validate_proxy_connectivity` against a configured runtime database.
++  - Run `database_gateway_validate_runtime_database` against a configured runtime database.
+ - If the tool list and query results are returned, the integration is working.
+ 
+ ## Notes
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.cn.md
+index 779d5d27ca1..29685bfb571 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.cn.md
+@@ -9,7 +9,7 @@ weight = 3
+ 
+ - 适合在后端服务、Agent 平台或自研应用中通过 OpenAI API 调用 ShardingSphere-MCP。
+ - 适合在模型调用中按需导入 ShardingSphere-MCP 工具，并通过 `allowed_tools`、`require_approval` 或 OAuth 参数约束使用范围。
+-- 接入完成后，可以让模型在 API 调用中查看逻辑库中的表、查看表结构、执行受控只读查询，或调用 `database_gateway_validate_proxy_connectivity` 对已经配置的 runtime database 进行接入前校验。
++- 接入完成后，可以让模型在 API 调用中查看逻辑库中的表、查看表结构、执行受控只读查询，或调用 `database_gateway_validate_runtime_database` 对已经配置的 runtime database 进行接入前校验。
+ 
+ ## 前置条件
+ 
+@@ -42,7 +42,7 @@ response = client.responses.create(
+             "server_url": "https://example.com/mcp",
+             "allowed_tools": [
+                 "database_gateway_search_metadata",
+-                "database_gateway_validate_proxy_connectivity",
++                "database_gateway_validate_runtime_database",
+             ],
+         }
+     ],
+@@ -71,7 +71,7 @@ response = client.responses.create(
+ - 可以先用一条最小验证请求确认导入与调用链路，例如：
+   - 查看 `<logic-database>` 中有哪些表。
+   - 查看 `orders` 表的列和索引。
+-  - 对已经配置的 runtime database 调用 `database_gateway_validate_proxy_connectivity`。
++  - 对已经配置的 runtime database 调用 `database_gateway_validate_runtime_database`。
+ - 当 `mcp_list_tools`、审批流程或最终查询结果按预期返回时，说明接入已经生效。
+ 
+ 如果接入失败，优先检查：
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.en.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.en.md
+index 42a02096505..60b50eb5c2d 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/openai-responses-api.en.md
+@@ -9,7 +9,7 @@ This page explains how to connect an already running ShardingSphere-MCP HTTP Ser
+ 
+ - Use this page when a backend service, agent platform, or custom application needs to call ShardingSphere-MCP through the OpenAI API.
+ - Use this integration when the model should import ShardingSphere-MCP tools on demand and constrain them with `allowed_tools`, `require_approval`, or OAuth parameters.
+-- After integration, the model can inspect logic databases, inspect table structures, run controlled read-only queries, or call `database_gateway_validate_proxy_connectivity` for preflight validation against configured runtime databases.
++- After integration, the model can inspect logic databases, inspect table structures, run controlled read-only queries, or call `database_gateway_validate_runtime_database` for preflight validation against configured runtime databases.
+ 
+ ## Prerequisites
+ 
+@@ -42,7 +42,7 @@ response = client.responses.create(
+             "server_url": "https://example.com/mcp",
+             "allowed_tools": [
+                 "database_gateway_search_metadata",
+-                "database_gateway_validate_proxy_connectivity",
++                "database_gateway_validate_runtime_database",
+             ],
+         }
+     ],
+@@ -71,7 +71,7 @@ Invocation succeeds when:
+ - Start with a minimal validation request such as:
+   - Show the tables in `<logic-database>`.
+   - Show columns and indexes for the `orders` table.
+-  - Call `database_gateway_validate_proxy_connectivity` for a configured runtime database.
++  - Call `database_gateway_validate_runtime_database` for a configured runtime database.
+ - When `mcp_list_tools`, approval flow events, or final query results appear as expected, the integration is working.
+ 
+ If the integration fails, check these items first:
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
+index a1dfc05a59e..f0ceac9627b 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
+@@ -203,7 +203,7 @@ location /mcp {
+ 3. 运行时数据库已就绪
+ 
+    - 读取 `shardingsphere://runtime`，确认 transport、runtime 数据库摘要和运行状态可见。
+-   - 调用 `database_gateway_validate_proxy_connectivity`，或在 AI 应用中执行“查看 `<logic-database>` 中有哪些表”这类最小任务，确认当前 `runtimeDatabases` 对应的逻辑库可用。
++   - 调用 `database_gateway_validate_runtime_database`，或在 AI 应用中执行“查看 `<logic-database>` 中有哪些表”这类最小任务，确认当前 `runtimeDatabases` 对应的逻辑库可用。
+    - 仅有 MCP Server 进程启动并不表示目标运行时数据库已经可用；连接失败、权限不足或逻辑库不可见仍会阻断后续任务。
+ 
+ ## 基础可观测入口
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
+index 8574c0a1429..27db8884474 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
+@@ -203,7 +203,7 @@ After deployment, verify that ShardingSphere-MCP is truly usable instead of stop
+ 3. Runtime databases are ready
+ 
+    - Read `shardingsphere://runtime` and confirm that the transport, runtime database summary, and readiness details are visible.
+-   - Call `database_gateway_validate_proxy_connectivity`, or run a minimal task such as “Show tables in `<logic-database>`” from the AI application to confirm that the configured runtime database is usable.
++   - Call `database_gateway_validate_runtime_database`, or run a minimal task such as “Show tables in `<logic-database>`” from the AI application to confirm that the configured runtime database is usable.
+    - A running MCP Server process alone does not mean that the target runtime database is ready. Connectivity failures, insufficient privileges, or invisible logical databases can still block tasks.
+ 
+ ## Basic Observability Entrypoints
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.cn.md
+index 76b4cf70f27..4e7b370531b 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.cn.md
+@@ -79,7 +79,7 @@ STDIO 示例：
+ | 工具                                             | 用途                                         | 副作用                                          |
+ |------------------------------------------------|--------------------------------------------|----------------------------------------------|
+ | `database_gateway_search_metadata`             | 按名称片段和对象类型搜索运行时数据库元数据，并返回后续资源读取提示。         | 无。                                           |
+-| `database_gateway_validate_proxy_connectivity` | 校验运行时数据库配置是否可用，用于接入失败时定位连接问题。              | 无。                                           |
++| `database_gateway_validate_runtime_database` | 校验运行时数据库配置是否可用，用于接入失败时定位连接问题。              | 无。                                           |
+ | `database_gateway_execute_query`               | 执行一个已判定为查询类的 `SELECT` 或 `EXPLAIN ANALYZE`。 | 无；拒绝 DML、DDL、DCL、事务控制、savepoint 和其他有副作用 SQL。 |
+ | `database_gateway_execute_update`              | 预览或执行一个可能修改数据、元数据、规则或事务状态的 SQL。            | 有；应先预览并确认。                                   |
+ | `database_gateway_apply_workflow`              | 预览、执行或导出功能插件生成的治理变更计划。                     | 取决于执行方式；预览和人工执行包不修改运行时状态。                    |
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.en.md b/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.en.md
+index 8460aff3867..50d5dbb1b6f 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/developer-appendix.en.md
+@@ -79,7 +79,7 @@ Replace `/path/to/apache-shardingsphere-mcp` with the actual distribution direct
+ | Tool                                           | Purpose                                                                                                                  | Side effect                                                                                |
+ |------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
+ | `database_gateway_search_metadata`             | Search runtime database metadata by name fragment and object type, and return resource hints for follow-up reads.        | None.                                                                                      |
+-| `database_gateway_validate_proxy_connectivity` | Validate whether runtime database configuration is reachable, mainly for diagnosing integration failures.                | None.                                                                                      |
++| `database_gateway_validate_runtime_database` | Validate whether runtime database configuration is reachable, mainly for diagnosing integration failures.                | None.                                                                                      |
+ | `database_gateway_execute_query`               | Execute a statement classified as query, such as `SELECT` or `EXPLAIN ANALYZE`.                                          | None. Rejects DML, DDL, DCL, transaction control, savepoint, and other side-effecting SQL. |
+ | `database_gateway_execute_update`              | Preview or execute SQL that may change data, metadata, rules, or transaction state.                                      | Yes. Preview and confirmation are recommended.                                             |
+ | `database_gateway_apply_workflow`              | Preview, execute, or export a governance change plan created by a feature plugin.                                        | Depends on the execution choice. Preview and manual packages do not change runtime state.  |
 diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-index d375dc3718d..a395eb2a266 100644
+index a395eb2a266..073a3760d5a 100644
 --- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
 +++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
-@@ -60,15 +60,14 @@ weight = 7
+@@ -62,11 +62,6 @@ weight = 7
  
- 以下内容记录当前文档已明确但仍需要后续源码演进的点。代码完成前，用户仍以现有工具名、错误分类和运行时行为为准。
- 
--| 改进项                       | 原因                                                                                           | 建议                                                                                                                    |
--|---------------------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
--| 连接预检工具命名                  | 现有工具名 `database_gateway_validate_proxy_connectivity` 容易让用户误以为只能校验 Proxy，但实际校验的是已配置的运行时数据库连接。 | 后续改为更中性的名称，例如 `database_gateway_validate_runtime_database` 或 `database_gateway_validate_connectivity`，并同步调整描述符、测试和文档。 |
--| 运行状态中的错误分类                | 连接错误分类包含 `database_not_visible`，但运行状态资源的安全分类列表尚未完全对齐。                                        | 后续在运行状态资源中补齐该分类，保证排障分类和运行时状态一致。                                                                                       |
--| HTTP 安全错误分类               | Origin 请求头和会话归属不一致时，目前主要通过 HTTP 状态码和日志定位。                                                    | 后续增加稳定、非敏感的错误分类，例如 `origin_not_allowed` 和 `session_attribution_mismatch`，方便 AI 应用和管理员按错误码排查。                          |
--| 空 `runtimeDatabases` 启动策略 | 当前启动配置要求 `runtimeDatabases` 非空，缺失或为空会导致启动校验失败。                                               | 如果后续希望支持先启动 Server 再补充运行时数据库，需要调整 YAML 校验、运行状态、启动日志和文档；如果仍要求非空，则保持当前启动失败行为，并继续让错误信息指向配置修正。                            |
--| 查询失败错误分类                  | 查询失败可能来自 SQL 语法、对象不存在、权限不足、连接中断或超时，目前用户仍需要结合错误响应和日志判断。                                       | 后续为查询执行失败补充稳定、非敏感的分类和处理建议，例如语法错误、对象不可见、权限不足和执行超时，并避免暴露原始连接信息或堆栈。                                                      |
--| 元数据不可见错误分类                | 看不到数据库、模式、表、列或索引时，用户需要从配置、权限和连接目标中自行排查。                                                      | 后续在元数据读取和搜索结果中返回更细的可见性分类，例如数据库不可见、模式不可见、对象不可见或权限不足，并给出下一步检查项。                                                         |
--| 敏感值引用机制                   | 规则变更可能需要密钥或凭证，目前由外部受控通道传递。                                                                   | 后续如需内置支持，应设计密钥引用或解析机制，而不是让 MCP Server 直接暴露敏感值。                                                                        |
-+| 改进项         | 原因                                                                                           | 建议                                                                                                                    |
-+|-------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
-+| 连接预检工具命名    | 现有工具名 `database_gateway_validate_proxy_connectivity` 容易让用户误以为只能校验 Proxy，但实际校验的是已配置的运行时数据库连接。 | 后续改为更中性的名称，例如 `database_gateway_validate_runtime_database` 或 `database_gateway_validate_connectivity`，并同步调整描述符、测试和文档。 |
-+| 运行状态中的错误分类  | 连接错误分类包含 `database_not_visible`，但运行状态资源的安全分类列表尚未完全对齐。                                        | 后续在运行状态资源中补齐该分类，保证排障分类和运行时状态一致。                                                                                       |
-+| HTTP 安全错误分类 | Origin 请求头和会话归属不一致时，目前主要通过 HTTP 状态码和日志定位。                                                    | 后续增加稳定、非敏感的错误分类，例如 `origin_not_allowed` 和 `session_attribution_mismatch`，方便 AI 应用和管理员按错误码排查。                          |
-+| 查询失败错误分类    | 查询失败可能来自 SQL 语法、对象不存在、权限不足、连接中断或超时，目前用户仍需要结合错误响应和日志判断。                                       | 后续为查询执行失败补充稳定、非敏感的分类和处理建议，例如语法错误、对象不可见、权限不足和执行超时，并避免暴露原始连接信息或堆栈。                                                      |
-+| 元数据不可见错误分类  | 看不到数据库、模式、表、列或索引时，用户需要从配置、权限和连接目标中自行排查。                                                      | 后续在元数据读取和搜索结果中返回更细的可见性分类，例如数据库不可见、模式不可见、对象不可见或权限不足，并给出下一步检查项。                                                         |
-+| 敏感值引用机制     | 规则变更可能需要密钥或凭证，目前由外部受控通道传递。                                                                   | 后续如需内置支持，应设计密钥引用或解析机制，而不是让 MCP Server 直接暴露敏感值。                                                                        |
+ | 改进项         | 原因                                                                                           | 建议                                                                                                                    |
+ |-------------|----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+-| 连接预检工具命名    | 现有工具名 `database_gateway_validate_proxy_connectivity` 容易让用户误以为只能校验 Proxy，但实际校验的是已配置的运行时数据库连接。 | 后续改为更中性的名称，例如 `database_gateway_validate_runtime_database` 或 `database_gateway_validate_connectivity`，并同步调整描述符、测试和文档。 |
+-| 运行状态中的错误分类  | 连接错误分类包含 `database_not_visible`，但运行状态资源的安全分类列表尚未完全对齐。                                        | 后续在运行状态资源中补齐该分类，保证排障分类和运行时状态一致。                                                                                       |
+-| HTTP 安全错误分类 | Origin 请求头和会话归属不一致时，目前主要通过 HTTP 状态码和日志定位。                                                    | 后续增加稳定、非敏感的错误分类，例如 `origin_not_allowed` 和 `session_attribution_mismatch`，方便 AI 应用和管理员按错误码排查。                          |
+-| 查询失败错误分类    | 查询失败可能来自 SQL 语法、对象不存在、权限不足、连接中断或超时，目前用户仍需要结合错误响应和日志判断。                                       | 后续为查询执行失败补充稳定、非敏感的分类和处理建议，例如语法错误、对象不可见、权限不足和执行超时，并避免暴露原始连接信息或堆栈。                                                      |
+-| 元数据不可见错误分类  | 看不到数据库、模式、表、列或索引时，用户需要从配置、权限和连接目标中自行排查。                                                      | 后续在元数据读取和搜索结果中返回更细的可见性分类，例如数据库不可见、模式不可见、对象不可见或权限不足，并给出下一步检查项。                                                         |
+ | 敏感值引用机制     | 规则变更可能需要密钥或凭证，目前由外部受控通道传递。                                                                   | 后续如需内置支持，应设计密钥引用或解析机制，而不是让 MCP Server 直接暴露敏感值。                                                                        |
  
  ## 提供给管理员或排障人员的信息
- 
 diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-index 3c2d12a4ad6..cae0e36f793 100644
+index cae0e36f793..9b9932bdf15 100644
 --- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
 +++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
-@@ -60,15 +60,14 @@ When a runtime database or ShardingSphere-Proxy connection fails, MCP responses
+@@ -62,11 +62,6 @@ The following items are documented as known follow-up code improvements. Until t
  
- The following items are documented as known follow-up code improvements. Until the code changes are completed, users should rely on the current tool names, error categories, and runtime behavior.
- 
--| Improvement                             | Reason                                                                                                                                                                                                        | Recommendation                                                                                                                                                                                                                                                               |
--|-----------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
--| Connectivity validation tool name       | The current tool name `database_gateway_validate_proxy_connectivity` can imply that only Proxy is validated, but the tool actually validates a configured runtime database connection.                        | Rename it to a more neutral name, such as `database_gateway_validate_runtime_database` or `database_gateway_validate_connectivity`, and update descriptors, tests, and documentation together.                                                                               |
--| Error categories in runtime status      | The connection failure categories include `database_not_visible`, but the safe category list in the runtime status resource is not fully aligned.                                                             | Add this category to the runtime status resource so troubleshooting categories and runtime status stay consistent.                                                                                                                                                           |
--| HTTP security error categories          | Origin header and session attribution failures are currently located mainly through HTTP status codes and logs.                                                                                               | Add stable, non-sensitive error categories such as `origin_not_allowed` and `session_attribution_mismatch`, so AI applications and administrators can troubleshoot by category.                                                                                              |
--| Empty `runtimeDatabases` startup policy | The current launch configuration requires `runtimeDatabases` to be non-empty. A missing or empty value fails startup validation.                                                                              | If startup without runtime databases should be supported later, adjust YAML validation, runtime status, startup logs, and documentation together. If the non-empty requirement remains, keep startup failure behavior and continue directing users to fix the configuration. |
--| Query failure error categories          | Query failures can come from SQL syntax, invisible objects, insufficient privileges, interrupted connections, or timeout. Users currently need to combine the error response with logs to identify the cause. | Add stable, non-sensitive categories and actions for query execution failures, such as syntax error, object not visible, insufficient privileges, and execution timeout, without exposing raw connection details or stack traces.                                            |
--| Metadata visibility error categories    | When databases, schemas, tables, columns, or indexes are not visible, users need to inspect configuration, privileges, and connection target manually.                                                        | Return finer-grained visibility categories from metadata read and search results, such as database not visible, schema not visible, object not visible, or insufficient privileges, with the next checks to perform.                                                         |
--| Secret reference mechanism              | Rule changes may require keys or credentials, which are currently passed through external protected channels.                                                                                                 | If built-in support is required later, design a secret reference or resolver mechanism instead of exposing sensitive values through the MCP Server.                                                                                                                          |
-+| Improvement                          | Reason                                                                                                                                                                                                        | Recommendation                                                                                                                                                                                                                               |
-+|--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-+| Connectivity validation tool name    | The current tool name `database_gateway_validate_proxy_connectivity` can imply that only Proxy is validated, but the tool actually validates a configured runtime database connection.                        | Rename it to a more neutral name, such as `database_gateway_validate_runtime_database` or `database_gateway_validate_connectivity`, and update descriptors, tests, and documentation together.                                               |
-+| Error categories in runtime status   | The connection failure categories include `database_not_visible`, but the safe category list in the runtime status resource is not fully aligned.                                                             | Add this category to the runtime status resource so troubleshooting categories and runtime status stay consistent.                                                                                                                           |
-+| HTTP security error categories       | Origin header and session attribution failures are currently located mainly through HTTP status codes and logs.                                                                                               | Add stable, non-sensitive error categories such as `origin_not_allowed` and `session_attribution_mismatch`, so AI applications and administrators can troubleshoot by category.                                                              |
-+| Query failure error categories       | Query failures can come from SQL syntax, invisible objects, insufficient privileges, interrupted connections, or timeout. Users currently need to combine the error response with logs to identify the cause. | Add stable, non-sensitive categories and actions for query execution failures, such as syntax error, object not visible, insufficient privileges, and execution timeout, without exposing raw connection details or stack traces.            |
-+| Metadata visibility error categories | When databases, schemas, tables, columns, or indexes are not visible, users need to inspect configuration, privileges, and connection target manually.                                                        | Return finer-grained visibility categories from metadata read and search results, such as database not visible, schema not visible, object not visible, or insufficient privileges, with the next checks to perform.                         |
-+| Secret reference mechanism           | Rule changes may require keys or credentials, which are currently passed through external protected channels.                                                                                                 | If built-in support is required later, design a secret reference or resolver mechanism instead of exposing sensitive values through the MCP Server.                                                                                          |
+ | Improvement                          | Reason                                                                                                                                                                                                        | Recommendation                                                                                                                                                                                                                               |
+ |--------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+-| Connectivity validation tool name    | The current tool name `database_gateway_validate_proxy_connectivity` can imply that only Proxy is validated, but the tool actually validates a configured runtime database connection.                        | Rename it to a more neutral name, such as `database_gateway_validate_runtime_database` or `database_gateway_validate_connectivity`, and update descriptors, tests, and documentation together.                                               |
+-| Error categories in runtime status   | The connection failure categories include `database_not_visible`, but the safe category list in the runtime status resource is not fully aligned.                                                             | Add this category to the runtime status resource so troubleshooting categories and runtime status stay consistent.                                                                                                                           |
+-| HTTP security error categories       | Origin header and session attribution failures are currently located mainly through HTTP status codes and logs.                                                                                               | Add stable, non-sensitive error categories such as `origin_not_allowed` and `session_attribution_mismatch`, so AI applications and administrators can troubleshoot by category.                                                              |
+-| Query failure error categories       | Query failures can come from SQL syntax, invisible objects, insufficient privileges, interrupted connections, or timeout. Users currently need to combine the error response with logs to identify the cause. | Add stable, non-sensitive categories and actions for query execution failures, such as syntax error, object not visible, insufficient privileges, and execution timeout, without exposing raw connection details or stack traces.            |
+-| Metadata visibility error categories | When databases, schemas, tables, columns, or indexes are not visible, users need to inspect configuration, privileges, and connection target manually.                                                        | Return finer-grained visibility categories from metadata read and search results, such as database not visible, schema not visible, object not visible, or insufficient privileges, with the next checks to perform.                         |
+ | Secret reference mechanism           | Rule changes may require keys or credentials, which are currently passed through external protected channels.                                                                                                 | If built-in support is required later, design a secret reference or resolver mechanism instead of exposing sensitive values through the MCP Server.                                                                                          |
  
  ## Information for Administrators or Troubleshooters
- 
