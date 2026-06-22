@@ -1,137 +1,32 @@
-commit 68c4600f080acf97f233fece980bc5d839b337ed
+commit 920b9f7ac740978ce8d1c7a4ec59cf1757026c7b
 Author: Hengqian Ling <linghengqian@outlook.com>
-Date:   Sun Jun 21 15:43:59 2026 +0800
+Date:   Mon Jun 22 09:49:13 2026 +0800
 
-    Stabilize Ubuntu nativeTest CI under GraalVM Native Image (#38880)
+    Bump the ClickHouse JDBC Driver used by optional modules to version `0.9.8` (#38878)
 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-index 3454172fe95..481481ba127 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.cn.md
-@@ -222,47 +222,6 @@ cd ./shardingsphere/
- 
- ## 已知限制
- 
--### `reachability-metadata.json` 限制
--
--受 https://github.com/apache/shardingsphere/issues/33206 影响，
--开发者执行 `./mvnw -PgenerateMetadata -T 1C -e clean test native:metadata-copy` 后，
--`infra/reachability-metadata/src/main/resources/META-INF/native-image/org.apache.shardingsphere/generated-reachability-metadata/reachability-metadata.json` 会生成不必要的包含绝对路径的 JSON 条目，
--
--对于 Ubuntu，类似如下，
--
--```json
--{
--  "resources": [
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/mysql/"
--    },
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/mysql//global.yaml"
--    },
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/postgresql/"
--    },
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/postgresql//global.yaml"
--    }
--  ]
--}
--```
--
--需要为 ShardingSphere 提交 PR 的贡献者应始终手动删除这些包含绝对路径的 JSON 条目，并等待 https://github.com/oracle/graal/issues/8417 被解决。
--
- ### 单元测试库限制
- 
- 对于 `shardingsphere-test-native` 的 Maven Module，
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-index af258665021..c393a605e36 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/development/_index.en.md
-@@ -229,48 +229,6 @@ developer should place it in the classpath of the `shardingsphere-test-native` s
- 
- ## Known limitations
- 
--### `reachability-metadata.json` limitations
--
--Affected by https://github.com/apache/shardingsphere/issues/33206,
--after developers execute `./mvnw -PgenerateMetadata -T 1C -e clean test native:metadata-copy`,
--`infra/reachability-metadata/src/main/resources/META-INF/native-image/org.apache.shardingsphere/generated-reachability-metadata/reachability-metadata.json` will generate unnecessary JSON entries containing absolute paths.
--
--For Ubuntu, it is similar to the following,
--
--```json
--{
--  "resources": [
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/mysql/"
--    },
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/mysql//global.yaml"
--    },
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/postgresql/"
--    },
--    {
--      "condition": {
--        "typeReached": "org.apache.shardingsphere.proxy.backend.config.ProxyConfigurationLoader"
--      },
--      "glob": "home/runner/work/shardingsphere/shardingsphere/test/native/src/test/resources/test-native/yaml/proxy/databases/postgresql//global.yaml"
--    }
--  ]
--}
--```
--
--Contributors who need to submit PRs for ShardingSphere should always manually remove these JSON entries containing absolute paths
--and wait for https://github.com/oracle/graal/issues/8417 to be resolved.
--
- ### Unit test library limitations
- 
- For the Maven Module of `shardingsphere-test-native`,
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-index e452542fb8c..561ef354f82 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.cn.md
-@@ -185,7 +185,7 @@ vfox install java@21.0.7-ms
- vfox use --global java@21.0.7-ms
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.cn.md
+index 52df75b0235..412c1279720 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.cn.md
+@@ -24,7 +24,7 @@ ShardingSphere 对 ClickHouse JDBC Driver 的支持位于可选模块中。
+         <groupId>com.clickhouse</groupId>
+         <artifactId>clickhouse-jdbc</artifactId>
+         <classifier>all</classifier>
+-        <version>0.9.5</version>
++        <version>0.9.8</version>
+     </dependency>
+ </dependencies>
  ```
- 
--当 Windows 弹出窗口，要求允许类似 `C:\users\lingh\.version-fox\cache\java\v-21.0.7-ms\java-21.0.7-ms\bin\java.exe` 路径的应用通过 Windows 防火墙时，
-+当 Windows 弹出窗口，要求允许类似 `C:\users\shard\.version-fox\cache\java\v-21.0.7-ms\java-21.0.7-ms\bin\java.exe` 路径的应用通过 Windows 防火墙时，
- 应当批准。 
- 背景参考 https://support.microsoft.com/en-us/windows/risks-of-allowing-apps-through-windows-firewall-654559af-3f54-3dcf-349f-71ccd90bcc5c 。
- 
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-index 7b5d8f49636..2a99d9db186 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/graalvm-native-image.en.md
-@@ -189,7 +189,7 @@ vfox install java@21.0.7-ms
- vfox use --global java@21.0.7-ms
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.en.md
+index 893711a7bb7..290cae76fb9 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/clickhouse/_index.en.md
+@@ -24,7 +24,7 @@ the possible Maven dependencies are as follows,
+         <groupId>com.clickhouse</groupId>
+         <artifactId>clickhouse-jdbc</artifactId>
+         <classifier>all</classifier>
+-        <version>0.9.5</version>
++        <version>0.9.8</version>
+     </dependency>
+ </dependencies>
  ```
- 
--When Windows pops up a window asking you to allow an application with a path like `C:\users\lingh\.version-fox\cache\java\v-21.0.7-ms\java-21.0.7-ms\bin\java.exe` to pass through Windows Firewall,
-+When Windows pops up a window asking you to allow an application with a path like `C:\users\shard\.version-fox\cache\java\v-21.0.7-ms\java-21.0.7-ms\bin\java.exe` to pass through Windows Firewall,
- you should approve it.
- Background reference https://support.microsoft.com/en-us/windows/risks-of-allowing-apps-through-windows-firewall-654559af-3f54-3dcf-349f-71ccd90bcc5c .
- 
