@@ -1,42 +1,252 @@
-commit 22f905802a74573398b57b431bd0b4b261bb1f79
-Author: Hengqian Ling <linghengqian@outlook.com>
-Date:   Sun Jun 28 15:11:30 2026 +0800
+commit 1c3c0f336c4ef6d52038f48e2179e5829697bc63
+Author: Liang Zhang <zhangliang@apache.org>
+Date:   Sun Jun 28 22:44:24 2026 +0800
 
-    Supports the use of local transactions for Presto in ShardingSphere JDBC (#38941)
+    Clean up branch-aware database type detection (#38942)
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Centralize branch-aware storage type detection
+    
+    - Add branch option gates before opening storage connections for type detection
+    - Propagate detected storage types through configuration creation, metadata rebuild, and YAML import paths
+    - Normalize branch storage types to protocol types for schema, identifier, proxy, and single table comparisons
+    - Add focused unit tests for branch detection gates and explicit storage type propagation
+    
+    * Clean up branch-aware database type detection
+    
+    - Resolve database type from JDBC URL only
+    - Remove dialect branch detection options and metadata SQL probing
+    - Drop MCP runtime databaseType config and Doris MCP capability
+    - Simplify storage type propagation across infra, mode, proxy and MCP
+    - Update tests for URL-only database type behavior
+    
+    * Clean up branch-aware database type detection
+    
+    - Resolve database type from JDBC URL only
+    - Remove dialect branch detection options and metadata SQL probing
+    - Drop MCP runtime databaseType config and Doris MCP capability
+    - Simplify storage type propagation across infra, mode, proxy and MCP
+    - Update tests for URL-only database type behavior
+    
+    * Clean up branch-aware database type detection
+    
+    - Resolve database type from JDBC URL only
+    - Remove dialect branch detection options and metadata SQL probing
+    - Drop MCP runtime databaseType config and Doris MCP capability
+    - Simplify storage type propagation across infra, mode, proxy and MCP
+    - Update tests for URL-only database type behavior
+    
+    * Clean up branch-aware database type detection
+    
+    - Resolve database type from JDBC URL only
+    - Remove dialect branch detection options and metadata SQL probing
+    - Drop MCP runtime databaseType config and Doris MCP capability
+    - Simplify storage type propagation across infra, mode, proxy and MCP
+    - Update tests for URL-only database type behavior
+    
+    * Clean up branch-aware database type detection
+    
+    - Resolve database type from JDBC URL only
+    - Remove dialect branch detection options and metadata SQL probing
+    - Drop MCP runtime databaseType config and Doris MCP capability
+    - Simplify storage type propagation across infra, mode, proxy and MCP
+    - Update tests for URL-only database type behavior
 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.cn.md
-index 38cde8d1902..07df3b5b402 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.cn.md
-@@ -207,8 +207,11 @@ ShardingSphere JDBC DataSource 尚不支持执行 Presto 的 `create table` 和
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
+index 4c6352fad51..cf600c698c4 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
+@@ -64,24 +64,23 @@ transport:
  
- ### 事务限制
+ `runtimeDatabases` 定义 MCP Server 可以连接并对外暴露的数据库。
+ 每个条目的 key 是用户在自然语言任务中引用的数据库名称，通常对应 ShardingSphere-Proxy 暴露的逻辑库。
++MCP Server 会从 `jdbcUrl` 解析数据库类型；请使用与该 JDBC URL 匹配的驱动类。
  
--Presto 不支持 ShardingSphere 集成级别的本地事务，XA 事务或 Seata 的 AT 模式事务。
--Presto 自身的事务支持存在问题，参考 https://github.com/prestodb/presto/issues/25204 。
-+Presto 支持 ShardingSphere 集成级别的本地事务，但不支持 XA 事务或 Seata 的 AT 模式事务。
-+
-+对 XA 事务的处理，应在 https://github.com/prestodb/presto 提交包含对应实现的 PR。
-+
-+对 Seata 的 AT 模式事务的处理，则应在 https://github.com/apache/incubator-seata 提交包含对应实现的 PR。
+ ```yaml
+ runtimeDatabases:
+   "<logic-database>":
+-    databaseType: MySQL
+     jdbcUrl: "jdbc:mysql://<proxy-host>:<proxy-port>/<logic-database>"
+     username: "<proxy-username>"
+     password: "<proxy-password>"
+     driverClassName: "com.mysql.cj.jdbc.Driver"
+ ```
  
- ### 连接器限制
+-| *名称*                  | *说明*                                                                                                |
+-|-----------------------|-----------------------------------------------------------------------------------------------------|
+-| `databaseType` (+)    | 连接端点的数据库协议或方言类型，例如 `MySQL` 或 `PostgreSQL`。它影响元数据识别和 SQL 能力判断，不表示连接目标一定是数据库直连或 ShardingSphere-Proxy。 |
+-| `jdbcUrl` (+)         | MCP Server 连接运行时数据库的 JDBC URL；使用 ShardingSphere 规则能力时应指向 Proxy 逻辑库。                                 |
+-| `username` (+)        | 连接运行时数据库的用户名，通常是 ShardingSphere-Proxy 逻辑库用户名。                                                       |
+-| `password` (?)        | 连接运行时数据库的密码。                                                                                        |
+-| `driverClassName` (+) | JDBC 驱动类名，例如 MySQL 驱动使用 `com.mysql.cj.jdbc.Driver`。                                                 |
++| *名称*                  | *说明*                                                                                   |
++|-----------------------|----------------------------------------------------------------------------------------|
++| `jdbcUrl` (+)         | MCP Server 连接运行时数据库并解析数据库类型的 JDBC URL；使用 ShardingSphere 规则能力时应指向 Proxy 逻辑库。 |
++| `username` (+)        | 连接运行时数据库的用户名，通常是 ShardingSphere-Proxy 逻辑库用户名。                                      |
++| `password` (?)        | 连接运行时数据库的密码。                                                                       |
++| `driverClassName` (+) | JDBC 驱动类名，例如 MySQL 驱动使用 `com.mysql.cj.jdbc.Driver`。                                |
  
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.en.md
-index 6209313ab7c..81e44b7fd4c 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/presto/_index.en.md
-@@ -207,8 +207,11 @@ ShardingSphere JDBC DataSource does not yet support the execution of Presto's `c
+ 说明：
  
- ### Transaction Limitations
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
+index 586ff7d8d74..0f079aea05e 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
+@@ -64,24 +64,23 @@ Enable this only when clients cannot forge these headers directly.
  
--Presto does not support local transactions, XA transactions, or Seata's AT mode transactions at the ShardingSphere integration level.
--There are bugs with Presto's own transaction support, see https://github.com/prestodb/presto/issues/25204 .
-+Presto supports ShardingSphere integration-level local transactions, but not XA transactions or Seata's AT mode transactions.
-+
-+For XA transaction, a PR containing the corresponding implementation should be submitted at https://github.com/prestodb/presto .
-+
-+For Seata's AT mode transactions, a PR containing the corresponding implementation should be submitted at https://github.com/apache/incubator-seata .
+ `runtimeDatabases` defines the databases that the MCP Server can connect to and expose to users.
+ Each entry key is the database name that users reference in natural-language tasks. It usually maps to a logical database exposed by ShardingSphere-Proxy.
++The MCP Server resolves the database type from `jdbcUrl`; use a JDBC driver class that matches the configured URL.
  
- ### Connector Limitations
+ ```yaml
+ runtimeDatabases:
+   "<logic-database>":
+-    databaseType: MySQL
+     jdbcUrl: "jdbc:mysql://<proxy-host>:<proxy-port>/<logic-database>"
+     username: "<proxy-username>"
+     password: "<proxy-password>"
+     driverClassName: "com.mysql.cj.jdbc.Driver"
+ ```
  
+-| *Name*                | *Description*                                                                                                                                                                                                                                                  |
+-|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+-| `databaseType` (+)    | Database protocol or dialect type of the connection endpoint, such as `MySQL` or `PostgreSQL`. It affects metadata recognition and SQL capability judgment; it does not mean the endpoint is necessarily a direct database connection or ShardingSphere-Proxy. |
+-| `jdbcUrl` (+)         | JDBC URL used by the MCP Server to connect to the runtime database. Point it to a Proxy logical database when using ShardingSphere rule capabilities.                                                                                                          |
+-| `username` (+)        | Username for the runtime database, usually the ShardingSphere-Proxy logical database username.                                                                                                                                                                 |
+-| `password` (?)        | Password for the runtime database.                                                                                                                                                                                                                             |
+-| `driverClassName` (+) | JDBC driver class name, such as `com.mysql.cj.jdbc.Driver` for the MySQL driver.                                                                                                                                                                               |
++| *Name*                | *Description*                                                                                                                                                         |
++|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
++| `jdbcUrl` (+)         | JDBC URL used by the MCP Server to connect to the runtime database and resolve the database type. Use a Proxy logical database for ShardingSphere rule capabilities. |
++| `username` (+)        | Username for the runtime database, usually the ShardingSphere-Proxy logical database username.                                                                        |
++| `password` (?)        | Password for the runtime database.                                                                                                                                    |
++| `driverClassName` (+) | JDBC driver class name, such as `com.mysql.cj.jdbc.Driver` for the MySQL driver.                                                                                      |
+ 
+ Legend:
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
+index f0ceac9627b..b43a6f4b803 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
+@@ -44,7 +44,6 @@ transport:
+ 
+ runtimeDatabases:
+   "<logic-database>":
+-    databaseType: MySQL
+     jdbcUrl: "jdbc:mysql://<proxy-host>:<proxy-port>/<logic-database>"
+     username: "<proxy-username>"
+     password: "<proxy-password>"
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
+index 27db8884474..bb3cd313596 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
+@@ -44,7 +44,6 @@ transport:
+ 
+ runtimeDatabases:
+   "<logic-database>":
+-    databaseType: MySQL
+     jdbcUrl: "jdbc:mysql://<proxy-host>:<proxy-port>/<logic-database>"
+     username: "<proxy-username>"
+     password: "<proxy-password>"
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
+index cfd5a6bb0b6..766a66f7878 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
+@@ -37,7 +37,6 @@ cd distribution/mcp/target/apache-shardingsphere-mcp-${version}
+ ```yaml
+ runtimeDatabases:
+   "<logic-database>":
+-    databaseType: MySQL
+     jdbcUrl: "jdbc:mysql://<proxy-host>:<proxy-port>/<logic-database>"
+     username: "<proxy-username>"
+     password: "<proxy-password>"
+@@ -45,6 +44,7 @@ runtimeDatabases:
+ ```
+ 
+ 将 `<logic-database>`、`<proxy-host>`、`<proxy-port>`、`<proxy-username>` 和 `<proxy-password>` 替换为 ShardingSphere-Proxy 的实际连接信息。
++MCP Server 会从 `jdbcUrl` 解析数据库类型。
+ 如果目标数据库驱动没有随发行包提供，请在启动前把对应 JDBC 驱动 jar 放入 `plugins/`。
+ 
+ ## 启动 HTTP MCP Server
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
+index 6fd6c96bba3..d1fdd49c89d 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
+@@ -37,7 +37,6 @@ Edit `conf/mcp-http.yaml` and point `runtimeDatabases` to an existing ShardingSp
+ ```yaml
+ runtimeDatabases:
+   "<logic-database>":
+-    databaseType: MySQL
+     jdbcUrl: "jdbc:mysql://<proxy-host>:<proxy-port>/<logic-database>"
+     username: "<proxy-username>"
+     password: "<proxy-password>"
+@@ -45,6 +44,7 @@ runtimeDatabases:
+ ```
+ 
+ Replace `<logic-database>`, `<proxy-host>`, `<proxy-port>`, `<proxy-username>`, and `<proxy-password>` with the actual ShardingSphere-Proxy connection information.
++The MCP Server resolves the database type from `jdbcUrl`.
+ If the target database driver is not provided with the distribution, put the corresponding JDBC driver jar under `plugins/` before startup.
+ 
+ ## Start the HTTP MCP Server
