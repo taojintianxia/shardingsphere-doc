@@ -1,104 +1,889 @@
-commit ec4a896d7170ad417f073e310f1fd999889e4c08
+commit 967924ab8d0130a3c1ccd53857ab2aa8e9b8df9b
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Mon Jun 29 18:22:20 2026 +0800
+Date:   Tue Jun 30 02:00:54 2026 +0800
 
-    Clarify ShardingSphere-MCP preview and HTTP safety guidance (#38949)
+    Fix documentation drift against current source (#38959)
     
-    * Clarify ShardingSphere-MCP preview and HTTP safety guidance
+    * Fix documentation drift against current source
     
-    - Add explicit HTTP bind/port/path defaults to the packaged MCP HTTP config
-    - Clarify that built-in HTTP transport requires a trusted gateway for auth, rate limiting, and audit logging
-    - Document that execute_update preview is classification-only and does not perform database-side trial execution
-    - Add descriptor and prompt assertions for preview semantics
+    - Correct stale API references, sharding examples, and JDBC URL loader docs
+    - Align Proxy MySQL driver docs with mysql-connector-j 8.4.0 and Firebird support
+    - Refresh SQL error code docs from current exception contracts
     
-    * Clarify ShardingSphere-MCP preview and HTTP safety guidance
+    * Fix documentation drift against current source
     
-    - Add explicit HTTP bind/port/path defaults to the packaged MCP HTTP config
-    - Clarify that built-in HTTP transport requires a trusted gateway for auth, rate limiting, and audit logging
-    - Document that execute_update preview is classification-only and does not perform database-side trial execution
-    - Add descriptor and prompt assertions for preview semantics
+    - Correct stale API references, sharding examples, and JDBC URL loader docs
+    - Align Proxy MySQL driver docs with mysql-connector-j 8.4.0 and Firebird support
+    - Refresh SQL error code docs from current exception contracts
 
-diff --git a/docs/document/content/reference/mcp/protocol-surface.cn.md b/docs/document/content/reference/mcp/protocol-surface.cn.md
-index dc10e485f12..eaf769b0ff3 100644
---- a/docs/document/content/reference/mcp/protocol-surface.cn.md
-+++ b/docs/document/content/reference/mcp/protocol-surface.cn.md
-@@ -60,7 +60,7 @@ ShardingSphere-MCP 不要求 roots，也不会发送 `sampling/createMessage` 
- `database_gateway_execute_update`
+diff --git a/docs/document/content/dev-manual/encrypt.cn.md b/docs/document/content/dev-manual/encrypt.cn.md
+index 9ffedbd2cfc..175c3030606 100644
+--- a/docs/document/content/dev-manual/encrypt.cn.md
++++ b/docs/document/content/dev-manual/encrypt.cn.md
+@@ -19,5 +19,5 @@ chapter = true
  
- - 预览或执行一个支持的有副作用 SQL。
--- `execution_mode=preview` 只做分类和副作用范围预览。
-+- `execution_mode=preview` 只做分类和副作用范围预览，不会在数据库侧进行试执行。
- - `execution_mode=execute` 在 review 后执行 SQL。
- - 多语句和禁用命令会被拒绝。
+ | *配置标识*           | *详细说明*           | *全限定类名*                                                                                                                                                                                                                                                            |
+ |------------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+-| AES              | 基于 AES 的数据加密算法   | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
+-| MD5              | 基于 MD5 的辅助查询加密算法 | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.MD5EncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
++| AES              | 基于 AES 的数据加密算法   | [`org.apache.shardingsphere.encrypt.algorithm.standard.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
++| MD5              | 基于 MD5 的辅助查询加密算法 | [`org.apache.shardingsphere.encrypt.algorithm.assisted.MD5AssistedEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
+diff --git a/docs/document/content/dev-manual/encrypt.en.md b/docs/document/content/dev-manual/encrypt.en.md
+index caeada00380..ac671fa3d17 100644
+--- a/docs/document/content/dev-manual/encrypt.en.md
++++ b/docs/document/content/dev-manual/encrypt.en.md
+@@ -19,5 +19,5 @@ Data encrypt algorithm definition
  
-diff --git a/docs/document/content/reference/mcp/protocol-surface.en.md b/docs/document/content/reference/mcp/protocol-surface.en.md
-index 6a5e98f4f34..7c17cf3440b 100644
---- a/docs/document/content/reference/mcp/protocol-surface.en.md
-+++ b/docs/document/content/reference/mcp/protocol-surface.en.md
-@@ -60,7 +60,7 @@ ShardingSphere-MCP does not require roots and does not send `sampling/createMess
- `database_gateway_execute_update`
+ | *Configuration Type* | *Description*                               | *Fully-qualified class name*                                                                                                                                                                                                                                       |
+ |----------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+-| AES                  | AES data encrypt algorithm                  | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
+-| MD5                  | MD5 assisted query encrypt algorithm        | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.MD5EncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
++| AES                  | AES data encrypt algorithm                  | [`org.apache.shardingsphere.encrypt.algorithm.standard.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
++| MD5                  | MD5 assisted query encrypt algorithm        | [`org.apache.shardingsphere.encrypt.algorithm.assisted.MD5AssistedEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
+diff --git a/docs/document/content/dev-manual/infra-algorithm.cn.md b/docs/document/content/dev-manual/infra-algorithm.cn.md
+index 9c0e55ba77e..b8a9312aadf 100644
+--- a/docs/document/content/dev-manual/infra-algorithm.cn.md
++++ b/docs/document/content/dev-manual/infra-algorithm.cn.md
+@@ -37,8 +37,8 @@ chapter = true
  
- - Previews or executes one supported side-effecting SQL statement.
--- `execution_mode=preview` only classifies the SQL and previews the side-effect scope.
-+- `execution_mode=preview` only classifies the SQL and previews the side-effect scope; it is not a database dry run.
- - `execution_mode=execute` executes the SQL after review.
- - Multiple statements and banned commands are rejected.
+ | *配置标识*       | *详细说明*                      | *全限定类名*                                                                                                                                                                                                                                                                                               |
+ |-----------------|--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+-| SNOWFLAKE       | 基于雪花算法的分布式主键生成算法    | [`org.apache.shardingsphere.keygen.snowflake.algorithm.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java)    |
+-| UUID            | 基于 UUID 的分布式主键生成算法     | [`org.apache.shardingsphere.keygen.uuid.algorithm.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                             |
++| SNOWFLAKE       | 基于雪花算法的分布式主键生成算法    | [`org.apache.shardingsphere.infra.algorithm.keygen.snowflake.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java)    |
++| UUID            | 基于 UUID 的分布式主键生成算法     | [`org.apache.shardingsphere.infra.algorithm.keygen.uuid.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                             |
  
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
-index b43a6f4b803..33b08c6d095 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
-@@ -77,12 +77,14 @@ docker run --rm -i \
+ ## MessageDigestAlgorithm
  
- ## 安全部署建议
+diff --git a/docs/document/content/dev-manual/infra-algorithm.en.md b/docs/document/content/dev-manual/infra-algorithm.en.md
+index 3fafcaaf1ad..bc529d8a6cb 100644
+--- a/docs/document/content/dev-manual/infra-algorithm.en.md
++++ b/docs/document/content/dev-manual/infra-algorithm.en.md
+@@ -37,8 +37,8 @@ Distributed key generated algorithms, they can be used in sharding feature.
  
--内置 HTTP Server 不提供认证和授权。
-+内置 HTTP Server 不提供认证、授权、限流或审计日志。
-+不支持把内置 HTTP Server 直接暴露到公网作为生产部署边界。
- 如果需要远程访问，应放在受信网络、反向代理或网关后面，由外层组件处理：
+ | *Configuration Type* | *Description*                    | *Fully-qualified class name*                                                                                                                                                                                                                                                                          |
+ |----------------------|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+-| SNOWFLAKE            | Snowflake key generate algorithm | [`org.apache.shardingsphere.keygen.snowflake.algorithm.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java) |
+-| UUID                 | UUID key generate algorithm      | [`org.apache.shardingsphere.keygen.uuid.algorithm.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                          |
++| SNOWFLAKE            | Snowflake key generate algorithm | [`org.apache.shardingsphere.infra.algorithm.keygen.snowflake.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java) |
++| UUID                 | UUID key generate algorithm      | [`org.apache.shardingsphere.infra.algorithm.keygen.uuid.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                          |
  
- - TLS 终止。
- - 身份认证。
- - 授权策略。
-+- 限流。
- - 网络访问控制。
- - 审计日志。
+ ## MessageDigestAlgorithm
  
-@@ -90,7 +92,7 @@ HTTP 绑定建议：
+diff --git a/docs/document/content/dev-manual/sharding.cn.md b/docs/document/content/dev-manual/sharding.cn.md
+index 37c8e0f407c..2ab34013f92 100644
+--- a/docs/document/content/dev-manual/sharding.cn.md
++++ b/docs/document/content/dev-manual/sharding.cn.md
+@@ -27,7 +27,7 @@ chapter = true
+ | INTERVAL                 | N        | 基于固定时间范围的分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.datetime.IntervalShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/datetime/IntervalShardingAlgorithm.java)                                                 |
+ | CLASS_BASED              | N        | 基于自定义类的分片算法               | [`org.apache.shardingsphere.sharding.algorithm.sharding.classbased.ClassBasedShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/classbased/ClassBasedShardingAlgorithm.java)                                         |
+ | INLINE                   | N        | 基于行表达式的分片算法               | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.InlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/InlineShardingAlgorithm.java)                                                         |
+-| COMPLEX_INLINE           | N        | 基于行表达式的复合分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.complex.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
++| COMPLEX_INLINE           | N        | 基于行表达式的复合分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
+ | HINT_INLINE              | N        | 基于行表达式的 Hint 分片算法         | [`org.apache.shardingsphere.sharding.algorithm.sharding.hint.HintInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/hint/HintInlineShardingAlgorithm.java)                                                     |
  
- - 本地调试使用 `127.0.0.1`。
- - 容器或内网部署使用受控网络接口。
--- 面向远程客户端暴露时，避免直接裸露 MCP Server。
-+- 面向远程客户端暴露时，避免直接裸露 MCP Server，应通过受信网关转发。
- - 需要把会话和外部用户或调用来源关联时，由受信网关注入会话归属请求头；不要允许客户端直接伪造这些请求头。
+ ## ShardingAuditAlgorithm
+@@ -67,7 +67,7 @@ chapter = true
  
- ### 受信网关与 TLS 终止样例
-diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
-index bb3cd313596..f8ca8d11dc2 100644
---- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
-@@ -77,12 +77,14 @@ Configure `runtimeDatabases` according to the target capability boundary:
+ ### 全限定类名
  
- ## Secure deployment
+-`org.apache.shardingsphere.infra.expr.core.InlineExpressionParser`
++`org.apache.shardingsphere.infra.expr.spi.InlineExpressionParser`
  
--The built-in HTTP Server does not provide authentication or authorization.
-+The built-in HTTP Server does not provide authentication, authorization, rate limiting, or audit logging.
-+Exposing the built-in HTTP Server directly to the public Internet is not a supported production boundary.
- For remote access, place it in a trusted network or behind a reverse proxy or gateway that handles:
+ ### 定义
  
- - TLS termination.
- - Authentication.
- - Authorization policy.
-+- Rate limiting.
- - Network access control.
- - Audit logs.
+diff --git a/docs/document/content/dev-manual/sharding.en.md b/docs/document/content/dev-manual/sharding.en.md
+index ae313a0651a..e9fc400deb0 100644
+--- a/docs/document/content/dev-manual/sharding.en.md
++++ b/docs/document/content/dev-manual/sharding.en.md
+@@ -27,7 +27,7 @@ Sharding Algorithm definition
+ | INTERVAL                 | N                    | Fixed interval sharding algorithm                                       | [`org.apache.shardingsphere.sharding.algorithm.sharding.datetime.IntervalShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/datetime/IntervalShardingAlgorithm.java)                                                 |
+ | CLASS_BASED              | N                    | Class based sharding algorithm                                          | [`org.apache.shardingsphere.sharding.algorithm.sharding.classbased.ClassBasedShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/classbased/ClassBasedShardingAlgorithm.java)                                         |
+ | INLINE                   | N                    | Inline sharding algorithm                                               | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.InlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/InlineShardingAlgorithm.java)                                                         |
+-| COMPLEX_INLINE           | N                    | Complex inline sharding algorithm                                       | [`org.apache.shardingsphere.sharding.algorithm.sharding.complex.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
++| COMPLEX_INLINE           | N                    | Complex inline sharding algorithm                                       | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
+ | HINT_INLINE              | N                    | Hint inline sharding algorithm                                          | [`org.apache.shardingsphere.sharding.algorithm.sharding.hint.HintInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/hint/HintInlineShardingAlgorithm.java)                                                     |
  
-@@ -90,7 +92,7 @@ HTTP binding recommendations:
+ ## ShardingAuditAlgorithm
+@@ -67,7 +67,7 @@ Obtain the current date for routing definition
  
- - Use `127.0.0.1` for local debugging.
- - Use a controlled network interface for container or intranet deployments.
--- Avoid exposing the MCP Server directly to remote clients.
-+- Avoid exposing the MCP Server directly to remote clients. Route remote access through a trusted gateway.
- - When sessions must be associated with external users or request sources, let a trusted gateway inject session attribution headers. Do not allow clients to forge these headers directly.
+ ### Fully-qualified class name
  
- ### Trusted gateway and TLS termination example
+-`org.apache.shardingsphere.infra.expr.core.InlineExpressionParser`
++`org.apache.shardingsphere.infra.expr.spi.InlineExpressionParser`
+ 
+ ### Definition
+ 
+diff --git a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md
+index 130c653c03b..13d0ee0f111 100644
+--- a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md
++++ b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md
+@@ -8,7 +8,7 @@ weight = 2
+ 
+ ![shardingsphere-proxy](https://shardingsphere.apache.org/document/current/img/shardingsphere-proxy_v2.png)
+ 
+-ShardingSphere-Proxy 的定位为透明化的数据库代理，理论上支持任何使用 MySQL、PostgreSQL、openGauss 协议的客户端操作数据，对异构语言、运维场景更友好。
++ShardingSphere-Proxy 的定位为透明化的数据库代理，理论上支持任何使用 MySQL、PostgreSQL、openGauss 和 Firebird 协议的客户端操作数据，对异构语言、运维场景更友好。
+ 
+ ## 使用限制
+ 
+@@ -40,9 +40,9 @@ ShardingSphere-Proxy 对系统库/表（如 information_schema、pg_catalog）
+ 
+ 3. 引入依赖
+ 
+-如果后端连接 PostgreSQL 或 openGauss 数据库，不需要引入额外依赖。
++如果后端连接 PostgreSQL、openGauss 或 Firebird 数据库，不需要引入额外依赖。
+ 
+-如果后端连接 MySQL 数据库，请下载 [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) 或者 [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar)，并将其放入 `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` 目录。
++如果后端连接 MySQL 数据库，请下载 [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar)，并将其放入 `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` 目录。
+ 
+ 4. 启动服务
+ 
+diff --git a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md
+index 3eaf061ba67..9bcbec98102 100644
+--- a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md
++++ b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md
+@@ -8,7 +8,7 @@ weight = 2
+ 
+ ![shardingsphere-proxy](https://shardingsphere.apache.org/document/current/img/shardingsphere-proxy_v2.png)
+ 
+-ShardingSphere-Proxy is positioned as a transparent database proxy. It theoretically supports any client operation data using MySQL, PostgreSQL and openGauss protocols, and is friendly to heterogeneous languages and operation and maintenance scenarios.
++ShardingSphere-Proxy is positioned as a transparent database proxy. It theoretically supports any client operation data using MySQL, PostgreSQL, openGauss and Firebird protocols, and is friendly to heterogeneous languages and operation and maintenance scenarios.
+ 
+ ## Limitations
+ 
+@@ -40,9 +40,9 @@ Please refer to [Configuration Manual](/en/user-manual/shardingsphere-proxy/yaml
+ 
+ 3. Import dependencies.
+ 
+-If the backend database is PostgreSQL or openGauss, no additional dependencies are required.
++If the backend database is PostgreSQL, openGauss or Firebird, no additional dependencies are required.
+ 
+-If the backend database is MySQL, please download [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) or [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar) and put it into the `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` directory.
++If the backend database is MySQL, please download [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar) and put it into the `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` directory.
+ 
+ 4. Start server.
+ 
+diff --git a/docs/document/content/test-manual/integration-test/_index.cn.md b/docs/document/content/test-manual/integration-test/_index.cn.md
+index be93787b310..1edc4d0e920 100644
+--- a/docs/document/content/test-manual/integration-test/_index.cn.md
++++ b/docs/document/content/test-manual/integration-test/_index.cn.md
+@@ -181,13 +181,13 @@ e2e.native.database.password=123456
+ #### 运行调试模式
+ 
+   - 标准测试引擎
+-    运行 `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` 以启动不同 SQL 类型的测试引擎。
++    运行 `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` 以启动不同 SQL 类型的测试引擎。
+ 
+   - 批量测试引擎
+-    运行 `org.apache.shardingsphere.test.e2e.it.sql.dml.BatchDMLE2EIT`，以启动为 DML 语句提供的测试 `addBatch()` 的批量测试引擎。
++    运行 `org.apache.shardingsphere.test.e2e.sql.it.sql.dml.BatchDMLE2EIT`，以启动为 DML 语句提供的测试 `addBatch()` 的批量测试引擎。
+ 
+   - 附加测试引擎
+-    运行 `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` 以启动使用更多 JDBC 方法调用的测试引擎。
++    运行 `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` 以启动使用更多 JDBC 方法调用的测试引擎。
+     附加测试引擎需要通过设置 `e2e.run.additional.cases=true` 开启。
+ 
+ #### 运行 Docker 模式
+diff --git a/docs/document/content/test-manual/integration-test/_index.en.md b/docs/document/content/test-manual/integration-test/_index.en.md
+index 61554120bb3..e08f6f3f31d 100644
+--- a/docs/document/content/test-manual/integration-test/_index.en.md
++++ b/docs/document/content/test-manual/integration-test/_index.en.md
+@@ -180,13 +180,13 @@ e2e.native.database.password=123456
+ #### Run debugging mode
+ 
+   - Standard test engine
+-    Run `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` to start the test engines of different SQL types.
++    Run `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` to start the test engines of different SQL types.
+ 
+   - Batch test engine
+-    Run `org.apache.shardingsphere.test.e2e.it.sql.dml.BatchDMLE2EIT` to start the batch test engine for the test `addBatch()` provided for DML statements.
++    Run `org.apache.shardingsphere.test.e2e.sql.it.sql.dml.BatchDMLE2EIT` to start the batch test engine for the test `addBatch()` provided for DML statements.
+ 
+   - Additional test engine
+-    Run `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` to start the test engine with more JDBC method calls.
++    Run `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` to start the test engine with more JDBC method calls.
+     Additional test engines need to be enabled by setting `e2e.run.additional.cases=true`.
+ 
+ #### Run Docker mode
+diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
+index 733ae7aa624..ecc3b32c841 100644
+--- a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
++++ b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
+@@ -15,7 +15,7 @@ Apache ShardingSphere 为不同的运行模式提供了不同的元数据持久
+ 由于第三方的 Vulnerability Report 时常误报 H2 Database，避免在 ShardingSphere Standalone Mode 使用 H2 Database 可能是一种选择。
+ 讨论 `provider` 不为默认值 `H2` 的情况。
+ 
+-1. 若 `provider` 设置为 `MySQL`，则要求存在已就绪的 MySQL Server。classpath 应包含 `com.mysql:mysql-connector-j:9.0.0` 的 Maven 依赖。
++1. 若 `provider` 设置为 `MySQL`，则要求存在已就绪的 MySQL Server。classpath 应包含 `com.mysql:mysql-connector-j:8.4.0` 的 Maven 依赖。
+ 
+ 2. 若 `provider` 设置为 `HSQLDB`，则要求存在已就绪的采用 Server Modes 的 HyperSQL，或以 in-process database 的方式创建数据库。
+ classpath 应包含 `classifier` 为 `jdk8` 的 `org.hsqldb:hsqldb:2.7.3` 的 Maven 依赖。
+diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
+index 770acd63c35..33f81bf4ac2 100644
+--- a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
++++ b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
+@@ -15,7 +15,7 @@ The optional values of `provider` are H2, MySQL and HSQLDB.
+ Since third-party Vulnerability Reports often misreport H2 Database, avoiding the use of H2 Database in ShardingSphere Standalone Mode may be an option.
+ Discuss the case where `provider` is not the default value `H2`.
+ 
+-1. If `provider` is set to `MySQL`, a ready MySQL Server is required. The classpath should contain the Maven dependency of `com.mysql:mysql-connector-j:9.0.0`.
++1. If `provider` is set to `MySQL`, a ready MySQL Server is required. The classpath should contain the Maven dependency of `com.mysql:mysql-connector-j:8.4.0`.
+ 
+ 2. If `provider` is set to `HSQLDB`, a ready HyperSQL using Server Modes is required, or a database is created as an in-process database.
+    The classpath should contain the Maven dependency of `org.hsqldb:hsqldb:2.7.3` with `classifier` as `jdk8`.
+diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md
+index 420ffec9ab5..6634fbd9d09 100644
+--- a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md
++++ b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md
+@@ -139,7 +139,7 @@ Apache ShardingSphere 内置的标准分片算法实现类包括：
+ 
+ 通过配置分片策略类型和算法类名，实现自定义扩展。
+ `CLASS_BASED` 允许向算法类内传入额外的自定义属性，传入的属性可以通过属性名为 `props` 的 `java.util.Properties` 类实例取出。 
+-参考 Git 的 `org.apache.shardingsphere.example.extension.sharding.algortihm.classbased.fixture.ClassBasedStandardShardingAlgorithmFixture` 。
++用户可实现对应的分片算法接口，并通过 `algorithmClassName` 配置算法类的全限定类名。
+ 
+ 类型：CLASS_BASED
+ 
+diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md
+index 45e1dec96cb..80b269d6ec2 100644
+--- a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md
++++ b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md
+@@ -132,7 +132,7 @@ Type: COMPLEX_INLINE
+ 
+ Please refer to [Inline Expression](/en/features/sharding/concept/#row-value-expressions) for more details.
+ 
+-Type: COMPLEX_INLINE
++Type: HINT_INLINE
+ 
+ | *Name*               | *DataType* | *Description*                        | *Default Value* |
+ |----------------------|------------|--------------------------------------|-----------------|
+@@ -143,7 +143,7 @@ Type: COMPLEX_INLINE
+ 
+ Realize custom extension by configuring the sharding strategy type and algorithm class name.
+ `CLASS_BASED` allows additional custom properties to be passed into the algorithm class. The passed properties can be retrieved through the `java.util.Properties` class instance with the property name `props`. 
+-Refer to Git's `org.apache.shardingsphere.example.extension.sharding.algortihm.classbased.fixture.ClassBasedStandardShardingAlgorithmFixture`.
++Users can implement the corresponding sharding algorithm interface and configure the fully-qualified class name with `algorithmClassName`.
+ 
+ Type：CLASS_BASED
+ 
+diff --git a/docs/document/content/user-manual/error-code/sql-error-code.cn.md b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
+index 22774f16862..b10f72d4c31 100644
+--- a/docs/document/content/user-manual/error-code/sql-error-code.cn.md
++++ b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
+@@ -17,13 +17,23 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ | 10000       | 42S02     | Database is required.                                                               |
+ | 10001       | 42S02     | Schema '%s' does not exist.                                                         |
+ | 10002       | 42S02     | Table or view '%s' does not exist.                                                  |
++| 10002       | 42S02     | Table or view '%s' does not exist in storage unit '%s'.                             |
+ | 10003       | 42S02     | Unknown column '%s' in '%s'.                                                        |
+ | 10004       | 42S02     | Index '%s' does not exist.                                                          |
++| 10004       | 42S02     | Index '%s' does not exist from schema '%s'.                                         |
+ | 10005       | 42S01     | Index '%s' already exists.                                                          |
++| 10005       | 08000     | Check database environment failed                                                   |
++| 10006       | 01007     | Missing required privilege(s) `%s`                                                  |
++| 10007       | 42S02     | User '%s' does exist                                                                |
++| 10008       | HY000     | Unexpected variable value of '%s', required '%s', now is '%s'.                      |
++| 10010       | HY000     | Cluster repository persist error.                                                   |
+ | 10010       | HY000     | Rule and storage meta data mismatched, reason is: %s.                               |
++| 10012       | HY000     | Load table meta data failed for database '%s'.                                      |
+ | 10012       | HY000     | Load table meta data failed for database '%s' and tables '%s'.                      |
++| 10023       | HY000     | Identifier '%s' is ambiguous, matched actual identifiers: %s.                       |
+ | 10024       | HY000     | Can not resolve prepared statement metadata because %s.                             |
+ | 10100       | HY000     | Can not %s storage units '%s'.                                                      |
++| 10101       | 42S02     | There is no storage unit in any database.                                           |
+ | 10101       | 42S02     | There is no storage unit in database '%s'.                                          |
+ | 10102       | 44000     | Storage units '%s' do not exist in database '%s'.                                   |
+ | 10103       | 44000     | Storage unit '%s' still used by '%s'.                                               |
+@@ -31,19 +41,31 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ | 10110       | 08000     | Storage units can not connect, error messages are: %s.                              |
+ | 10111       | 0A000     | Can not alter connection info in storage units: '%s'.                               |
+ | 10120       | 44000     | Invalid storage unit status, error message is: %s.                                  |
+-| 10200       | 44000     | Invalid '%s' rule '%s', error message is: %s                                        |
++| 10200       | 44000     | Invalid '%s' rules '%s', error messages are: %s                                     |
++| 10200       | 44000     | Invalid '%s' rule, error message is: %s                                             |
+ | 10201       | 42S02     | There is no rule in database '%s'.                                                  |
++| 10202       | 42S02     | %s rule does not exist.                                                             |
++| 10202       | 42S02     | %s rule does not exist in database '%s'.                                            |
++| 10202       | 42S02     | %s rules '%s' do not exist.                                                         |
++| 10202       | 42S02     | %s rule '%s' do not exist in database '%s'.                                         |
+ | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
+ | 10203       | 44000     | %s rules '%s' in database '%s' are still in used.                                   |
++| 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
+ | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
++| 10204       | 42S01     | Duplicate %s rule names '%s'.                                                       |
++| 10204       | 42S01     | Duplicate '%s' in database '%s'.                                                    |
+ | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
+ | 10300       | HY000     | Invalid format for actual data node '%s'.                                           |
++| 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
+ | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s' with JDBC '%s'.          |
+ | 10400       | 44000     | Algorithm '%s' initialization failed, reason is: %s.                                |
+ | 10401       | 42S02     | '%s' algorithm on %s is required.                                                   |
+ | 10402       | 42S02     | '%s' algorithm '%s' on %s is unregistered.                                          |
++| 10402       | 42S02     | '%s' algorithm '%s' on %s are unregistered.                                         |
+ | 10403       | 44000     | %s algorithms '%s' in database '%s' are still in used.                              |
+ | 10404       | 44000     | Invalid %s algorithm configuration '%s'.                                            |
++| 10404       | 44000     | Invalid %s algorithm configuration.                                                 |
++| 10404       | 44000     | Invalid %s algorithm configuration '%s'. %s.                                        |
+ | 10410       | 0A000     | Unsupported %s.%s with database type '%s'.                                          |
+ | 10440       | HY000     | Algorithm '%s' execute failed, reason is: %s.                                       |
+ | 10500       | 44000     | Invalid single rule configuration, reason is: %s.                                   |
+@@ -100,7 +122,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ | 14004       | 25000     | Close transaction manager failed.                                                         |
+ | 14200       | 25000     | Failed to create '%s' XA data source.                                                     |
+ | 14201       | 25000     | Can not start new XA transaction in a active transaction.                                 |
+-| 14202       | 25000     | Check XA transaction privileges failed on data source, please grant '%s' to current user. |
+ | 14400       | 44000     | No application id within 'seata.conf' file.                                               |
+ | 14401       | 25000     | Seata-AT transaction has been disabled.                                                   |
+ 
+@@ -117,7 +138,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ |-------------|-----------|---------------------------------------------------------------|
+ | 17000       | 44000     | Mode must be 'cluster'.                                       |
+ | 17001       | HY000     | Worker ID assigned failed, which should be in [0, %s).        |
+-| 17010       | HY000     | Cluster persist repository error, reason is: %s               |
+ | 17011       | HY000     | Failed to reload meta data context.                           |
+ | 17020       | HY000     | The cluster status is %s, can not support SQL statement '%s'. |
+ | 17100       | 42S02     | Cluster persist repository configuration is required.         |
+@@ -152,6 +172,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ 
+ | Vendor Code | SQL State | 错误信息                                                                                                                                |
+ |-------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------|
++| 20000       | 42S02     | %s configuration does not exist.                                                                                                    |
+ | 20000       | 42S02     | %s configuration does not exist in database '%s'.                                                                                   |
+ | 20001       | 42S02     | Can not find table rule with logic tables '%s'.                                                                                     |
+ | 20002       | 42S02     | Can not find data source in sharding rule, invalid actual data node '%s'.                                                           |
+@@ -174,6 +195,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ | 20033       | 44000     | PREPARE statement can not support sharding tables route to same data sources.                                                       |
+ | 20034       | 44000     | The table inserted and the table selected must be the same or bind tables.                                                          |
+ | 20035       | 0A000     | Can not support DML operation with multiple tables '%s'.                                                                            |
++| 20036       | 42000     | SELECT ... %s can not support route to multiple data sources.                                                                       |
+ | 20036       | 42000     | %s ... LIMIT can not support route to multiple data nodes.                                                                          |
+ | 20037       | 44000     | Can not find actual data source intersection for logic tables '%s'.                                                                 |
+ | 20038       | 42000     | INSERT INTO ... SELECT can not support applying key generator with absent generate key column.                                      |
+@@ -199,6 +221,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ | 20100       | 42000     | Unsupported SQL node conversion for SQL statement '%s'. |
+ | 20101       | 42000     | SQL federation does not support SQL '%s'.               |
+ | 20102       | 42S02     | SQL federation schema '%s' not found in SQL '%s'.       |
++| 20108       | HY000     | Invalid execution plan cache config: `%s`=`%s`, the value must be positive. |
+ 
+ ### 读写分离
+ 
+@@ -217,12 +240,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ |-------------|-----------|---------------------------------------------------|
+ | 20400       | 0A000     | Can not support database '%s' in SQL translation. |
+ 
+-### 流量治理
+-
+-| Vendor Code | SQL State | 错误信息                                |
+-|-------------|-----------|-------------------------------------|
+-| 20500       | 42S02     | Can not get traffic execution unit. |
+-
+ ### 数据加密
+ 
+ | Vendor Code | SQL State | 错误信息                                                                                         |
+diff --git a/docs/document/content/user-manual/error-code/sql-error-code.en.md b/docs/document/content/user-manual/error-code/sql-error-code.en.md
+index 0e4e98f026f..f84bbd2dcd6 100644
+--- a/docs/document/content/user-manual/error-code/sql-error-code.en.md
++++ b/docs/document/content/user-manual/error-code/sql-error-code.en.md
+@@ -17,13 +17,23 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ | 10000       | 42S02     | Database is required.                                                               |
+ | 10001       | 42S02     | Schema '%s' does not exist.                                                         |
+ | 10002       | 42S02     | Table or view '%s' does not exist.                                                  |
++| 10002       | 42S02     | Table or view '%s' does not exist in storage unit '%s'.                             |
+ | 10003       | 42S02     | Unknown column '%s' in '%s'.                                                        |
+ | 10004       | 42S02     | Index '%s' does not exist.                                                          |
++| 10004       | 42S02     | Index '%s' does not exist from schema '%s'.                                         |
+ | 10005       | 42S01     | Index '%s' already exists.                                                          |
++| 10005       | 08000     | Check database environment failed                                                   |
++| 10006       | 01007     | Missing required privilege(s) `%s`                                                  |
++| 10007       | 42S02     | User '%s' does exist                                                                |
++| 10008       | HY000     | Unexpected variable value of '%s', required '%s', now is '%s'.                      |
++| 10010       | HY000     | Cluster repository persist error.                                                   |
+ | 10010       | HY000     | Rule and storage meta data mismatched, reason is: %s.                               |
++| 10012       | HY000     | Load table meta data failed for database '%s'.                                      |
+ | 10012       | HY000     | Load table meta data failed for database '%s' and tables '%s'.                      |
++| 10023       | HY000     | Identifier '%s' is ambiguous, matched actual identifiers: %s.                       |
+ | 10024       | HY000     | Can not resolve prepared statement metadata because %s.                             |
+ | 10100       | HY000     | Can not %s storage units '%s'.                                                      |
++| 10101       | 42S02     | There is no storage unit in any database.                                           |
+ | 10101       | 42S02     | There is no storage unit in database '%s'.                                          |
+ | 10102       | 44000     | Storage units '%s' do not exist in database '%s'.                                   |
+ | 10103       | 44000     | Storage unit '%s' still used by '%s'.                                               |
+@@ -31,19 +41,31 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ | 10110       | 08000     | Storage units can not connect, error messages are: %s.                              |
+ | 10111       | 0A000     | Can not alter connection info in storage units: '%s'.                               |
+ | 10120       | 44000     | Invalid storage unit status, error message is: %s.                                  |
+-| 10200       | 44000     | Invalid '%s' rule '%s', error message is: %s                                        |
++| 10200       | 44000     | Invalid '%s' rules '%s', error messages are: %s                                     |
++| 10200       | 44000     | Invalid '%s' rule, error message is: %s                                             |
+ | 10201       | 42S02     | There is no rule in database '%s'.                                                  |
++| 10202       | 42S02     | %s rule does not exist.                                                             |
++| 10202       | 42S02     | %s rule does not exist in database '%s'.                                            |
++| 10202       | 42S02     | %s rules '%s' do not exist.                                                         |
++| 10202       | 42S02     | %s rule '%s' do not exist in database '%s'.                                         |
+ | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
+ | 10203       | 44000     | %s rules '%s' in database '%s' are still in used.                                   |
++| 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
+ | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
++| 10204       | 42S01     | Duplicate %s rule names '%s'.                                                       |
++| 10204       | 42S01     | Duplicate '%s' in database '%s'.                                                    |
+ | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
+ | 10300       | HY000     | Invalid format for actual data node '%s'.                                           |
++| 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
+ | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s' with JDBC '%s'.          |
+ | 10400       | 44000     | Algorithm '%s' initialization failed, reason is: %s.                                |
+ | 10401       | 42S02     | '%s' algorithm on %s is required.                                                   |
+ | 10402       | 42S02     | '%s' algorithm '%s' on %s is unregistered.                                          |
++| 10402       | 42S02     | '%s' algorithm '%s' on %s are unregistered.                                         |
+ | 10403       | 44000     | %s algorithms '%s' in database '%s' are still in used.                              |
+ | 10404       | 44000     | Invalid %s algorithm configuration '%s'.                                            |
++| 10404       | 44000     | Invalid %s algorithm configuration.                                                 |
++| 10404       | 44000     | Invalid %s algorithm configuration '%s'. %s.                                        |
+ | 10410       | 0A000     | Unsupported %s.%s with database type '%s'.                                          |
+ | 10440       | HY000     | Algorithm '%s' execute failed, reason is: %s.                                       |
+ | 10500       | 44000     | Invalid single rule configuration, reason is: %s.                                   |
+@@ -100,7 +122,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ | 14004       | 25000     | Close transaction manager failed.                                                         |
+ | 14200       | 25000     | Failed to create '%s' XA data source.                                                     |
+ | 14201       | 25000     | Can not start new XA transaction in a active transaction.                                 |
+-| 14202       | 25000     | Check XA transaction privileges failed on data source, please grant '%s' to current user. |
+ | 14400       | 44000     | No application id within 'seata.conf' file.                                               |
+ | 14401       | 25000     | Seata-AT transaction has been disabled.                                                   |
+ 
+@@ -117,7 +138,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ |-------------|-----------|---------------------------------------------------------------|
+ | 17000       | 44000     | Mode must be 'cluster'.                                       |
+ | 17001       | HY000     | Worker ID assigned failed, which should be in [0, %s).        |
+-| 17010       | HY000     | Cluster persist repository error, reason is: %s               |
+ | 17011       | HY000     | Failed to reload meta data context.                           |
+ | 17020       | HY000     | The cluster status is %s, can not support SQL statement '%s'. |
+ | 17100       | 42S02     | Cluster persist repository configuration is required.         |
+@@ -152,6 +172,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ 
+ | Vendor Code | SQL State | Reason                                                                                                                              |
+ |-------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------|
++| 20000       | 42S02     | %s configuration does not exist.                                                                                                    |
+ | 20000       | 42S02     | %s configuration does not exist in database '%s'.                                                                                   |
+ | 20001       | 42S02     | Can not find table rule with logic tables '%s'.                                                                                     |
+ | 20002       | 42S02     | Can not find data source in sharding rule, invalid actual data node '%s'.                                                           |
+@@ -174,6 +195,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ | 20033       | 44000     | PREPARE statement can not support sharding tables route to same data sources.                                                       |
+ | 20034       | 44000     | The table inserted and the table selected must be the same or bind tables.                                                          |
+ | 20035       | 0A000     | Can not support DML operation with multiple tables '%s'.                                                                            |
++| 20036       | 42000     | SELECT ... %s can not support route to multiple data sources.                                                                       |
+ | 20036       | 42000     | %s ... LIMIT can not support route to multiple data nodes.                                                                          |
+ | 20037       | 44000     | Can not find actual data source intersection for logic tables '%s'.                                                                 |
+ | 20038       | 42000     | INSERT INTO ... SELECT can not support applying key generator with absent generate key column.                                      |
+@@ -199,6 +221,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ | 20100       | 42000     | Unsupported SQL node conversion for SQL statement '%s'. |
+ | 20101       | 42000     | SQL federation does not support SQL '%s'.               |
+ | 20102       | 42S02     | SQL federation schema '%s' not found in SQL '%s'.       |
++| 20108       | HY000     | Invalid execution plan cache config: `%s`=`%s`, the value must be positive. |
+ 
+ ### Readwrite-splitting
+ 
+@@ -217,12 +240,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ |-------------|-----------|---------------------------------------------------|
+ | 20400       | 0A000     | Can not support database '%s' in SQL translation. |
+ 
+-### Traffic Management
+-
+-| Vendor Code | SQL State | Reason                              |
+-|-------------|-----------|-------------------------------------|
+-| 20500       | 42S02     | Can not get traffic execution unit. |
+-
+ ### Data Encrypt
+ 
+ | Vendor Code | SQL State | Reason                                                                                       |
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md
+index 35fa10bfa3d..a400cd83b61 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md
+@@ -317,8 +317,8 @@ Caused by: java.io.UnsupportedEncodingException: Codepage Cp1252 is not supporte
+ `com.mysql:mysql-connector-j` 等其他数据库驱动的 GraalVM Reachability Metadata 应自行定义，
+ 或将对应 JSON 提交到 https://github.com/oracle/graalvm-reachability-metadata 一侧。
+ 
+-以 `com.mysql:mysql-connector-j:9.0.0` 的 `com.mysql.cj.jdbc.MysqlXADataSource` 类为例，这是 MySQL JDBC Driver 的 `javax.sql.XADataSource` 的实现。
+-用户需要在自有项目的 claapath 的 `/META-INF/native-image/com.mysql/mysql-connector-j/9.0.0/` 文件夹的 `reachability-metadata.json`文件内定义如下 JSON。
++以 `com.mysql:mysql-connector-j:8.4.0` 的 `com.mysql.cj.jdbc.MysqlXADataSource` 类为例，这是 MySQL JDBC Driver 的 `javax.sql.XADataSource` 的实现。
++用户需要在自有项目的 classpath 的 `/META-INF/native-image/com.mysql/mysql-connector-j/8.4.0/` 文件夹的 `reachability-metadata.json`文件内定义如下 JSON。
+ 
+ ```json
+ {
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md
+index 778a21f5300..05f63d4358e 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md
+@@ -326,8 +326,8 @@ while ShardingSphere itself only provides the corresponding GraalVM Reachability
+ GraalVM Reachability Metadata of other database drivers such as `com.mysql:mysql-connector-j` should be defined by themselves,
+ or the corresponding JSON should be submitted to https://github.com/oracle/graalvm-reachability-metadata .
+ 
+-For example, the `com.mysql.cj.jdbc.MysqlXADataSource` class in `com.mysql:mysql-connector-j:9.0.0` implements the `javax.sql.XADataSource` class of the MySQL JDBC Driver.
+-Users need to define the following JSON in the `reachability-metadata.json` file in the `/META-INF/native-image/com.mysql/mysql-connector-j/9.0.0/` folder of their project's buildpath.
++For example, the `com.mysql.cj.jdbc.MysqlXADataSource` class in `com.mysql:mysql-connector-j:8.4.0` implements the `javax.sql.XADataSource` class of the MySQL JDBC Driver.
++Users need to define the following JSON in the `reachability-metadata.json` file in the `/META-INF/native-image/com.mysql/mysql-connector-j/8.4.0/` folder of their project's buildpath.
+ 
+ ```json
+ {
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md
+index 4e820cd3ecc..c17d328bc18 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md
+@@ -44,7 +44,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
+     
+     @Override
+     public DataSource getDataSource() throws SQLException {
+-        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
++        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
+     }
+     
+     private ShardingRuleConfiguration createShardingRuleConfiguration() {
+@@ -54,7 +54,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
+         result.getKeyGenerateStrategies().put("t_order_order_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order", "order_id"));
+         result.getKeyGenerateStrategies().put("t_order_item_order_item_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order_item", "order_item_id"));
+         // ...
+-        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheConfiguration.RouteCacheConfiguration(65536, 262144, true)));
++        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheOptionsConfiguration(true, 65536, 262144)));
+         return result;
+     }
+     
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md
+index 4e63fa1a7cd..a2203efd47b 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md
+@@ -24,8 +24,8 @@ Attributes：
+ 
+ | *name*                                  | *DataType* | *Description*                                    | *Default Value* |
+ |-----------------------|------------------------------------------------------|----------------|-------|
+-| allowedMaxSqlLength            | int                                                  | 允许缓存的 SQL 长度限制 | -     |
+-| routeCache | org.apache.shardingsphere.sharding.api.config.cache.ShardingCacheOptionsConfiguration | 路由缓存           | -     |
++| allowedMaxSqlLength | int | Maximum SQL length allowed for route cache | - |
++| routeCache | org.apache.shardingsphere.sharding.api.config.cache.ShardingCacheOptionsConfiguration | Route cache options | - |
+ 
+ Class：org.apache.shardingsphere.sharding.api.config.cache.ShardingCacheOptionsConfiguration
+ 
+@@ -33,9 +33,9 @@ Attributes：
+ 
+ | *name*                                  | *DataType* | *Description*                                    | *Default Value* |
+ |-----------------------|------------------------------------------------------|----------------|-------|
+-| softValues            | boolean                                                  | 是否软引用缓存值 | -     |
+-| initialCapacity | int | 缓存初始容量           | -     |
+-| maximumSize | int | 缓存最大容量           | -     |
++| softValues | boolean | Whether to use soft references for cached values | - |
++| initialCapacity | int | Initial cache capacity | - |
++| maximumSize | int | Maximum cache size | - |
+ 
+ ## Sample
+ 
+@@ -44,7 +44,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
+     
+     @Override
+     public DataSource getDataSource() throws SQLException {
+-        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
++        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
+     }
+     
+     private ShardingRuleConfiguration createShardingRuleConfiguration() {
+@@ -54,7 +54,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
+         result.getKeyGenerateStrategies().put("t_order_order_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order", "order_id"));
+         result.getKeyGenerateStrategies().put("t_order_item_order_item_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order_item", "order_item_id"));
+         // ...
+-        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheConfiguration.RouteCacheConfiguration(65536, 262144, true)));
++        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheOptionsConfiguration(true, 65536, 262144)));
+         return result;
+     }
+     
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md
+index 2f9e02bbfd7..47474019530 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md
+@@ -32,7 +32,7 @@ weight = 1
+ 
+ ### 分片表配置
+ 
+-类名称：org.apache.shardingsphere.sharding.api.config.ShardingTableRuleConfiguration
++类名称：org.apache.shardingsphere.sharding.api.config.rule.ShardingTableRuleConfiguration
+ 
+ 可配置属性：
+ 
+@@ -46,7 +46,7 @@ weight = 1
+ 
+ ### 自动分片表配置
+ 
+-类名称：org.apache.shardingsphere.sharding.api.config.ShardingAutoTableRuleConfiguration
++类名称：org.apache.shardingsphere.sharding.api.config.rule.ShardingAutoTableRuleConfiguration
+ 
+ 可配置属性：
+ 
+@@ -165,7 +165,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
+     
+     @Override
+     public DataSource getDataSource() throws SQLException {
+-        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
++        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
+     }
+     
+     private ShardingRuleConfiguration createShardingRuleConfiguration() {
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md
+index 3fad8dcfbfc..bb431cf34e6 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md
+@@ -32,7 +32,7 @@ Attributes:
+ 
+ ### Sharding Table Configuration
+ 
+-Class name: org.apache.shardingsphere.sharding.api.config.ShardingTableRuleConfiguration
++Class name: org.apache.shardingsphere.sharding.api.config.rule.ShardingTableRuleConfiguration
+ 
+ Attributes:
+ 
+@@ -46,7 +46,7 @@ Attributes:
+ 
+ ### Sharding Auto Table Configuration
+ 
+-Class name: org.apache.shardingsphere.sharding.api.config.ShardingAutoTableRuleConfiguration
++Class name: org.apache.shardingsphere.sharding.api.config.rule.ShardingAutoTableRuleConfiguration
+ 
+ Attributes:
+ 
+@@ -164,7 +164,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
+     
+     @Override
+     public DataSource getDataSource() throws SQLException {
+-        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
++        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
+     }
+     
+     private ShardingRuleConfiguration createShardingRuleConfiguration() {
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md
+index 16dae175170..e2681ca932c 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md
+@@ -18,11 +18,11 @@ weight = 13
+ |--------------------------|------------------------------------------------------|-------------------|-------|
+ | sqlFederationEnabled     | boolean                                              | 是否开启联邦查询          | -     |
+ | allQueryUseSQLFederation | boolean                                              | 是否全部查询 SQL 使用联邦查询 | -     |
+-| executionPlanCache       | org.apache.shardingsphere.sql.parser.api.CacheOption | 执行计划缓存            | -     |
++| executionPlanCache       | org.apache.shardingsphere.sql.parser.engine.api.CacheOption | 执行计划缓存            | -     |
+ 
+ ## 本地缓存配置
+ 
+-类名称：org.apache.shardingsphere.sql.parser.api.CacheOption
++类名称：org.apache.shardingsphere.sql.parser.engine.api.CacheOption
+ 
+ 可配置属性：
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md
+index 12515d88b8d..76875c51644 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md
+@@ -18,11 +18,11 @@ Attributes:
+ |--------------------------|------------------------------------------------------|--------------------------------------------|-----------------|
+ | sqlFederationEnabled     | boolean                                              | SQL federation enabled configuration       | -               |
+ | allQueryUseSQLFederation | boolean                                              | all query use SQL federation configuration | -               |
+-| executionPlanCache       | org.apache.shardingsphere.sql.parser.api.CacheOption | execution plan cache configuration         | -               |
++| executionPlanCache       | org.apache.shardingsphere.sql.parser.engine.api.CacheOption | execution plan cache configuration         | -               |
+ 
+ ## Cache option Configuration
+ 
+-Class: org.apache.shardingsphere.sql.parser.api.CacheOption
++Class: org.apache.shardingsphere.sql.parser.engine.api.CacheOption
+ 
+ Attributes: 
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md
+index 81607b29775..7312359dd48 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md
+@@ -22,7 +22,7 @@ SQL 是使用者与数据库交流的标准语言。 SQL 解析引擎负责将 S
+ 
+ ## 本地缓存配置
+ 
+-类名称：org.apache.shardingsphere.sql.parser.api.CacheOption
++类名称：org.apache.shardingsphere.sql.parser.engine.api.CacheOption
+ 
+ 可配置属性：
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md
+index dacd52132a1..953194061dd 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md
+@@ -22,7 +22,7 @@ Attributes:
+ 
+ ## Cache option Configuration
+ 
+-Class：org.apache.shardingsphere.sql.parser.api.CacheOption
++Class: org.apache.shardingsphere.sql.parser.engine.api.CacheOption
+ 
+ Attributes:
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md
+index 59447e7388e..1d4c9454abf 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md
+@@ -22,7 +22,7 @@ Main application scenarios for Hint:
+ 
+ ### Hint Configuration
+ 
+-Hint algorithms require users to implement the interface of `org.apache.shardingsphere.api.sharding.hint.HintShardingAlgorithm`.
++Hint algorithms require users to implement the interface of `org.apache.shardingsphere.sharding.api.sharding.hint.HintShardingAlgorithm`.
+ `org.apache.shardingsphere.sharding.api.sharding.hint.HintShardingAlgorithm` has two built-in implementations,
+ 
+ - `org.apache.shardingsphere.sharding.algorithm.sharding.hint.HintInlineShardingAlgorithm`
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md
+index 266c6183126..6c8f822b3c0 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md
+@@ -7,10 +7,10 @@ chapter = true
+ ## 背景信息
+ 
+ 对于 `org.apache.shardingsphere.driver.ShardingSphereDriver` 的驱动类，
+-通过实现 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` 的 SPI，
+-可允许从多种来源和 File System 获取并解析为 ShardingSphere 的 YAML 配置文件。
++`org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` SPI 用于从类路径、绝对路径等本地来源加载 YAML 配置文件，
++`org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader` SPI 用于从治理中心加载模式配置。
+ 如无特定声明，以下实现均采用 YAML 1.1 作为 YAML 的编写规范，
+-这并不阻止 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` 的自定义实现从 XML 或 JSON 等文件手动转化为 YAML。
++这并不阻止 `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` 的自定义实现从 XML 或 JSON 等文件手动转化为 YAML。
+ 
+ 在解析并加载 YAML 文件为 ShardingSphere 的元数据后，
+ 会再次通过[模式配置](/cn/user-manual/shardingsphere-jdbc/java-api/mode)的相关配置决定下一步行为。讨论两种情况，
+@@ -48,8 +48,8 @@ chapter = true
+ 
+ ## JDBC URL 参数
+ 
+-对于 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` 的实现，并非所有的 JDBC URL 参数都必须被解析，
+-这涉及到如何实现 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader.load()`。
++对于 `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` 和 `org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader` 的实现，并非所有的 JDBC URL 参数都必须被解析。
++具体支持的参数取决于各加载器的 `load()` 实现。
+ 
+ ### placeholder-type
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md
+index 33322009382..099ac45a45a 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md
+@@ -7,10 +7,10 @@ chapter = true
+ ## Background Information
+ 
+ For the driver class of `org.apache.shardingsphere.driver.ShardingSphereDriver`,
+-by implementing the SPI of `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader`,
+-allows YAML configuration files to be fetched from multiple sources and File Systems and parsed into ShardingSphere.
++the `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` SPI loads YAML configuration files from local sources such as classpath or absolute paths,
++and the `org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader` SPI loads mode configurations from governance centers.
+ If there is no specific statement, the following implementations all use YAML 1.1 as the YAML writing specification.
+-This does not prevent custom implementations of `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` from being manually converted to YAML from files such as XML or JSON.
++This does not prevent custom implementations of `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` from being manually converted to YAML from files such as XML or JSON.
+ 
+ After parsing and loading the YAML file into ShardingSphere's metadata, 
+ the next behavior will be determined again through the relevant configuration of [Mode Configuration](/en/user-manual/shardingsphere-jdbc/java-api/mode). 
+@@ -56,9 +56,9 @@ Example:
+ 
+ ## JDBC URL parameters
+ 
+-For implementations of `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader`, 
+-not all JDBC URL parameters must be parsed,
+-this involves how to implement `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader.load()`.
++For implementations of `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` and `org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader`,
++not all JDBC URL parameters must be parsed.
++The supported parameters depend on each loader's `load()` implementation.
+ 
+ ### placeholder-type
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md
+similarity index 100%
+rename from docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.cn.md
+rename to docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md
+similarity index 100%
+rename from docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.en.md
+rename to docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md
+index 74b0041cb7c..cab997e6ad8 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md
+@@ -36,7 +36,7 @@ variableName ::=
+ 
+ ### 补充说明
+ 
+-- 未指定 `vairableName` 时，默认查询所有 `PROXY` 系统变量配置
++- 未指定 `variableName` 时，默认查询所有 `PROXY` 系统变量配置
+ 
+ ### 示例
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md
+index 9dc92c22595..d0c58ee02c5 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md
+@@ -35,9 +35,9 @@ ShardingSphere-Proxy 支持配置多个逻辑数据源，每个以 `database-` 
+ 
+ 4. （可选）引入数据库驱动
+ 
+-如果后端连接 PostgreSQL 或 openGauss 数据库，不需要引入额外依赖。
++如果后端连接 PostgreSQL、openGauss 或 Firebird 数据库，不需要引入额外依赖。
+ 
+-如果后端连接 MySQL 数据库，请下载 [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) 或者 [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar)，并将其放入 `ext-lib` 目录。
++如果后端连接 MySQL 数据库，请下载 [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar)，并将其放入 `ext-lib` 目录。
+ 
+ 5. （可选）引入集群模式所需依赖
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md
+index a7bb616646d..e691b443219 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md
+@@ -37,9 +37,9 @@ ShardingSphere-Proxy supports multiple logical data sources. Each YAML configura
+ 
+ 4. Introduce database driver (Optional)
+ 
+-If the backend is connected to a PostgreSQL or openGauss database, no additional dependencies need to be introduced.
++If the backend is connected to a PostgreSQL, openGauss or Firebird database, no additional dependencies need to be introduced.
+ 
+-If the backend is connected to a MySQL database, please download [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) or [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar), and put it into the `ext-lib` directory.
++If the backend is connected to a MySQL database, please download [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar), and put it into the `ext-lib` directory.
+ 
+ 5. Introduce dependencies required by the cluster mode (Optional)
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md
+index 8d9685deb02..fefa7b9f249 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md
+@@ -92,7 +92,7 @@ helm uninstall shardingsphere-proxy
+ | `compute.replicas`                  | ShardingSphere-Proxy 节点个数         | `3`                           |
+ | `compute.service.type`              | ShardingSphere-Proxy 网络模式         | `ClusterIP`                   |
+ | `compute.service.port`              | ShardingSphere-Proxy 暴露端口         | `3307`                        |
+-| `compute.mysqlConnector.version`    | MySQL 驱动版本                        | `5.1.49`                      |
++| `compute.mysqlConnector.version`    | MySQL 驱动版本                        | `8.4.0`                       |
+ | `compute.startPort`                 | ShardingSphere-Proxy 启动端口         | `3307`                        |
+ | `compute.serverConfig`              | ShardingSphere-Proxy 模式配置文件       | `""`                          |
+ 
+@@ -203,7 +203,7 @@ compute:
+   ## @param compute.mysqlConnector.version MySQL connector version
+   ##
+   mysqlConnector:
+-    version: "5.1.49"
++    version: "8.4.0"
+   ## @param compute.startPort ShardingSphere-Proxy start port
+   ## ShardingSphere-Proxy start port
+   ## ref: https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/startup/docker/
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md
+index d2d85e3eec0..90200727cfb 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md
+@@ -94,7 +94,7 @@ helm uninstall shardingsphere-proxy
+ | `compute.replicas`                  | Number of cluster replicas                                   | `3`                           |
+ | `compute.service.type`              | ShardingSphere-Proxy network mode                            | `ClusterIP`                   |
+ | `compute.service.port`              | ShardingSphere-Proxy expose port                             | `3307`                        |
+-| `compute.mysqlConnector.version`    | MySQL connector version                                      | `5.1.49`                      |
++| `compute.mysqlConnector.version`    | MySQL connector version                                      | `8.4.0`                       |
+ | `compute.startPort`                 | ShardingSphere-Proxy start port                              | `3307`                        |
+ | `compute.serverConfig`              | Server Configuration file for ShardingSphere-Proxy           | `""`                          |
+ 
+@@ -207,7 +207,7 @@ compute:
+   ## @param compute.mysqlConnector.version MySQL connector version
+   ##
+   mysqlConnector:
+-    version: "5.1.49"
++    version: "8.4.0"
+   ## @param compute.startPort ShardingSphere-Proxy start port
+   ## ShardingSphere-Proxy start port
+   ## ref: https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/startup/docker/
