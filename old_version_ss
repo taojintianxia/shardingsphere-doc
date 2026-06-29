@@ -1,889 +1,576 @@
-commit 967924ab8d0130a3c1ccd53857ab2aa8e9b8df9b
+commit 88d4efb1ed1fe725b4b083bba2457f27ac16b389
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Tue Jun 30 02:00:54 2026 +0800
+Date:   Tue Jun 30 03:02:29 2026 +0800
 
-    Fix documentation drift against current source (#38959)
+    Fix documentation drift for Proxy properties and DistSQL variables (#38961)
     
-    * Fix documentation drift against current source
+    * Fix documentation drift for Proxy properties and DistSQL variables
     
-    - Correct stale API references, sharding examples, and JDBC URL loader docs
-    - Align Proxy MySQL driver docs with mysql-connector-j 8.4.0 and Firebird support
-    - Refresh SQL error code docs from current exception contracts
+    - Sync common and Proxy property tables with current ConfigurationPropertyKey
+    - Align SET/SHOW DIST VARIABLE docs with persistent variable behavior
+    - Fix documentation links and obvious typos
     
-    * Fix documentation drift against current source
+    * Fix documentation drift for Proxy properties and DistSQL variables
     
-    - Correct stale API references, sharding examples, and JDBC URL loader docs
-    - Align Proxy MySQL driver docs with mysql-connector-j 8.4.0 and Firebird support
-    - Refresh SQL error code docs from current exception contracts
+    - Sync common and Proxy property tables with current ConfigurationPropertyKey
+    - Align SET/SHOW DIST VARIABLE docs with persistent variable behavior
+    - Fix documentation links and obvious typos
 
-diff --git a/docs/document/content/dev-manual/encrypt.cn.md b/docs/document/content/dev-manual/encrypt.cn.md
-index 9ffedbd2cfc..175c3030606 100644
---- a/docs/document/content/dev-manual/encrypt.cn.md
-+++ b/docs/document/content/dev-manual/encrypt.cn.md
-@@ -19,5 +19,5 @@ chapter = true
- 
- | *配置标识*           | *详细说明*           | *全限定类名*                                                                                                                                                                                                                                                            |
- |------------------|------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
--| AES              | 基于 AES 的数据加密算法   | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
--| MD5              | 基于 MD5 的辅助查询加密算法 | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.MD5EncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
-+| AES              | 基于 AES 的数据加密算法   | [`org.apache.shardingsphere.encrypt.algorithm.standard.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
-+| MD5              | 基于 MD5 的辅助查询加密算法 | [`org.apache.shardingsphere.encrypt.algorithm.assisted.MD5AssistedEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
-diff --git a/docs/document/content/dev-manual/encrypt.en.md b/docs/document/content/dev-manual/encrypt.en.md
-index caeada00380..ac671fa3d17 100644
---- a/docs/document/content/dev-manual/encrypt.en.md
-+++ b/docs/document/content/dev-manual/encrypt.en.md
-@@ -19,5 +19,5 @@ Data encrypt algorithm definition
- 
- | *Configuration Type* | *Description*                               | *Fully-qualified class name*                                                                                                                                                                                                                                       |
- |----------------------|---------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
--| AES                  | AES data encrypt algorithm                  | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
--| MD5                  | MD5 assisted query encrypt algorithm        | [`org.apache.shardingsphere.encrypt.algorithm.encrypt.MD5EncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
-+| AES                  | AES data encrypt algorithm                  | [`org.apache.shardingsphere.encrypt.algorithm.standard.AESEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/standard/AESEncryptAlgorithm.java)                |
-+| MD5                  | MD5 assisted query encrypt algorithm        | [`org.apache.shardingsphere.encrypt.algorithm.assisted.MD5AssistedEncryptAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/encrypt/core/src/main/java/org/apache/shardingsphere/encrypt/algorithm/assisted/MD5AssistedEncryptAlgorithm.java)        |
-diff --git a/docs/document/content/dev-manual/infra-algorithm.cn.md b/docs/document/content/dev-manual/infra-algorithm.cn.md
-index 9c0e55ba77e..b8a9312aadf 100644
---- a/docs/document/content/dev-manual/infra-algorithm.cn.md
-+++ b/docs/document/content/dev-manual/infra-algorithm.cn.md
-@@ -37,8 +37,8 @@ chapter = true
- 
- | *配置标识*       | *详细说明*                      | *全限定类名*                                                                                                                                                                                                                                                                                               |
- |-----------------|--------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
--| SNOWFLAKE       | 基于雪花算法的分布式主键生成算法    | [`org.apache.shardingsphere.keygen.snowflake.algorithm.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java)    |
--| UUID            | 基于 UUID 的分布式主键生成算法     | [`org.apache.shardingsphere.keygen.uuid.algorithm.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                             |
-+| SNOWFLAKE       | 基于雪花算法的分布式主键生成算法    | [`org.apache.shardingsphere.infra.algorithm.keygen.snowflake.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java)    |
-+| UUID            | 基于 UUID 的分布式主键生成算法     | [`org.apache.shardingsphere.infra.algorithm.keygen.uuid.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                             |
- 
- ## MessageDigestAlgorithm
- 
-diff --git a/docs/document/content/dev-manual/infra-algorithm.en.md b/docs/document/content/dev-manual/infra-algorithm.en.md
-index 3fafcaaf1ad..bc529d8a6cb 100644
---- a/docs/document/content/dev-manual/infra-algorithm.en.md
-+++ b/docs/document/content/dev-manual/infra-algorithm.en.md
-@@ -37,8 +37,8 @@ Distributed key generated algorithms, they can be used in sharding feature.
- 
- | *Configuration Type* | *Description*                    | *Fully-qualified class name*                                                                                                                                                                                                                                                                          |
- |----------------------|----------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
--| SNOWFLAKE            | Snowflake key generate algorithm | [`org.apache.shardingsphere.keygen.snowflake.algorithm.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java) |
--| UUID                 | UUID key generate algorithm      | [`org.apache.shardingsphere.keygen.uuid.algorithm.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                          |
-+| SNOWFLAKE            | Snowflake key generate algorithm | [`org.apache.shardingsphere.infra.algorithm.keygen.snowflake.SnowflakeKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/snowflake/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/snowflake/SnowflakeKeyGenerateAlgorithm.java) |
-+| UUID                 | UUID key generate algorithm      | [`org.apache.shardingsphere.infra.algorithm.keygen.uuid.UUIDKeyGenerateAlgorithm`](https://github.com/apache/shardingsphere/blob/master/infra/algorithm/type/key-generator/type/uuid/src/main/java/org/apache/shardingsphere/infra/algorithm/keygen/uuid/UUIDKeyGenerateAlgorithm.java)                          |
- 
- ## MessageDigestAlgorithm
- 
-diff --git a/docs/document/content/dev-manual/sharding.cn.md b/docs/document/content/dev-manual/sharding.cn.md
-index 37c8e0f407c..2ab34013f92 100644
---- a/docs/document/content/dev-manual/sharding.cn.md
-+++ b/docs/document/content/dev-manual/sharding.cn.md
-@@ -27,7 +27,7 @@ chapter = true
- | INTERVAL                 | N        | 基于固定时间范围的分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.datetime.IntervalShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/datetime/IntervalShardingAlgorithm.java)                                                 |
- | CLASS_BASED              | N        | 基于自定义类的分片算法               | [`org.apache.shardingsphere.sharding.algorithm.sharding.classbased.ClassBasedShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/classbased/ClassBasedShardingAlgorithm.java)                                         |
- | INLINE                   | N        | 基于行表达式的分片算法               | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.InlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/InlineShardingAlgorithm.java)                                                         |
--| COMPLEX_INLINE           | N        | 基于行表达式的复合分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.complex.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
-+| COMPLEX_INLINE           | N        | 基于行表达式的复合分片算法             | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
- | HINT_INLINE              | N        | 基于行表达式的 Hint 分片算法         | [`org.apache.shardingsphere.sharding.algorithm.sharding.hint.HintInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/hint/HintInlineShardingAlgorithm.java)                                                     |
- 
- ## ShardingAuditAlgorithm
-@@ -67,7 +67,7 @@ chapter = true
- 
- ### 全限定类名
- 
--`org.apache.shardingsphere.infra.expr.core.InlineExpressionParser`
-+`org.apache.shardingsphere.infra.expr.spi.InlineExpressionParser`
- 
- ### 定义
- 
-diff --git a/docs/document/content/dev-manual/sharding.en.md b/docs/document/content/dev-manual/sharding.en.md
-index ae313a0651a..e9fc400deb0 100644
---- a/docs/document/content/dev-manual/sharding.en.md
-+++ b/docs/document/content/dev-manual/sharding.en.md
-@@ -27,7 +27,7 @@ Sharding Algorithm definition
- | INTERVAL                 | N                    | Fixed interval sharding algorithm                                       | [`org.apache.shardingsphere.sharding.algorithm.sharding.datetime.IntervalShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/datetime/IntervalShardingAlgorithm.java)                                                 |
- | CLASS_BASED              | N                    | Class based sharding algorithm                                          | [`org.apache.shardingsphere.sharding.algorithm.sharding.classbased.ClassBasedShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/classbased/ClassBasedShardingAlgorithm.java)                                         |
- | INLINE                   | N                    | Inline sharding algorithm                                               | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.InlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/InlineShardingAlgorithm.java)                                                         |
--| COMPLEX_INLINE           | N                    | Complex inline sharding algorithm                                       | [`org.apache.shardingsphere.sharding.algorithm.sharding.complex.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
-+| COMPLEX_INLINE           | N                    | Complex inline sharding algorithm                                       | [`org.apache.shardingsphere.sharding.algorithm.sharding.inline.ComplexInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/inline/ComplexInlineShardingAlgorithm.java)                                          |
- | HINT_INLINE              | N                    | Hint inline sharding algorithm                                          | [`org.apache.shardingsphere.sharding.algorithm.sharding.hint.HintInlineShardingAlgorithm`](https://github.com/apache/shardingsphere/blob/master/features/sharding/core/src/main/java/org/apache/shardingsphere/sharding/algorithm/sharding/hint/HintInlineShardingAlgorithm.java)                                                     |
- 
- ## ShardingAuditAlgorithm
-@@ -67,7 +67,7 @@ Obtain the current date for routing definition
- 
- ### Fully-qualified class name
- 
--`org.apache.shardingsphere.infra.expr.core.InlineExpressionParser`
-+`org.apache.shardingsphere.infra.expr.spi.InlineExpressionParser`
- 
- ### Definition
- 
-diff --git a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md
-index 130c653c03b..13d0ee0f111 100644
---- a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md
-+++ b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.cn.md
-@@ -8,7 +8,7 @@ weight = 2
- 
- ![shardingsphere-proxy](https://shardingsphere.apache.org/document/current/img/shardingsphere-proxy_v2.png)
- 
--ShardingSphere-Proxy 的定位为透明化的数据库代理，理论上支持任何使用 MySQL、PostgreSQL、openGauss 协议的客户端操作数据，对异构语言、运维场景更友好。
-+ShardingSphere-Proxy 的定位为透明化的数据库代理，理论上支持任何使用 MySQL、PostgreSQL、openGauss 和 Firebird 协议的客户端操作数据，对异构语言、运维场景更友好。
- 
- ## 使用限制
- 
-@@ -40,9 +40,9 @@ ShardingSphere-Proxy 对系统库/表（如 information_schema、pg_catalog）
- 
- 3. 引入依赖
- 
--如果后端连接 PostgreSQL 或 openGauss 数据库，不需要引入额外依赖。
-+如果后端连接 PostgreSQL、openGauss 或 Firebird 数据库，不需要引入额外依赖。
- 
--如果后端连接 MySQL 数据库，请下载 [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) 或者 [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar)，并将其放入 `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` 目录。
-+如果后端连接 MySQL 数据库，请下载 [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar)，并将其放入 `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` 目录。
- 
- 4. 启动服务
- 
-diff --git a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md
-index 3eaf061ba67..9bcbec98102 100644
---- a/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md
-+++ b/docs/document/content/quick-start/shardingsphere-proxy-quick-start.en.md
-@@ -8,7 +8,7 @@ weight = 2
- 
- ![shardingsphere-proxy](https://shardingsphere.apache.org/document/current/img/shardingsphere-proxy_v2.png)
- 
--ShardingSphere-Proxy is positioned as a transparent database proxy. It theoretically supports any client operation data using MySQL, PostgreSQL and openGauss protocols, and is friendly to heterogeneous languages and operation and maintenance scenarios.
-+ShardingSphere-Proxy is positioned as a transparent database proxy. It theoretically supports any client operation data using MySQL, PostgreSQL, openGauss and Firebird protocols, and is friendly to heterogeneous languages and operation and maintenance scenarios.
- 
- ## Limitations
- 
-@@ -40,9 +40,9 @@ Please refer to [Configuration Manual](/en/user-manual/shardingsphere-proxy/yaml
- 
- 3. Import dependencies.
- 
--If the backend database is PostgreSQL or openGauss, no additional dependencies are required.
-+If the backend database is PostgreSQL, openGauss or Firebird, no additional dependencies are required.
- 
--If the backend database is MySQL, please download [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) or [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar) and put it into the `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` directory.
-+If the backend database is MySQL, please download [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar) and put it into the `%SHARDINGSPHERE_PROXY_HOME%/ext-lib` directory.
- 
- 4. Start server.
- 
-diff --git a/docs/document/content/test-manual/integration-test/_index.cn.md b/docs/document/content/test-manual/integration-test/_index.cn.md
-index be93787b310..1edc4d0e920 100644
---- a/docs/document/content/test-manual/integration-test/_index.cn.md
-+++ b/docs/document/content/test-manual/integration-test/_index.cn.md
-@@ -181,13 +181,13 @@ e2e.native.database.password=123456
- #### 运行调试模式
- 
-   - 标准测试引擎
--    运行 `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` 以启动不同 SQL 类型的测试引擎。
-+    运行 `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` 以启动不同 SQL 类型的测试引擎。
- 
-   - 批量测试引擎
--    运行 `org.apache.shardingsphere.test.e2e.it.sql.dml.BatchDMLE2EIT`，以启动为 DML 语句提供的测试 `addBatch()` 的批量测试引擎。
-+    运行 `org.apache.shardingsphere.test.e2e.sql.it.sql.dml.BatchDMLE2EIT`，以启动为 DML 语句提供的测试 `addBatch()` 的批量测试引擎。
- 
-   - 附加测试引擎
--    运行 `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` 以启动使用更多 JDBC 方法调用的测试引擎。
-+    运行 `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` 以启动使用更多 JDBC 方法调用的测试引擎。
-     附加测试引擎需要通过设置 `e2e.run.additional.cases=true` 开启。
- 
- #### 运行 Docker 模式
-diff --git a/docs/document/content/test-manual/integration-test/_index.en.md b/docs/document/content/test-manual/integration-test/_index.en.md
-index 61554120bb3..e08f6f3f31d 100644
---- a/docs/document/content/test-manual/integration-test/_index.en.md
-+++ b/docs/document/content/test-manual/integration-test/_index.en.md
-@@ -180,13 +180,13 @@ e2e.native.database.password=123456
- #### Run debugging mode
- 
-   - Standard test engine
--    Run `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` to start the test engines of different SQL types.
-+    Run `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.General${SQL-TYPE}E2EIT` to start the test engines of different SQL types.
- 
-   - Batch test engine
--    Run `org.apache.shardingsphere.test.e2e.it.sql.dml.BatchDMLE2EIT` to start the batch test engine for the test `addBatch()` provided for DML statements.
-+    Run `org.apache.shardingsphere.test.e2e.sql.it.sql.dml.BatchDMLE2EIT` to start the batch test engine for the test `addBatch()` provided for DML statements.
- 
-   - Additional test engine
--    Run `org.apache.shardingsphere.test.e2e.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` to start the test engine with more JDBC method calls.
-+    Run `org.apache.shardingsphere.test.e2e.sql.it.sql.${SQL-TYPE}.Additional${SQL-TYPE}E2EIT` to start the test engine with more JDBC method calls.
-     Additional test engines need to be enabled by setting `e2e.run.additional.cases=true`.
- 
- #### Run Docker mode
-diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
-index 733ae7aa624..ecc3b32c841 100644
---- a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
-+++ b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.cn.md
-@@ -15,7 +15,7 @@ Apache ShardingSphere 为不同的运行模式提供了不同的元数据持久
- 由于第三方的 Vulnerability Report 时常误报 H2 Database，避免在 ShardingSphere Standalone Mode 使用 H2 Database 可能是一种选择。
- 讨论 `provider` 不为默认值 `H2` 的情况。
- 
--1. 若 `provider` 设置为 `MySQL`，则要求存在已就绪的 MySQL Server。classpath 应包含 `com.mysql:mysql-connector-j:9.0.0` 的 Maven 依赖。
-+1. 若 `provider` 设置为 `MySQL`，则要求存在已就绪的 MySQL Server。classpath 应包含 `com.mysql:mysql-connector-j:8.4.0` 的 Maven 依赖。
- 
- 2. 若 `provider` 设置为 `HSQLDB`，则要求存在已就绪的采用 Server Modes 的 HyperSQL，或以 in-process database 的方式创建数据库。
- classpath 应包含 `classifier` 为 `jdk8` 的 `org.hsqldb:hsqldb:2.7.3` 的 Maven 依赖。
-diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
-index 770acd63c35..33f81bf4ac2 100644
---- a/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
-+++ b/docs/document/content/user-manual/common-config/builtin-algorithm/metadata-repository.en.md
-@@ -15,7 +15,7 @@ The optional values of `provider` are H2, MySQL and HSQLDB.
- Since third-party Vulnerability Reports often misreport H2 Database, avoiding the use of H2 Database in ShardingSphere Standalone Mode may be an option.
- Discuss the case where `provider` is not the default value `H2`.
- 
--1. If `provider` is set to `MySQL`, a ready MySQL Server is required. The classpath should contain the Maven dependency of `com.mysql:mysql-connector-j:9.0.0`.
-+1. If `provider` is set to `MySQL`, a ready MySQL Server is required. The classpath should contain the Maven dependency of `com.mysql:mysql-connector-j:8.4.0`.
- 
- 2. If `provider` is set to `HSQLDB`, a ready HyperSQL using Server Modes is required, or a database is created as an in-process database.
-    The classpath should contain the Maven dependency of `org.hsqldb:hsqldb:2.7.3` with `classifier` as `jdk8`.
-diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md
-index 420ffec9ab5..6634fbd9d09 100644
---- a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md
-+++ b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.cn.md
-@@ -139,7 +139,7 @@ Apache ShardingSphere 内置的标准分片算法实现类包括：
- 
- 通过配置分片策略类型和算法类名，实现自定义扩展。
- `CLASS_BASED` 允许向算法类内传入额外的自定义属性，传入的属性可以通过属性名为 `props` 的 `java.util.Properties` 类实例取出。 
--参考 Git 的 `org.apache.shardingsphere.example.extension.sharding.algortihm.classbased.fixture.ClassBasedStandardShardingAlgorithmFixture` 。
-+用户可实现对应的分片算法接口，并通过 `algorithmClassName` 配置算法类的全限定类名。
- 
- 类型：CLASS_BASED
- 
-diff --git a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md
-index 45e1dec96cb..80b269d6ec2 100644
---- a/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md
-+++ b/docs/document/content/user-manual/common-config/builtin-algorithm/sharding.en.md
-@@ -132,7 +132,7 @@ Type: COMPLEX_INLINE
- 
- Please refer to [Inline Expression](/en/features/sharding/concept/#row-value-expressions) for more details.
- 
--Type: COMPLEX_INLINE
-+Type: HINT_INLINE
- 
- | *Name*               | *DataType* | *Description*                        | *Default Value* |
- |----------------------|------------|--------------------------------------|-----------------|
-@@ -143,7 +143,7 @@ Type: COMPLEX_INLINE
- 
- Realize custom extension by configuring the sharding strategy type and algorithm class name.
- `CLASS_BASED` allows additional custom properties to be passed into the algorithm class. The passed properties can be retrieved through the `java.util.Properties` class instance with the property name `props`. 
--Refer to Git's `org.apache.shardingsphere.example.extension.sharding.algortihm.classbased.fixture.ClassBasedStandardShardingAlgorithmFixture`.
-+Users can implement the corresponding sharding algorithm interface and configure the fully-qualified class name with `algorithmClassName`.
- 
- Type：CLASS_BASED
- 
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.cn.md b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-index 22774f16862..b10f72d4c31 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-@@ -17,13 +17,23 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 10000       | 42S02     | Database is required.                                                               |
- | 10001       | 42S02     | Schema '%s' does not exist.                                                         |
- | 10002       | 42S02     | Table or view '%s' does not exist.                                                  |
-+| 10002       | 42S02     | Table or view '%s' does not exist in storage unit '%s'.                             |
- | 10003       | 42S02     | Unknown column '%s' in '%s'.                                                        |
- | 10004       | 42S02     | Index '%s' does not exist.                                                          |
-+| 10004       | 42S02     | Index '%s' does not exist from schema '%s'.                                         |
- | 10005       | 42S01     | Index '%s' already exists.                                                          |
-+| 10005       | 08000     | Check database environment failed                                                   |
-+| 10006       | 01007     | Missing required privilege(s) `%s`                                                  |
-+| 10007       | 42S02     | User '%s' does exist                                                                |
-+| 10008       | HY000     | Unexpected variable value of '%s', required '%s', now is '%s'.                      |
-+| 10010       | HY000     | Cluster repository persist error.                                                   |
- | 10010       | HY000     | Rule and storage meta data mismatched, reason is: %s.                               |
-+| 10012       | HY000     | Load table meta data failed for database '%s'.                                      |
- | 10012       | HY000     | Load table meta data failed for database '%s' and tables '%s'.                      |
-+| 10023       | HY000     | Identifier '%s' is ambiguous, matched actual identifiers: %s.                       |
- | 10024       | HY000     | Can not resolve prepared statement metadata because %s.                             |
- | 10100       | HY000     | Can not %s storage units '%s'.                                                      |
-+| 10101       | 42S02     | There is no storage unit in any database.                                           |
- | 10101       | 42S02     | There is no storage unit in database '%s'.                                          |
- | 10102       | 44000     | Storage units '%s' do not exist in database '%s'.                                   |
- | 10103       | 44000     | Storage unit '%s' still used by '%s'.                                               |
-@@ -31,19 +41,31 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 10110       | 08000     | Storage units can not connect, error messages are: %s.                              |
- | 10111       | 0A000     | Can not alter connection info in storage units: '%s'.                               |
- | 10120       | 44000     | Invalid storage unit status, error message is: %s.                                  |
--| 10200       | 44000     | Invalid '%s' rule '%s', error message is: %s                                        |
-+| 10200       | 44000     | Invalid '%s' rules '%s', error messages are: %s                                     |
-+| 10200       | 44000     | Invalid '%s' rule, error message is: %s                                             |
- | 10201       | 42S02     | There is no rule in database '%s'.                                                  |
-+| 10202       | 42S02     | %s rule does not exist.                                                             |
-+| 10202       | 42S02     | %s rule does not exist in database '%s'.                                            |
-+| 10202       | 42S02     | %s rules '%s' do not exist.                                                         |
-+| 10202       | 42S02     | %s rule '%s' do not exist in database '%s'.                                         |
- | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
- | 10203       | 44000     | %s rules '%s' in database '%s' are still in used.                                   |
-+| 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
- | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
-+| 10204       | 42S01     | Duplicate %s rule names '%s'.                                                       |
-+| 10204       | 42S01     | Duplicate '%s' in database '%s'.                                                    |
- | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
- | 10300       | HY000     | Invalid format for actual data node '%s'.                                           |
-+| 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
- | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s' with JDBC '%s'.          |
- | 10400       | 44000     | Algorithm '%s' initialization failed, reason is: %s.                                |
- | 10401       | 42S02     | '%s' algorithm on %s is required.                                                   |
- | 10402       | 42S02     | '%s' algorithm '%s' on %s is unregistered.                                          |
-+| 10402       | 42S02     | '%s' algorithm '%s' on %s are unregistered.                                         |
- | 10403       | 44000     | %s algorithms '%s' in database '%s' are still in used.                              |
- | 10404       | 44000     | Invalid %s algorithm configuration '%s'.                                            |
-+| 10404       | 44000     | Invalid %s algorithm configuration.                                                 |
-+| 10404       | 44000     | Invalid %s algorithm configuration '%s'. %s.                                        |
- | 10410       | 0A000     | Unsupported %s.%s with database type '%s'.                                          |
- | 10440       | HY000     | Algorithm '%s' execute failed, reason is: %s.                                       |
- | 10500       | 44000     | Invalid single rule configuration, reason is: %s.                                   |
-@@ -100,7 +122,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 14004       | 25000     | Close transaction manager failed.                                                         |
- | 14200       | 25000     | Failed to create '%s' XA data source.                                                     |
- | 14201       | 25000     | Can not start new XA transaction in a active transaction.                                 |
--| 14202       | 25000     | Check XA transaction privileges failed on data source, please grant '%s' to current user. |
- | 14400       | 44000     | No application id within 'seata.conf' file.                                               |
- | 14401       | 25000     | Seata-AT transaction has been disabled.                                                   |
- 
-@@ -117,7 +138,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- |-------------|-----------|---------------------------------------------------------------|
- | 17000       | 44000     | Mode must be 'cluster'.                                       |
- | 17001       | HY000     | Worker ID assigned failed, which should be in [0, %s).        |
--| 17010       | HY000     | Cluster persist repository error, reason is: %s               |
- | 17011       | HY000     | Failed to reload meta data context.                           |
- | 17020       | HY000     | The cluster status is %s, can not support SQL statement '%s'. |
- | 17100       | 42S02     | Cluster persist repository configuration is required.         |
-@@ -152,6 +172,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- 
- | Vendor Code | SQL State | 错误信息                                                                                                                                |
- |-------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------|
-+| 20000       | 42S02     | %s configuration does not exist.                                                                                                    |
- | 20000       | 42S02     | %s configuration does not exist in database '%s'.                                                                                   |
- | 20001       | 42S02     | Can not find table rule with logic tables '%s'.                                                                                     |
- | 20002       | 42S02     | Can not find data source in sharding rule, invalid actual data node '%s'.                                                           |
-@@ -174,6 +195,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 20033       | 44000     | PREPARE statement can not support sharding tables route to same data sources.                                                       |
- | 20034       | 44000     | The table inserted and the table selected must be the same or bind tables.                                                          |
- | 20035       | 0A000     | Can not support DML operation with multiple tables '%s'.                                                                            |
-+| 20036       | 42000     | SELECT ... %s can not support route to multiple data sources.                                                                       |
- | 20036       | 42000     | %s ... LIMIT can not support route to multiple data nodes.                                                                          |
- | 20037       | 44000     | Can not find actual data source intersection for logic tables '%s'.                                                                 |
- | 20038       | 42000     | INSERT INTO ... SELECT can not support applying key generator with absent generate key column.                                      |
-@@ -199,6 +221,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 20100       | 42000     | Unsupported SQL node conversion for SQL statement '%s'. |
- | 20101       | 42000     | SQL federation does not support SQL '%s'.               |
- | 20102       | 42S02     | SQL federation schema '%s' not found in SQL '%s'.       |
-+| 20108       | HY000     | Invalid execution plan cache config: `%s`=`%s`, the value must be positive. |
- 
- ### 读写分离
- 
-@@ -217,12 +240,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- |-------------|-----------|---------------------------------------------------|
- | 20400       | 0A000     | Can not support database '%s' in SQL translation. |
- 
--### 流量治理
--
--| Vendor Code | SQL State | 错误信息                                |
--|-------------|-----------|-------------------------------------|
--| 20500       | 42S02     | Can not get traffic execution unit. |
--
- ### 数据加密
- 
- | Vendor Code | SQL State | 错误信息                                                                                         |
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.en.md b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-index 0e4e98f026f..f84bbd2dcd6 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.en.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-@@ -17,13 +17,23 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 10000       | 42S02     | Database is required.                                                               |
- | 10001       | 42S02     | Schema '%s' does not exist.                                                         |
- | 10002       | 42S02     | Table or view '%s' does not exist.                                                  |
-+| 10002       | 42S02     | Table or view '%s' does not exist in storage unit '%s'.                             |
- | 10003       | 42S02     | Unknown column '%s' in '%s'.                                                        |
- | 10004       | 42S02     | Index '%s' does not exist.                                                          |
-+| 10004       | 42S02     | Index '%s' does not exist from schema '%s'.                                         |
- | 10005       | 42S01     | Index '%s' already exists.                                                          |
-+| 10005       | 08000     | Check database environment failed                                                   |
-+| 10006       | 01007     | Missing required privilege(s) `%s`                                                  |
-+| 10007       | 42S02     | User '%s' does exist                                                                |
-+| 10008       | HY000     | Unexpected variable value of '%s', required '%s', now is '%s'.                      |
-+| 10010       | HY000     | Cluster repository persist error.                                                   |
- | 10010       | HY000     | Rule and storage meta data mismatched, reason is: %s.                               |
-+| 10012       | HY000     | Load table meta data failed for database '%s'.                                      |
- | 10012       | HY000     | Load table meta data failed for database '%s' and tables '%s'.                      |
-+| 10023       | HY000     | Identifier '%s' is ambiguous, matched actual identifiers: %s.                       |
- | 10024       | HY000     | Can not resolve prepared statement metadata because %s.                             |
- | 10100       | HY000     | Can not %s storage units '%s'.                                                      |
-+| 10101       | 42S02     | There is no storage unit in any database.                                           |
- | 10101       | 42S02     | There is no storage unit in database '%s'.                                          |
- | 10102       | 44000     | Storage units '%s' do not exist in database '%s'.                                   |
- | 10103       | 44000     | Storage unit '%s' still used by '%s'.                                               |
-@@ -31,19 +41,31 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 10110       | 08000     | Storage units can not connect, error messages are: %s.                              |
- | 10111       | 0A000     | Can not alter connection info in storage units: '%s'.                               |
- | 10120       | 44000     | Invalid storage unit status, error message is: %s.                                  |
--| 10200       | 44000     | Invalid '%s' rule '%s', error message is: %s                                        |
-+| 10200       | 44000     | Invalid '%s' rules '%s', error messages are: %s                                     |
-+| 10200       | 44000     | Invalid '%s' rule, error message is: %s                                             |
- | 10201       | 42S02     | There is no rule in database '%s'.                                                  |
-+| 10202       | 42S02     | %s rule does not exist.                                                             |
-+| 10202       | 42S02     | %s rule does not exist in database '%s'.                                            |
-+| 10202       | 42S02     | %s rules '%s' do not exist.                                                         |
-+| 10202       | 42S02     | %s rule '%s' do not exist in database '%s'.                                         |
- | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
- | 10203       | 44000     | %s rules '%s' in database '%s' are still in used.                                   |
-+| 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
- | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
-+| 10204       | 42S01     | Duplicate %s rule names '%s'.                                                       |
-+| 10204       | 42S01     | Duplicate '%s' in database '%s'.                                                    |
- | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
- | 10300       | HY000     | Invalid format for actual data node '%s'.                                           |
-+| 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
- | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s' with JDBC '%s'.          |
- | 10400       | 44000     | Algorithm '%s' initialization failed, reason is: %s.                                |
- | 10401       | 42S02     | '%s' algorithm on %s is required.                                                   |
- | 10402       | 42S02     | '%s' algorithm '%s' on %s is unregistered.                                          |
-+| 10402       | 42S02     | '%s' algorithm '%s' on %s are unregistered.                                         |
- | 10403       | 44000     | %s algorithms '%s' in database '%s' are still in used.                              |
- | 10404       | 44000     | Invalid %s algorithm configuration '%s'.                                            |
-+| 10404       | 44000     | Invalid %s algorithm configuration.                                                 |
-+| 10404       | 44000     | Invalid %s algorithm configuration '%s'. %s.                                        |
- | 10410       | 0A000     | Unsupported %s.%s with database type '%s'.                                          |
- | 10440       | HY000     | Algorithm '%s' execute failed, reason is: %s.                                       |
- | 10500       | 44000     | Invalid single rule configuration, reason is: %s.                                   |
-@@ -100,7 +122,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 14004       | 25000     | Close transaction manager failed.                                                         |
- | 14200       | 25000     | Failed to create '%s' XA data source.                                                     |
- | 14201       | 25000     | Can not start new XA transaction in a active transaction.                                 |
--| 14202       | 25000     | Check XA transaction privileges failed on data source, please grant '%s' to current user. |
- | 14400       | 44000     | No application id within 'seata.conf' file.                                               |
- | 14401       | 25000     | Seata-AT transaction has been disabled.                                                   |
- 
-@@ -117,7 +138,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- |-------------|-----------|---------------------------------------------------------------|
- | 17000       | 44000     | Mode must be 'cluster'.                                       |
- | 17001       | HY000     | Worker ID assigned failed, which should be in [0, %s).        |
--| 17010       | HY000     | Cluster persist repository error, reason is: %s               |
- | 17011       | HY000     | Failed to reload meta data context.                           |
- | 17020       | HY000     | The cluster status is %s, can not support SQL statement '%s'. |
- | 17100       | 42S02     | Cluster persist repository configuration is required.         |
-@@ -152,6 +172,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- 
- | Vendor Code | SQL State | Reason                                                                                                                              |
- |-------------|-----------|-------------------------------------------------------------------------------------------------------------------------------------|
-+| 20000       | 42S02     | %s configuration does not exist.                                                                                                    |
- | 20000       | 42S02     | %s configuration does not exist in database '%s'.                                                                                   |
- | 20001       | 42S02     | Can not find table rule with logic tables '%s'.                                                                                     |
- | 20002       | 42S02     | Can not find data source in sharding rule, invalid actual data node '%s'.                                                           |
-@@ -174,6 +195,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 20033       | 44000     | PREPARE statement can not support sharding tables route to same data sources.                                                       |
- | 20034       | 44000     | The table inserted and the table selected must be the same or bind tables.                                                          |
- | 20035       | 0A000     | Can not support DML operation with multiple tables '%s'.                                                                            |
-+| 20036       | 42000     | SELECT ... %s can not support route to multiple data sources.                                                                       |
- | 20036       | 42000     | %s ... LIMIT can not support route to multiple data nodes.                                                                          |
- | 20037       | 44000     | Can not find actual data source intersection for logic tables '%s'.                                                                 |
- | 20038       | 42000     | INSERT INTO ... SELECT can not support applying key generator with absent generate key column.                                      |
-@@ -199,6 +221,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 20100       | 42000     | Unsupported SQL node conversion for SQL statement '%s'. |
- | 20101       | 42000     | SQL federation does not support SQL '%s'.               |
- | 20102       | 42S02     | SQL federation schema '%s' not found in SQL '%s'.       |
-+| 20108       | HY000     | Invalid execution plan cache config: `%s`=`%s`, the value must be positive. |
- 
- ### Readwrite-splitting
- 
-@@ -217,12 +240,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- |-------------|-----------|---------------------------------------------------|
- | 20400       | 0A000     | Can not support database '%s' in SQL translation. |
- 
--### Traffic Management
--
--| Vendor Code | SQL State | Reason                              |
--|-------------|-----------|-------------------------------------|
--| 20500       | 42S02     | Can not get traffic execution unit. |
--
- ### Data Encrypt
- 
- | Vendor Code | SQL State | Reason                                                                                       |
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md
-index 35fa10bfa3d..a400cd83b61 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.cn.md
-@@ -317,8 +317,8 @@ Caused by: java.io.UnsupportedEncodingException: Codepage Cp1252 is not supporte
- `com.mysql:mysql-connector-j` 等其他数据库驱动的 GraalVM Reachability Metadata 应自行定义，
- 或将对应 JSON 提交到 https://github.com/oracle/graalvm-reachability-metadata 一侧。
- 
--以 `com.mysql:mysql-connector-j:9.0.0` 的 `com.mysql.cj.jdbc.MysqlXADataSource` 类为例，这是 MySQL JDBC Driver 的 `javax.sql.XADataSource` 的实现。
--用户需要在自有项目的 claapath 的 `/META-INF/native-image/com.mysql/mysql-connector-j/9.0.0/` 文件夹的 `reachability-metadata.json`文件内定义如下 JSON。
-+以 `com.mysql:mysql-connector-j:8.4.0` 的 `com.mysql.cj.jdbc.MysqlXADataSource` 类为例，这是 MySQL JDBC Driver 的 `javax.sql.XADataSource` 的实现。
-+用户需要在自有项目的 classpath 的 `/META-INF/native-image/com.mysql/mysql-connector-j/8.4.0/` 文件夹的 `reachability-metadata.json`文件内定义如下 JSON。
- 
- ```json
- {
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md
-index 778a21f5300..05f63d4358e 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/graalvm-native-image/_index.en.md
-@@ -326,8 +326,8 @@ while ShardingSphere itself only provides the corresponding GraalVM Reachability
- GraalVM Reachability Metadata of other database drivers such as `com.mysql:mysql-connector-j` should be defined by themselves,
- or the corresponding JSON should be submitted to https://github.com/oracle/graalvm-reachability-metadata .
- 
--For example, the `com.mysql.cj.jdbc.MysqlXADataSource` class in `com.mysql:mysql-connector-j:9.0.0` implements the `javax.sql.XADataSource` class of the MySQL JDBC Driver.
--Users need to define the following JSON in the `reachability-metadata.json` file in the `/META-INF/native-image/com.mysql/mysql-connector-j/9.0.0/` folder of their project's buildpath.
-+For example, the `com.mysql.cj.jdbc.MysqlXADataSource` class in `com.mysql:mysql-connector-j:8.4.0` implements the `javax.sql.XADataSource` class of the MySQL JDBC Driver.
-+Users need to define the following JSON in the `reachability-metadata.json` file in the `/META-INF/native-image/com.mysql/mysql-connector-j/8.4.0/` folder of their project's buildpath.
- 
- ```json
- {
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md
-index 4e820cd3ecc..c17d328bc18 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.cn.md
-@@ -44,7 +44,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
-     
-     @Override
-     public DataSource getDataSource() throws SQLException {
--        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
-+        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
-     }
-     
-     private ShardingRuleConfiguration createShardingRuleConfiguration() {
-@@ -54,7 +54,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
-         result.getKeyGenerateStrategies().put("t_order_order_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order", "order_id"));
-         result.getKeyGenerateStrategies().put("t_order_item_order_item_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order_item", "order_item_id"));
-         // ...
--        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheConfiguration.RouteCacheConfiguration(65536, 262144, true)));
-+        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheOptionsConfiguration(true, 65536, 262144)));
-         return result;
-     }
-     
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md
-index 4e63fa1a7cd..a2203efd47b 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding-cache.en.md
-@@ -24,8 +24,8 @@ Attributes：
- 
- | *name*                                  | *DataType* | *Description*                                    | *Default Value* |
- |-----------------------|------------------------------------------------------|----------------|-------|
--| allowedMaxSqlLength            | int                                                  | 允许缓存的 SQL 长度限制 | -     |
--| routeCache | org.apache.shardingsphere.sharding.api.config.cache.ShardingCacheOptionsConfiguration | 路由缓存           | -     |
-+| allowedMaxSqlLength | int | Maximum SQL length allowed for route cache | - |
-+| routeCache | org.apache.shardingsphere.sharding.api.config.cache.ShardingCacheOptionsConfiguration | Route cache options | - |
- 
- Class：org.apache.shardingsphere.sharding.api.config.cache.ShardingCacheOptionsConfiguration
- 
-@@ -33,9 +33,9 @@ Attributes：
- 
- | *name*                                  | *DataType* | *Description*                                    | *Default Value* |
- |-----------------------|------------------------------------------------------|----------------|-------|
--| softValues            | boolean                                                  | 是否软引用缓存值 | -     |
--| initialCapacity | int | 缓存初始容量           | -     |
--| maximumSize | int | 缓存最大容量           | -     |
-+| softValues | boolean | Whether to use soft references for cached values | - |
-+| initialCapacity | int | Initial cache capacity | - |
-+| maximumSize | int | Maximum cache size | - |
+diff --git a/docs/document/content/faq/_index.cn.md b/docs/document/content/faq/_index.cn.md
+index 0e37169c52c..0c2ddd29c2c 100644
+--- a/docs/document/content/faq/_index.cn.md
++++ b/docs/document/content/faq/_index.cn.md
+@@ -108,7 +108,7 @@ DROP DATABASE sharding_db;
+ 
+ ## 分片
+ 
+-### Cloud not resolve placeholder ... in string value ... 异常的解决方法?
++### Could not resolve placeholder ... in string value ... 异常的解决方法?
+ 
+ 回答：
+ 
+diff --git a/docs/document/content/faq/_index.en.md b/docs/document/content/faq/_index.en.md
+index d901d5d072b..80430be0bc0 100644
+--- a/docs/document/content/faq/_index.en.md
++++ b/docs/document/content/faq/_index.en.md
+@@ -109,7 +109,7 @@ Answer:
+ 
+ ## Sharding
+ 
+-### How to solve `Cloud not resolve placeholder … in string value …` error?
++### How to solve `Could not resolve placeholder … in string value …` error?
+ 
+ Answer:
+ 
+diff --git a/docs/document/content/overview/_index.en.md b/docs/document/content/overview/_index.en.md
+index b9dedc131f3..27acbb5eb6d 100644
+--- a/docs/document/content/overview/_index.en.md
++++ b/docs/document/content/overview/_index.en.md
+@@ -26,7 +26,7 @@ ShardingSphere-JDBC is a lightweight Java framework that provides additional ser
+ #### ShardingSphere-Proxy
+ 
+ [![Nightly-Download](https://img.shields.io/badge/nightly--builds-download-orange.svg)](https://nightlies.apache.org/shardingsphere/)
+-[![Download](https://img.shields.io/badge/release-download-orange.svg)](/cn/downloads/)
++[![Download](https://img.shields.io/badge/release-download-orange.svg)](/en/downloads/)
+ [![Docker Pulls](https://img.shields.io/docker/pulls/apache/shardingsphere-proxy.svg)](https://hub.docker.com/r/apache/shardingsphere-proxy)
+ 
+ ShardingSphere-Proxy is a transparent database proxy, providing a database server that encapsulates database binary protocol to support heterogeneous languages.
+diff --git a/docs/document/content/reference/shadow/_index.en.md b/docs/document/content/reference/shadow/_index.en.md
+index e8e71e15ec1..77705b193cc 100644
+--- a/docs/document/content/reference/shadow/_index.en.md
++++ b/docs/document/content/reference/shadow/_index.en.md
+@@ -26,4 +26,4 @@ If the execution SQL does not contain comments or the HINT shadow algorithm dete
+ ## References
+ 
+ [JAVA API: shadow database configuration](/en/user-manual/shardingsphere-jdbc/java-api/rules/shadow/)  
+-[YAMLconfiguration: shadow database](/en/user-manual/shardingsphere-jdbc/yaml-config/rules/shadow/)  
++[YAML configuration: shadow database](/en/user-manual/shardingsphere-jdbc/yaml-config/rules/shadow/)
+diff --git a/docs/document/content/user-manual/common-config/props.cn.md b/docs/document/content/user-manual/common-config/props.cn.md
+index ea2c3acd759..6fa847c6d24 100644
+--- a/docs/document/content/user-manual/common-config/props.cn.md
++++ b/docs/document/content/user-manual/common-config/props.cn.md
+@@ -6,19 +6,21 @@ chapter = true
+ 
+ ## 背景信息
+ 
+-Apache ShardingSphere 提供属性配置的方式配置系统级配置。
++Apache ShardingSphere 提供属性配置来设置系统级行为。
+ 
+ ## 参数解释
+ 
+-| *名称*                               | *数据类型*  | *说明*                                                                                                                                | *默认值*    |
+-|------------------------------------|---------|-------------------------------------------------------------------------------------------------------------------------------------|----------|
+-| sql-show (?)                       | boolean | 是否在日志中打印 SQL<br /> 打印 SQL 可以帮助开发者快速定位系统问题。日志内容包含：逻辑 SQL，真实 SQL 和 SQL 解析结果。<br /> 如果开启配置，日志将使用 Topic `org.apache.shardingsphere.sql`，日志级别是 INFO | false    |
+-| sql-simple (?)                     | boolean | 是否在日志中打印简单风格的 SQL                                                                                                                   | false    |
+-| kernel-executor-size (?)           | int     | 用于设置任务处理线程池的大小<br />每个 ShardingSphereDataSource 使用一个独立的线程池，同一个 JVM 的不同数据源不共享线程池                                                     | infinite |
+-| max-connections-size-per-query (?) | int     | 一次查询请求在每个数据库实例中所能使用的最大连接数                                                                                                           | 1        |
+-| max-union-size-per-datasource (?)  | int     | 每个数据源允许合并的最大 UNION ALL 数量。当路由到同一数据源的路由单元数量超过此值时，将分批合并以恢复并行执行能力                                                                       | Integer.MAX_VALUE |
+-| check-table-metadata-enabled (?)   | boolean | 在程序启动和更新时，是否检查分片元数据的结构一致性                                                                                                           | false    |
+-| load-table-metadata-batch-size (?) | int     | 在程序启动或刷新元数据时，单个批次加载表元数据的数量                                                                                                          | 1000     |
++| *名称*                                                | *数据类型*  | *说明*                                                                                                                         | *默认值*           |
++|-----------------------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------|-----------------|
++| sql-show (?)                                        | boolean | 是否在日志中打印 SQL。SQL 日志内容包含：逻辑 SQL、真实 SQL 和 SQL 解析结果。如果开启配置，日志将使用 Topic `org.apache.shardingsphere.sql`，日志级别为 INFO。 | false           |
++| sql-simple (?)                                      | boolean | 是否在日志中打印简单风格的 SQL。                                                                                                          | false           |
++| kernel-executor-size (?)                            | int     | SQL 执行工作线程池大小。每个 ShardingSphereDataSource 使用独立线程池，同一个 JVM 的不同数据源不共享线程池。`0` 表示不限制。                              | 0               |
++| max-connections-size-per-query (?)                  | int     | 一次查询请求在每个数据库实例中所能使用的最大连接数。                                                                                                  | 1               |
++| max-union-size-per-datasource (?)                   | int     | 每个数据源允许合并的最大 UNION ALL 数量。当路由到同一数据源的路由单元数量超过此值时，将分批合并以恢复并行执行能力。                                      | Integer.MAX_VALUE |
++| check-table-metadata-enabled (?)                    | boolean | 应用启动或元数据更新时，是否校验表元数据一致性。                                                                                                    | false           |
++| load-table-metadata-batch-size (?)                  | int     | 应用启动或刷新表元数据时，单个批次加载表元数据的数量。                                                                                                 | 1000            |
++| metadata-identifier-case-sensitivity (?)            | String  | 元数据标识符大小写敏感策略。可选值为 `AUTO`、`SENSITIVE` 和 `INSENSITIVE`。                                                                      | AUTO            |
++| groovy-inline-expression-parsing-cache-max-size (?) | long    | Groovy 行表达式解析缓存的最大容量。                                                                                                      | 1000            |
+ 
+ ## 操作步骤
+ 
+diff --git a/docs/document/content/user-manual/common-config/props.en.md b/docs/document/content/user-manual/common-config/props.en.md
+index 441dcadf95e..182128ef01f 100644
+--- a/docs/document/content/user-manual/common-config/props.en.md
++++ b/docs/document/content/user-manual/common-config/props.en.md
+@@ -6,23 +6,25 @@ chapter = true
+ 
+ ## Background
+ 
+-Apache ShardingSphere provides the way of property configuration to configure system level configuration.
++Apache ShardingSphere provides properties to configure system-level behavior.
+ 
+ ## Parameters
+ 
+-| *Name*                             | *Data Type* | *Description*                                                                                                                                                                                                                                               | *Default Value* |
+-|------------------------------------|-------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|
+-| sql-show (?)                       | boolean     | Whether show SQL or not in log. <br /> Print SQL details can help developers debug easier. The log details include: logic SQL, actual SQL and SQL parse result. <br /> Enable this property will log into log topic `org.apache.shardingsphere.sql`, log level is INFO | false           |
+-| sql-simple (?)                     | boolean     | Whether show SQL details in simple style                                                                                                                                                                                                                    | false           |
+-| kernel-executor-size (?)           | int         | The max thread size of worker group to execute SQL. One ShardingSphereDataSource will use a independent thread pool, it does not share thread pool even different data source in same JVM                                                                   | infinite        |
+-| max-connections-size-per-query (?) | int         | Max opened connection size for each query                                                                                                                                                                                                                   | 1               |
+-| max-union-size-per-datasource (?)  | int         | Max union size per datasource for aggregate rewrite. When route units count for a datasource exceeds this value, they will be split into batches to restore parallel execution capability                                                                   | Integer.MAX_VALUE |
+-| check-table-metadata-enabled (?)   | boolean     | Whether validate table meta data consistency when application startup or updated                                                                                                                                                                            | false           |
+-| load-table-metadata-batch-size (?) | int         | The number of table metadata loaded at a time when application startup or refreshes table metadata                                                                                                                                                          | 1000            |
++| *Name*                                              | *Data Type* | *Description*                                                                                                                                                                                                                         | *Default Value*   |
++|-----------------------------------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------|
++| sql-show (?)                                        | boolean     | Whether to print SQL in logs. SQL logs include logical SQL, actual SQL, and SQL parse results. If enabled, logs use topic `org.apache.shardingsphere.sql` with log level INFO.                                                        | false             |
++| sql-simple (?)                                      | boolean     | Whether to print SQL in a simplified style.                                                                                                                                                                                           | false             |
++| kernel-executor-size (?)                            | int         | Worker thread pool size for SQL execution. Each ShardingSphereDataSource uses an independent thread pool, and different data sources in the same JVM do not share thread pools. `0` means unlimited.                                 | 0                 |
++| max-connections-size-per-query (?)                  | int         | Maximum number of connections that one query request can use in each database instance.                                                                                                                                               | 1                 |
++| max-union-size-per-datasource (?)                   | int         | Maximum UNION ALL size per data source for aggregate rewrite. When route units for one data source exceed this value, they are split into batches to restore parallel execution capability.                                          | Integer.MAX_VALUE |
++| check-table-metadata-enabled (?)                    | boolean     | Whether to validate table metadata consistency when the application starts or metadata is updated.                                                                                                                                     | false             |
++| load-table-metadata-batch-size (?)                  | int         | Number of table metadata entries loaded per batch when the application starts or refreshes table metadata.                                                                                                                             | 1000              |
++| metadata-identifier-case-sensitivity (?)            | String      | Metadata identifier case sensitivity. Available values are `AUTO`, `SENSITIVE`, and `INSENSITIVE`.                                                                                                                                    | AUTO              |
++| groovy-inline-expression-parsing-cache-max-size (?) | long        | Maximum size of the Groovy inline expression parsing cache.                                                                                                                                                                           | 1000              |
+ 
+ ## Procedure
+ 
+-1. Properties configuration is directly configured in the profile used by ShardingSphere-JDBC. The format is as follows:
++1. Properties are configured directly in the configuration file used by ShardingSphere-JDBC. The format is as follows:
+ 
+ ```yaml
+ props:
+@@ -35,4 +37,4 @@ The default value of the `max-connections-size-per-query` configuration is 1, me
  
  ## Sample
  
-@@ -44,7 +44,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
-     
-     @Override
-     public DataSource getDataSource() throws SQLException {
--        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
-+        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
-     }
-     
-     private ShardingRuleConfiguration createShardingRuleConfiguration() {
-@@ -54,7 +54,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
-         result.getKeyGenerateStrategies().put("t_order_order_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order", "order_id"));
-         result.getKeyGenerateStrategies().put("t_order_item_order_item_id", new ColumnKeyGenerateStrategiesRuleConfiguration("snowflake", "t_order_item", "order_item_id"));
-         // ...
--        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheConfiguration.RouteCacheConfiguration(65536, 262144, true)));
-+        result.setShardingCache(new ShardingCacheConfiguration(512, new ShardingCacheOptionsConfiguration(true, 65536, 262144)));
-         return result;
-     }
-     
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md
-index 2f9e02bbfd7..47474019530 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.cn.md
-@@ -32,7 +32,7 @@ weight = 1
+-The example of ShardingSphere warehouse contains property configurations of various scenarios. Please refer to: <https://github.com/apache/shardingsphere/tree/master/examples>
++ShardingSphere examples contain property configurations for various scenarios. Please refer to: <https://github.com/apache/shardingsphere/tree/master/examples>
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.cn.md
+index 6679c67bcc8..476ee9f5306 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.cn.md
+@@ -101,5 +101,5 @@ public final class EncryptDatabasesConfiguration {
  
- ### 分片表配置
+ ## 相关参考
  
--类名称：org.apache.shardingsphere.sharding.api.config.ShardingTableRuleConfiguration
-+类名称：org.apache.shardingsphere.sharding.api.config.rule.ShardingTableRuleConfiguration
+-- [数据加密的核心特性](/cn/features/sharding/ )
+-- [数据加密的开发者指南](/cn/dev-manual/encrypt/)
+\ No newline at end of file
++- [数据加密的核心特性](/cn/features/encrypt/)
++- [数据加密的开发者指南](/cn/dev-manual/encrypt/)
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.en.md
+index 6e418013602..4491b9d5938 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/encrypt.en.md
+@@ -101,5 +101,5 @@ public final class EncryptDatabasesConfiguration {
  
- 可配置属性：
+ ## Related References
  
-@@ -46,7 +46,7 @@ weight = 1
+-- [The feature description of Data Encryption](/en/features/encrypt/ )
++- [The feature description of Data Encryption](/en/features/encrypt/)
+ - [Dev Guide of Data Encryption](/en/dev-manual/encrypt/)
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.cn.md
+index 2c631c41fed..6ac9adcf224 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.cn.md
+@@ -97,5 +97,5 @@ public final class MaskDatabasesConfiguration {
  
- ### 自动分片表配置
+ ## 相关参考
  
--类名称：org.apache.shardingsphere.sharding.api.config.ShardingAutoTableRuleConfiguration
-+类名称：org.apache.shardingsphere.sharding.api.config.rule.ShardingAutoTableRuleConfiguration
+-- [数据脱敏的核心特性](/cn/features/mask/ )
+-- [数据脱敏的开发者指南](/cn/dev-manual/mask/)
+\ No newline at end of file
++- [数据脱敏的核心特性](/cn/features/mask/)
++- [数据脱敏的开发者指南](/cn/dev-manual/mask/)
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.en.md
+index df65db1a679..7518b1cd627 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/mask.en.md
+@@ -96,5 +96,5 @@ public final class MaskDatabasesConfiguration {
  
- 可配置属性：
+ ## Related References
  
-@@ -165,7 +165,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
-     
-     @Override
-     public DataSource getDataSource() throws SQLException {
--        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
-+        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
-     }
-     
-     private ShardingRuleConfiguration createShardingRuleConfiguration() {
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md
-index 3fad8dcfbfc..bb431cf34e6 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sharding.en.md
-@@ -32,7 +32,7 @@ Attributes:
+-- [The feature description of Data Masking](/en/features/mask/ )
++- [The feature description of Data Masking](/en/features/mask/)
+ - [Dev Guide of Data Masking](/en/dev-manual/mask/)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/cdc/build.en.md b/docs/document/content/user-manual/shardingsphere-proxy/cdc/build.en.md
+index 1de110978d2..2021ab3b1dc 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/cdc/build.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/cdc/build.en.md
+@@ -20,7 +20,7 @@ Users can introduce the CDC Client into their own projects to implement data con
  
- ### Sharding Table Configuration
+ Here, the openGauss database is used as an example to introduce the deployment steps of the CDC Server.
  
--Class name: org.apache.shardingsphere.sharding.api.config.ShardingTableRuleConfiguration
-+Class name: org.apache.shardingsphere.sharding.api.config.rule.ShardingTableRuleConfiguration
+-Since the CDC Server is built into ShardingSphere-Proxy, you need to get ShardingSphere-Proxy. For details, please refer to the [proxy startup manual](/cn/user-manual/shardingsphere-proxy/startup/bin/).
++Since the CDC Server is built into ShardingSphere-Proxy, you need to get ShardingSphere-Proxy. For details, please refer to the [proxy startup manual](/en/user-manual/shardingsphere-proxy/startup/bin/).
  
- Attributes:
+ ### Configure GLT Module (Optional)
  
-@@ -46,7 +46,7 @@ Attributes:
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md
+index bee22a6cf5b..6200c99cdf8 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md
+@@ -13,16 +13,13 @@ weight = 7
+ {{% tab name="语法" %}}
+ ```sql
+ SetDistVariable ::=
+-  'SET' 'DIST' 'VARIABLE' (proxyPropertyName '=' proxyPropertyValue | 'agent_plugins_enabled' '=' agentPluginsEnabled)
++  'SET' 'DIST' 'VARIABLE' variableName '=' variableValue
  
- ### Sharding Auto Table Configuration
+-proxyPropertyName ::= 
++variableName ::=
+   identifier
  
--Class name: org.apache.shardingsphere.sharding.api.config.ShardingAutoTableRuleConfiguration
-+Class name: org.apache.shardingsphere.sharding.api.config.rule.ShardingAutoTableRuleConfiguration
+-proxyPropertyValue ::=
++variableValue ::=
+   literal
+-
+-agentPluginsEnabled ::=
+-  boolean
+ ```
+ {{% /tab %}}
+ {{% tab name="铁路图" %}}
+@@ -32,9 +29,9 @@ agentPluginsEnabled ::=
  
- Attributes:
+ ### 补充说明
  
-@@ -164,7 +164,7 @@ public final class ShardingDatabasesAndTablesConfigurationPrecise {
-     
-     @Override
-     public DataSource getDataSource() throws SQLException {
--        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration())), new Properties());
-+        return ShardingSphereDataSourceFactory.createDataSource(createDataSourceMap(), Arrays.asList(createShardingRuleConfiguration(), createBroadcastRuleConfiguration()), new Properties());
-     }
-     
-     private ShardingRuleConfiguration createShardingRuleConfiguration() {
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md
-index 16dae175170..e2681ca932c 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.cn.md
-@@ -18,11 +18,11 @@ weight = 13
- |--------------------------|------------------------------------------------------|-------------------|-------|
- | sqlFederationEnabled     | boolean                                              | 是否开启联邦查询          | -     |
- | allQueryUseSQLFederation | boolean                                              | 是否全部查询 SQL 使用联邦查询 | -     |
--| executionPlanCache       | org.apache.shardingsphere.sql.parser.api.CacheOption | 执行计划缓存            | -     |
-+| executionPlanCache       | org.apache.shardingsphere.sql.parser.engine.api.CacheOption | 执行计划缓存            | -     |
+-- `proxy_property_name` 为 `PROXY` 的[属性配置](/cn/user-manual/shardingsphere-proxy/yaml-config/props/)，需使用下划线命名
++- `variableName` 为 `PROXY` 的[属性配置](/cn/user-manual/shardingsphere-proxy/yaml-config/props/)，DistSQL 变量名使用下划线而非连字符
  
- ## 本地缓存配置
+-- `agent_plugins_enabled` 为 `agent` 插件的启用状态，默认值 `FALSE`
++- `agent_plugins_enabled` 用于设置 `agent` 插件的启用状态，默认值为 `TRUE`
  
--类名称：org.apache.shardingsphere.sql.parser.api.CacheOption
-+类名称：org.apache.shardingsphere.sql.parser.engine.api.CacheOption
+ ### 示例
  
- 可配置属性：
+@@ -56,4 +53,4 @@ SET DIST VARIABLE agent_plugins_enabled = TRUE;
  
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md
-index 12515d88b8d..76875c51644 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-federation.en.md
-@@ -18,11 +18,11 @@ Attributes:
- |--------------------------|------------------------------------------------------|--------------------------------------------|-----------------|
- | sqlFederationEnabled     | boolean                                              | SQL federation enabled configuration       | -               |
- | allQueryUseSQLFederation | boolean                                              | all query use SQL federation configuration | -               |
--| executionPlanCache       | org.apache.shardingsphere.sql.parser.api.CacheOption | execution plan cache configuration         | -               |
-+| executionPlanCache       | org.apache.shardingsphere.sql.parser.engine.api.CacheOption | execution plan cache configuration         | -               |
+ ### 相关链接
  
- ## Cache option Configuration
+-- [保留字](/cn/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
+\ No newline at end of file
++- [保留字](/cn/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md
+index 717c3340bb4..25b3cb38d3f 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md
+@@ -6,22 +6,20 @@ weight = 7
+ ### Description
  
--Class: org.apache.shardingsphere.sql.parser.api.CacheOption
-+Class: org.apache.shardingsphere.sql.parser.engine.api.CacheOption
+ The `SET DIST VARIABLE` syntax is used to set system variables.
++
+ ### Syntax
  
- Attributes: 
+ {{< tabs >}}
+ {{% tab name="Grammar" %}}
+ ```sql
+ SetDistVariable ::=
+-  'SET' 'DIST' 'VARIABLE' (proxyPropertyName '=' proxyPropertyValue | 'agent_plugins_enabled' '=' agentPluginsEnabled)
++  'SET' 'DIST' 'VARIABLE' variableName '=' variableValue
  
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md
-index 81607b29775..7312359dd48 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.cn.md
-@@ -22,7 +22,7 @@ SQL 是使用者与数据库交流的标准语言。 SQL 解析引擎负责将 S
+-proxyPropertyName ::= 
++variableName ::=
+   identifier
  
- ## 本地缓存配置
+-proxyPropertyValue ::=
++variableValue ::=
+   literal
+-
+-agentPluginsEnabled ::=
+-  boolean
+ ```
+ {{% /tab %}}
+ {{% tab name="Railroad diagram" %}}
+@@ -31,9 +29,9 @@ agentPluginsEnabled ::=
  
--类名称：org.apache.shardingsphere.sql.parser.api.CacheOption
-+类名称：org.apache.shardingsphere.sql.parser.engine.api.CacheOption
+ ### Supplement
  
- 可配置属性：
+-- `proxy_property_name` is one of [properties configuration](/en/user-manual/shardingsphere-proxy/yaml-config/props/) of `PROXY`, name is split by underscore
++- `variableName` is one of [properties configuration](/en/user-manual/shardingsphere-proxy/yaml-config/props/) of `PROXY`. Use underscores instead of hyphens in DistSQL variable names.
  
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md
-index dacd52132a1..953194061dd 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/java-api/rules/sql-parser.en.md
-@@ -22,7 +22,7 @@ Attributes:
+-- `agent_plugins_enabled` is use to set the `agent` plugins enable status, the default value is `FALSE`
++- `agent_plugins_enabled` is used to set the `agent` plugin status. Its default value is `TRUE`.
  
- ## Cache option Configuration
+ ### Example
  
--Class：org.apache.shardingsphere.sql.parser.api.CacheOption
-+Class: org.apache.shardingsphere.sql.parser.engine.api.CacheOption
- 
- Attributes:
- 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md
-index 59447e7388e..1d4c9454abf 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/sharding/hint.en.md
-@@ -22,7 +22,7 @@ Main application scenarios for Hint:
- 
- ### Hint Configuration
- 
--Hint algorithms require users to implement the interface of `org.apache.shardingsphere.api.sharding.hint.HintShardingAlgorithm`.
-+Hint algorithms require users to implement the interface of `org.apache.shardingsphere.sharding.api.sharding.hint.HintShardingAlgorithm`.
- `org.apache.shardingsphere.sharding.api.sharding.hint.HintShardingAlgorithm` has two built-in implementations,
- 
- - `org.apache.shardingsphere.sharding.algorithm.sharding.hint.HintInlineShardingAlgorithm`
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md
-index 266c6183126..6c8f822b3c0 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.cn.md
-@@ -7,10 +7,10 @@ chapter = true
- ## 背景信息
- 
- 对于 `org.apache.shardingsphere.driver.ShardingSphereDriver` 的驱动类，
--通过实现 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` 的 SPI，
--可允许从多种来源和 File System 获取并解析为 ShardingSphere 的 YAML 配置文件。
-+`org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` SPI 用于从类路径、绝对路径等本地来源加载 YAML 配置文件，
-+`org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader` SPI 用于从治理中心加载模式配置。
- 如无特定声明，以下实现均采用 YAML 1.1 作为 YAML 的编写规范，
--这并不阻止 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` 的自定义实现从 XML 或 JSON 等文件手动转化为 YAML。
-+这并不阻止 `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` 的自定义实现从 XML 或 JSON 等文件手动转化为 YAML。
- 
- 在解析并加载 YAML 文件为 ShardingSphere 的元数据后，
- 会再次通过[模式配置](/cn/user-manual/shardingsphere-jdbc/java-api/mode)的相关配置决定下一步行为。讨论两种情况，
-@@ -48,8 +48,8 @@ chapter = true
- 
- ## JDBC URL 参数
- 
--对于 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` 的实现，并非所有的 JDBC URL 参数都必须被解析，
--这涉及到如何实现 `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader.load()`。
-+对于 `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` 和 `org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader` 的实现，并非所有的 JDBC URL 参数都必须被解析。
-+具体支持的参数取决于各加载器的 `load()` 实现。
- 
- ### placeholder-type
- 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md
-index 33322009382..099ac45a45a 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/jdbc-driver/known-implementation/_index.en.md
-@@ -7,10 +7,10 @@ chapter = true
- ## Background Information
- 
- For the driver class of `org.apache.shardingsphere.driver.ShardingSphereDriver`,
--by implementing the SPI of `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader`,
--allows YAML configuration files to be fetched from multiple sources and File Systems and parsed into ShardingSphere.
-+the `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` SPI loads YAML configuration files from local sources such as classpath or absolute paths,
-+and the `org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader` SPI loads mode configurations from governance centers.
- If there is no specific statement, the following implementations all use YAML 1.1 as the YAML writing specification.
--This does not prevent custom implementations of `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader` from being manually converted to YAML from files such as XML or JSON.
-+This does not prevent custom implementations of `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` from being manually converted to YAML from files such as XML or JSON.
- 
- After parsing and loading the YAML file into ShardingSphere's metadata, 
- the next behavior will be determined again through the relevant configuration of [Mode Configuration](/en/user-manual/shardingsphere-jdbc/java-api/mode). 
-@@ -56,9 +56,9 @@ Example:
- 
- ## JDBC URL parameters
- 
--For implementations of `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader`, 
--not all JDBC URL parameters must be parsed,
--this involves how to implement `org.apache.shardingsphere.infra.url.ShardingSphereURLLoader.load()`.
-+For implementations of `org.apache.shardingsphere.infra.url.spi.ShardingSphereLocalFileURLLoader` and `org.apache.shardingsphere.infra.url.spi.ShardingSphereModeConfigurationURLLoader`,
-+not all JDBC URL parameters must be parsed.
-+The supported parameters depend on each loader's `load()` implementation.
- 
- ### placeholder-type
- 
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md
-similarity index 100%
-rename from docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.cn.md
-rename to docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.cn.md
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md
-similarity index 100%
-rename from docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-vairable.en.md
-rename to docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable.en.md
 diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md
-index 74b0041cb7c..cab997e6ad8 100644
+index cab997e6ad8..b3e4871c556 100644
 --- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md
 +++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.cn.md
 @@ -36,7 +36,7 @@ variableName ::=
  
  ### 补充说明
  
--- 未指定 `vairableName` 时，默认查询所有 `PROXY` 系统变量配置
-+- 未指定 `variableName` 时，默认查询所有 `PROXY` 系统变量配置
+-- 未指定 `variableName` 时，默认查询所有 `PROXY` 系统变量配置
++- 未指定 `variableName` 时，默认查询所有持久化 `PROXY` 系统变量配置和缓存连接数
  
  ### 示例
  
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md
-index 9dc92c22595..d0c58ee02c5 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.cn.md
-@@ -35,9 +35,9 @@ ShardingSphere-Proxy 支持配置多个逻辑数据源，每个以 `database-` 
+@@ -48,32 +48,34 @@ SHOW DIST VARIABLES;
  
- 4. （可选）引入数据库驱动
+ ```sql
+ mysql> SHOW DIST VARIABLES;
+-+-----------------------------------------+-----------------+
+-| variable_name                           | variable_value  |
+-+-----------------------------------------+-----------------+
+-| agent_plugins_enabled                   | true            |
+-| cached_connections                      | 0               |
+-| cdc_server_port                         | 33071           |
+-| check_table_metadata_enabled            | false           |
+-| kernel_executor_size                    | 0               |
+-| load_table_metadata_batch_size          | 1000            |
+-| max_connections_size_per_query          | 1               |
+-| proxy_backend_query_fetch_size          | -1              |
+-| proxy_default_port                      | 3307            |
+-| proxy_frontend_database_protocol_type   |                 |
+-| proxy_frontend_executor_size            | 0               |
+-| proxy_frontend_flush_threshold          | 128             |
+-| proxy_frontend_max_connections          | 0               |
+-| proxy_frontend_ssl_cipher               |                 |
+-| proxy_frontend_ssl_enabled              | false           |
+-| proxy_frontend_ssl_version              | TLSv1.2,TLSv1.3 |
+-| proxy_meta_data_collector_enabled       | false           |
+-| proxy_netty_backlog                     | 1024            |
+-| sql_show                                | false           |
+-| sql_simple                              | false           |
+-| system_schema_metadata_assembly_enabled | true            |
+-+-----------------------------------------+-----------------+
+-21 rows in set (0.01 sec)
+++-------------------------------------------------------+-----------------+
++| variable_name                                         | variable_value  |
+++-------------------------------------------------------+-----------------+
++| agent_plugins_enabled                                 | true            |
++| cached_connections                                    | 0               |
++| cdc_server_port                                       | 33071           |
++| check_table_metadata_enabled                          | false           |
++| groovy_inline_expression_parsing_cache_max_size       | 1000            |
++| kernel_executor_size                                  | 0               |
++| load_table_metadata_batch_size                        | 1000            |
++| max_connections_size_per_query                        | 1               |
++| max_union_size_per_datasource                         | 2147483647      |
++| metadata_identifier_case_sensitivity                  | AUTO            |
++| proxy_backend_query_fetch_size                        | -1              |
++| proxy_default_port                                    | 3307            |
++| proxy_frontend_connection_idle_timeout                | 28800           |
++| proxy_frontend_database_protocol_type                 |                 |
++| proxy_frontend_executor_size                          | 0               |
++| proxy_frontend_flush_threshold                        | 128             |
++| proxy_frontend_max_connections                        | 0               |
++| proxy_frontend_ssl_cipher                             |                 |
++| proxy_frontend_ssl_enabled                            | false           |
++| proxy_frontend_ssl_version                            | TLSv1.2,TLSv1.3 |
++| proxy_netty_backlog                                   | 1024            |
++| sql_show                                              | false           |
++| sql_simple                                            | false           |
+++-------------------------------------------------------+-----------------+
++23 rows in set (0.01 sec)
+ ```
  
--如果后端连接 PostgreSQL 或 openGauss 数据库，不需要引入额外依赖。
-+如果后端连接 PostgreSQL、openGauss 或 Firebird 数据库，不需要引入额外依赖。
+ - 查询指定 `PROXY` 系统变量配置
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.en.md
+index dca3090981d..75327b7a5f4 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable.en.md
+@@ -36,7 +36,7 @@ variableName ::=
  
--如果后端连接 MySQL 数据库，请下载 [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) 或者 [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar)，并将其放入 `ext-lib` 目录。
-+如果后端连接 MySQL 数据库，请下载 [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar)，并将其放入 `ext-lib` 目录。
+ ### Supplement
  
- 5. （可选）引入集群模式所需依赖
+-- When `variableName` is not specified, the default is query all `PROXY` variables configuration.
++- When `variableName` is not specified, all persistent `PROXY` system variables and the cached connection count are queried by default.
  
+ ### Example
+ 
+@@ -48,33 +48,36 @@ SHOW DIST VARIABLES;
+ 
+ ```sql
+ mysql> SHOW DIST VARIABLES;
+-+-----------------------------------------+-----------------+
+-| variable_name                           | variable_value  |
+-+-----------------------------------------+-----------------+
+-| agent_plugins_enabled                   | true            |
+-| cached_connections                      | 0               |
+-| cdc_server_port                         | 33071           |
+-| check_table_metadata_enabled            | false           |
+-| kernel_executor_size                    | 0               |
+-| load_table_metadata_batch_size          | 1000            |
+-| max_connections_size_per_query          | 1               |
+-| proxy_backend_query_fetch_size          | -1              |
+-| proxy_default_port                      | 3307            |
+-| proxy_frontend_database_protocol_type   |                 |
+-| proxy_frontend_executor_size            | 0               |
+-| proxy_frontend_flush_threshold          | 128             |
+-| proxy_frontend_max_connections          | 0               |
+-| proxy_frontend_ssl_cipher               |                 |
+-| proxy_frontend_ssl_enabled              | false           |
+-| proxy_frontend_ssl_version              | TLSv1.2,TLSv1.3 |
+-| proxy_meta_data_collector_enabled       | false           |
+-| proxy_netty_backlog                     | 1024            |
+-| sql_show                                | false           |
+-| sql_simple                              | false           |
+-| system_schema_metadata_assembly_enabled | true            |
+-+-----------------------------------------+-----------------+
+-21 rows in set (0.01 sec)
+++-------------------------------------------------------+-----------------+
++| variable_name                                         | variable_value  |
+++-------------------------------------------------------+-----------------+
++| agent_plugins_enabled                                 | true            |
++| cached_connections                                    | 0               |
++| cdc_server_port                                       | 33071           |
++| check_table_metadata_enabled                          | false           |
++| groovy_inline_expression_parsing_cache_max_size       | 1000            |
++| kernel_executor_size                                  | 0               |
++| load_table_metadata_batch_size                        | 1000            |
++| max_connections_size_per_query                        | 1               |
++| max_union_size_per_datasource                         | 2147483647      |
++| metadata_identifier_case_sensitivity                  | AUTO            |
++| proxy_backend_query_fetch_size                        | -1              |
++| proxy_default_port                                    | 3307            |
++| proxy_frontend_connection_idle_timeout                | 28800           |
++| proxy_frontend_database_protocol_type                 |                 |
++| proxy_frontend_executor_size                          | 0               |
++| proxy_frontend_flush_threshold                        | 128             |
++| proxy_frontend_max_connections                        | 0               |
++| proxy_frontend_ssl_cipher                             |                 |
++| proxy_frontend_ssl_enabled                            | false           |
++| proxy_frontend_ssl_version                            | TLSv1.2,TLSv1.3 |
++| proxy_netty_backlog                                   | 1024            |
++| sql_show                                              | false           |
++| sql_simple                                            | false           |
+++-------------------------------------------------------+-----------------+
++23 rows in set (0.01 sec)
+ ```
++
+ - Query specified system variable configuration of `PROXY`
+ 
+ ```sql
 diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md
-index a7bb616646d..e691b443219 100644
+index e691b443219..f19d099b545 100644
 --- a/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md
 +++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/bin.en.md
-@@ -37,9 +37,9 @@ ShardingSphere-Proxy supports multiple logical data sources. Each YAML configura
+@@ -31,7 +31,7 @@ Please refer to the following links for other configuration items:
  
- 4. Introduce database driver (Optional)
+ 3. Configure `conf/database-*.yaml`
  
--If the backend is connected to a PostgreSQL or openGauss database, no additional dependencies need to be introduced.
-+If the backend is connected to a PostgreSQL, openGauss or Firebird database, no additional dependencies need to be introduced.
+-Modify files named with the prefix `database-` in the `conf` directory, such as `conf/database-sharding.yaml` file and configure sharding rules and read/write splitting rules. See [Confuguration Mannual](/en/user-manual/shardingsphere-proxy/yaml-config/) for configuration methods. The `*` part of the `database-*.yaml` file can be named whatever you want.
++Modify files named with the prefix `database-` in the `conf` directory, such as `conf/database-sharding.yaml` file and configure sharding rules and read/write splitting rules. See [Configuration Manual](/en/user-manual/shardingsphere-proxy/yaml-config/) for configuration methods. The `*` part of the `database-*.yaml` file can be named whatever you want.
  
--If the backend is connected to a MySQL database, please download [mysql-connector-java-5.1.49.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.49/mysql-connector-java-5.1.49.jar) or [mysql-connector-java-8.0.11.jar](https://repo1.maven.org/maven2/mysql/mysql-connector-java/8.0.11/mysql-connector-java-8.0.11.jar), and put it into the `ext-lib` directory.
-+If the backend is connected to a MySQL database, please download [mysql-connector-j-8.4.0.jar](https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.4.0/mysql-connector-j-8.4.0.jar), and put it into the `ext-lib` directory.
+ ShardingSphere-Proxy supports multiple logical data sources. Each YAML configuration file named with the prefix `database-` is a logical data source.
  
- 5. Introduce dependencies required by the cluster mode (Optional)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.cn.md
+index 1a865b6c13d..25f300cc9ae 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.cn.md
+@@ -10,28 +10,34 @@ Apache ShardingSphere 提供了丰富的系统配置属性，用户可通过 `gl
  
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md
-index 8d9685deb02..fefa7b9f249 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.cn.md
-@@ -92,7 +92,7 @@ helm uninstall shardingsphere-proxy
- | `compute.replicas`                  | ShardingSphere-Proxy 节点个数         | `3`                           |
- | `compute.service.type`              | ShardingSphere-Proxy 网络模式         | `ClusterIP`                   |
- | `compute.service.port`              | ShardingSphere-Proxy 暴露端口         | `3307`                        |
--| `compute.mysqlConnector.version`    | MySQL 驱动版本                        | `5.1.49`                      |
-+| `compute.mysqlConnector.version`    | MySQL 驱动版本                        | `8.4.0`                       |
- | `compute.startPort`                 | ShardingSphere-Proxy 启动端口         | `3307`                        |
- | `compute.serverConfig`              | ShardingSphere-Proxy 模式配置文件       | `""`                          |
+ ## 参数解释
  
-@@ -203,7 +203,7 @@ compute:
-   ## @param compute.mysqlConnector.version MySQL connector version
-   ##
-   mysqlConnector:
--    version: "5.1.49"
-+    version: "8.4.0"
-   ## @param compute.startPort ShardingSphere-Proxy start port
-   ## ShardingSphere-Proxy start port
-   ## ref: https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/startup/docker/
-diff --git a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md
-index d2d85e3eec0..90200727cfb 100644
---- a/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-proxy/startup/helm.en.md
-@@ -94,7 +94,7 @@ helm uninstall shardingsphere-proxy
- | `compute.replicas`                  | Number of cluster replicas                                   | `3`                           |
- | `compute.service.type`              | ShardingSphere-Proxy network mode                            | `ClusterIP`                   |
- | `compute.service.port`              | ShardingSphere-Proxy expose port                             | `3307`                        |
--| `compute.mysqlConnector.version`    | MySQL connector version                                      | `5.1.49`                      |
-+| `compute.mysqlConnector.version`    | MySQL connector version                                      | `8.4.0`                       |
- | `compute.startPort`                 | ShardingSphere-Proxy start port                              | `3307`                        |
- | `compute.serverConfig`              | Server Configuration file for ShardingSphere-Proxy           | `""`                          |
+-| *名称*                                      | *数据类型*  | *说明*                                                                                                                                   | *默认值*           | *动态生效* |
+-|-------------------------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------|-----------------|--------|
+-| sql-show (?)                              | boolean | 是否在日志中打印 SQL。 <br /> 打印 SQL 可以帮助开发者快速定位系统问题。日志内容包含：逻辑 SQL，真实 SQL 和 SQL 解析结果。<br /> 如果开启配置，日志将使用 Topic `org.apache.shardingsphere.sql`，日志级别是 INFO。 | false           | 是      |
+-| sql-simple (?)                            | boolean | 是否在日志中打印简单风格的 SQL。                                                                                                                     | false           | 是      |
+-| kernel-executor-size (?)                  | int     | 用于设置任务处理线程池的大小。每个 ShardingSphereDataSource 使用一个独立的线程池，同一个 JVM 的不同数据源不共享线程池。                                                            | infinite        | 否      |
+-| max-connections-size-per-query (?)        | int     | 一次查询请求在每个数据库实例中所能使用的最大连接数。                                                                                                             | 1               | 是      |
+-| check-table-metadata-enabled (?)          | boolean | 在程序启动和更新时，是否检查分片元数据的结构一致性。                                                                                                             | false           | 是      |
+-| load-table-metadata-batch-size (?)        | int     | 在程序启动或刷新元数据时，单个批次加载表元数据的数量。                                                                                                            | 1000            | 是      |
+-| proxy-frontend-flush-threshold (?)        | int     | 在 ShardingSphere-Proxy 中设置传输数据条数的 IO 刷新阈值。                                                                                             | 128             | 是      |
+-| proxy-backend-query-fetch-size (?)        | int     | Proxy 后端与数据库交互的每次获取数据行数（使用游标的情况下）。数值增大可能会增加 ShardingSphere Proxy 的内存使用。默认值为 -1，代表设置为 JDBC 驱动的最小值。                                      | -1              | 是      |
+-| proxy-frontend-executor-size (?)          | int     | Proxy 前端 Netty 线程池线程数量，默认值 0 代表使用 Netty 默认值。                                                                                           | 0               | 否      |
+-| proxy-frontend-max-connections (?)        | int     | 允许连接 Proxy 的最大客户端数量，默认值 0 代表不限制。                                                                                                       | 0               | 是      |
+-| proxy-default-port (?)                    | String  | Proxy 通过配置文件指定默认端口。                                                                                                                    | 3307            | 否      |
+-| proxy-netty-backlog (?)                   | int     | Proxy 通过配置文件指定默认netty back_log参数。                                                                                                      | 1024            | 否      |
+-| proxy-frontend-database-protocol-type (?) | String  | Proxy 前端协议类型，支持 MySQL，PostgreSQL 和 openGauss                                                                                           | \"\"            | 否      |
+-| proxy-frontend-ssl-enabled (?)            | boolean | Proxy 前端启用 SSL/TLS。                                                                                                                    | false           | 否      |
+-| proxy-frontend-ssl-version (?)            | String  | 要启用的 SSL/TLS 协议。空白以使用默认值。                                                                                                              | TLSv1.2,TLSv1.3 | 否  |
+-| proxy-frontend-ssl-cipher (?)             | String  | 按偏好顺序启用的密码套件。用逗号分隔的多密码套件。空白以使用默认值。                                                                                                     | \"\"            | 否  |
++| *名称*                                                | *数据类型*  | *说明*                                                                                                                         | *默认值*           | *动态生效* |
++|-----------------------------------------------------|---------|------------------------------------------------------------------------------------------------------------------------------|-----------------|--------|
++| sql-show (?)                                        | boolean | 是否在日志中打印 SQL。SQL 日志内容包含：逻辑 SQL、真实 SQL 和 SQL 解析结果。如果开启配置，日志将使用 Topic `org.apache.shardingsphere.sql`，日志级别为 INFO。 | false           | 是      |
++| sql-simple (?)                                      | boolean | 是否在日志中打印简单风格的 SQL。                                                                                                          | false           | 是      |
++| kernel-executor-size (?)                            | int     | SQL 执行工作线程池大小。`0` 表示不限制。                                                                                                  | 0               | 否      |
++| max-connections-size-per-query (?)                  | int     | 一次查询请求在每个数据库实例中所能使用的最大连接数。                                                                                                  | 1               | 是      |
++| max-union-size-per-datasource (?)                   | int     | 每个数据源允许合并的最大 UNION ALL 数量。当路由到同一数据源的路由单元数量超过此值时，将分批合并以恢复并行执行能力。                                      | Integer.MAX_VALUE | 是    |
++| check-table-metadata-enabled (?)                    | boolean | 应用启动或元数据更新时，是否校验表元数据一致性。                                                                                                    | false           | 是      |
++| load-table-metadata-batch-size (?)                  | int     | 应用启动或刷新表元数据时，单个批次加载表元数据的数量。                                                                                                 | 1000            | 是      |
++| proxy-frontend-database-protocol-type (?)           | String  | ShardingSphere-Proxy 前端数据库协议类型。支持 `MySQL`、`PostgreSQL`、`openGauss` 和 `Firebird`。                                      | ""              | 是      |
++| proxy-frontend-flush-threshold (?)                  | int     | ShardingSphere-Proxy 前端传输记录的 I/O 刷新阈值。                                                                                       | 128             | 是      |
++| proxy-backend-query-fetch-size (?)                  | int     | Proxy 后端与数据库使用游标交互时每次获取的数据行数。数值增大可能会增加 ShardingSphere-Proxy 的内存使用。`-1` 表示使用不同 JDBC 驱动的最小值。                  | -1              | 是      |
++| proxy-frontend-executor-size (?)                    | int     | ShardingSphere-Proxy 前端 Netty 线程池线程数量。`0` 表示使用 Netty 默认值。                                                                 | 0               | 否      |
++| proxy-frontend-max-connections (?)                  | int     | 允许连接 ShardingSphere-Proxy 的最大客户端数量。`0` 表示不限制。                                                                            | 0               | 是      |
++| proxy-frontend-connection-idle-timeout (?)          | long    | 前端连接空闲超时时间，单位为秒。                                                                                                          | 28800           | 是      |
++| proxy-default-port (?)                              | int     | ShardingSphere-Proxy 默认启动端口。                                                                                                  | 3307            | 否      |
++| proxy-netty-backlog (?)                             | int     | ShardingSphere-Proxy 的 Netty backlog 大小。                                                                                       | 1024            | 是      |
++| cdc-server-port (?)                                 | int     | CDC Server 端口。                                                                                                                | 33071           | 否      |
++| proxy-frontend-ssl-enabled (?)                      | boolean | ShardingSphere-Proxy 前端是否启用 SSL/TLS。                                                                                         | false           | 否      |
++| proxy-frontend-ssl-version (?)                      | String  | 要启用的 SSL/TLS 协议。未配置时使用默认值 `TLSv1.2,TLSv1.3`。                                                                                 | TLSv1.2,TLSv1.3 | 否      |
++| proxy-frontend-ssl-cipher (?)                       | String  | 按偏好顺序启用的密码套件。多个密码套件用逗号分隔。空白表示使用默认密码套件。                                                                                | ""              | 否      |
++| agent-plugins-enabled (?)                           | boolean | 是否启用 agent 插件。                                                                                                             | true            | 是      |
++| metadata-identifier-case-sensitivity (?)            | String  | 元数据标识符大小写敏感策略。可选值为 `AUTO`、`SENSITIVE` 和 `INSENSITIVE`。                                                                      | AUTO            | 否      |
++| groovy-inline-expression-parsing-cache-max-size (?) | long    | Groovy 行表达式解析缓存的最大容量。                                                                                                      | 1000            | 是      |
  
-@@ -207,7 +207,7 @@ compute:
-   ## @param compute.mysqlConnector.version MySQL connector version
-   ##
-   mysqlConnector:
--    version: "5.1.49"
-+    version: "8.4.0"
-   ## @param compute.startPort ShardingSphere-Proxy start port
-   ## ShardingSphere-Proxy start port
-   ## ref: https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/startup/docker/
+ 属性配置可以通过 [DistSQL#RAL](/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/) 在线修改。
+ 其中支持动态修改的属性立即生效，不支持动态修改的属性在重启后生效。
+ 
+ ## 配置示例
+ 
+-完整配置示例请参考 ShardingSphere 仓库内的 `global.yaml`：<https://github.com/apache/shardingsphere/blob/612cd5d8e802d0d712a3a4d89da8fdc048d23879/proxy/bootstrap/src/main/resources/conf/global.yaml#L71-L89>
++完整配置示例请参考 ShardingSphere 仓库内的 `global.yaml`：<https://github.com/apache/shardingsphere/blob/master/proxy/bootstrap/src/main/resources/conf/global.yaml>
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.en.md b/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.en.md
+index b5ebcab8860..ca0d0661081 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/yaml-config/props.en.md
+@@ -10,28 +10,34 @@ Apache ShardingSphere provides a wealth of system configuration properties, whic
+ 
+ ## Parameters
+ 
+-| *Name*                                    | *Data Type* | *Description*                                                                                                                                                                                                                                                                                      | *Default*       | *Dynamic Update* |
+-|-------------------------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|------------------|
+-| sql-show (?)                              | boolean     | Whether to print SQL in logs. <br /> Printing SQL can help developers quickly locate system problems. Logs contain the following contents: logical SQL, authentic SQL and SQL parsing result. <br /> If configuration is enabled, logs will use Topic `org.apache.shardingsphere.sql`, and log level is INFO. | false           | True             |
+-| sql-simple (?)                            | boolean     | Whether to print simple SQL in logs.                                                                                                                                                                                                                                                               | false           | True             |
+-| kernel-executor-size (?)                  | int         | Set the size of the thread pool for task processing. Each ShardingSphereDataSource uses an independent thread pool, and different data sources on the same JVM do not share thread pools.                                                                                                          | infinite        | False            |
+-| max-connections-size-per-query (?)        | int         | The maximum number of connections that a query request can use in each database instance.                                                                                                                                                                                                          | 1               | True             |
+-| check-table-metadata-enabled (?)          | boolean     | Whether shard metadata is checked for structural consistency when the program is started and updated.                                                                                                                                                                                              | false           | True             |
+-| load-table-metadata-batch-size (?)        | int         | The number of table metadata loaded at a time when application startup or refreshes table metadata.                                                                                                                                                                                                | 1000            | True             |
+-| proxy-frontend-flush-threshold (?)        | int         | Set the I/O refresh threshold for the number of transmitted data items in ShardingSphere-Proxy.                                                                                                                                                                                                    | 128             | True             |
+-| proxy-backend-query-fetch-size (?)        | int         | The number of rows of data obtained when the backend Proxy interacts with databases (using a cursor). A larger number may increase the occupied memory of ShardingSphere-Proxy. The default value of -1 indicates the minimum value for JDBC driver.                                               | -1              | True             |
+-| proxy-frontend-executor-size (?)          | int         | The number of threads in the Netty thread pool of front-end Proxy.                                                                                                                                                                                                                                 | 0               | False            |
+-| proxy-frontend-max-connections (?)        | int         | The maximum number of clients that can be connected to Proxy. The default value of 0 indicates that there's no limit.                                                                                                                                                                              | 0               | True             |
+-| proxy-default-port (?)                    | String      | Proxy specifies the default window through configuration files.                                                                                                                                                                                                                                    | 3307            | False            |
+-| proxy-netty-backlog (?)                   | int         | Proxy specifies the default netty back_log parameter through configuration files.                                                                                                                                                                                                                  | 1024            | False            |
+-| proxy-frontend-database-protocol-type (?) | String      | Proxy front-end protocol type, supports MySQL, PostgreSQL, openGauss                                                                                                                                                                                                                               | \"\"            | False            |
+-| proxy-frontend-ssl-enabled (?)            | boolean     | Enable SSL/TLS for ShardingSphere-Proxy frontend.                                                                                                                                                                                                                                                  | false           | False            |
+-| proxy-frontend-ssl-version (?)            | String      | The SSL/TLS protocols to enable. Blank to use default.                                                                                                                                                                                                                                             | TLSv1.2,TLSv1.3 | False            |
+-| proxy-frontend-ssl-cipher (?)             | String      | The cipher suites to enable, in the order of preference. Multi cipher suites separated by comma. Blank to use default.                                                                                                                                                                             | \"\"            | False            |
++| *Name*                                                 | *Data Type* | *Description*                                                                                                                                                                                                                         | *Default*       | *Dynamic Update* |
++|--------------------------------------------------------|-------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------|------------------|
++| sql-show (?)                                           | boolean     | Whether to print SQL in logs. SQL logs include logical SQL, actual SQL, and SQL parse results. If enabled, logs use topic `org.apache.shardingsphere.sql` with log level INFO.                                                        | false           | True             |
++| sql-simple (?)                                         | boolean     | Whether to print SQL in a simplified style.                                                                                                                                                                                           | false           | True             |
++| kernel-executor-size (?)                               | int         | Worker thread pool size for SQL execution. `0` means unlimited.                                                                                                                                                                       | 0               | False            |
++| max-connections-size-per-query (?)                     | int         | Maximum number of connections that one query request can use in each database instance.                                                                                                                                               | 1               | True             |
++| max-union-size-per-datasource (?)                      | int         | Maximum UNION ALL size per data source for aggregate rewrite. When route units for one data source exceed this value, they are split into batches to restore parallel execution capability.                                          | Integer.MAX_VALUE | True           |
++| check-table-metadata-enabled (?)                       | boolean     | Whether to validate table metadata consistency when the application starts or metadata is updated.                                                                                                                                     | false           | True             |
++| load-table-metadata-batch-size (?)                     | int         | Number of table metadata entries loaded per batch when the application starts or refreshes table metadata.                                                                                                                             | 1000            | True             |
++| proxy-frontend-database-protocol-type (?)              | String      | Frontend database protocol type for ShardingSphere-Proxy. Supported values are `MySQL`, `PostgreSQL`, `openGauss`, and `Firebird`.                                                                                                    | ""              | True             |
++| proxy-frontend-flush-threshold (?)                     | int         | I/O flush threshold for records transmitted by the ShardingSphere-Proxy frontend.                                                                                                                                                     | 128             | True             |
++| proxy-backend-query-fetch-size (?)                     | int         | Number of rows fetched when the Proxy backend interacts with databases by cursor. A larger value may increase ShardingSphere-Proxy memory usage. `-1` means using the minimum value for each JDBC driver.                            | -1              | True             |
++| proxy-frontend-executor-size (?)                       | int         | Number of threads in the ShardingSphere-Proxy frontend Netty thread pool. `0` means using Netty's default value.                                                                                                                      | 0               | False            |
++| proxy-frontend-max-connections (?)                     | int         | Maximum number of clients that can connect to ShardingSphere-Proxy. `0` means unlimited.                                                                                                                                              | 0               | True             |
++| proxy-frontend-connection-idle-timeout (?)             | long        | Frontend connection idle timeout in seconds.                                                                                                                                                                                          | 28800           | True             |
++| proxy-default-port (?)                                 | int         | Default startup port of ShardingSphere-Proxy.                                                                                                                                                                                         | 3307            | False            |
++| proxy-netty-backlog (?)                                | int         | Netty backlog size of ShardingSphere-Proxy.                                                                                                                                                                                           | 1024            | True             |
++| cdc-server-port (?)                                    | int         | CDC server port.                                                                                                                                                                                                                      | 33071           | False            |
++| proxy-frontend-ssl-enabled (?)                         | boolean     | Whether to enable SSL/TLS for the ShardingSphere-Proxy frontend.                                                                                                                                                                      | false           | False            |
++| proxy-frontend-ssl-version (?)                         | String      | SSL/TLS protocols to enable. If omitted, the default value is `TLSv1.2,TLSv1.3`.                                                                                                                                                       | TLSv1.2,TLSv1.3 | False            |
++| proxy-frontend-ssl-cipher (?)                          | String      | Cipher suites to enable, in preference order. Multiple cipher suites are separated by commas. Blank means using the default cipher suites.                                                                                             | ""              | False            |
++| agent-plugins-enabled (?)                              | boolean     | Whether to enable agent plugins.                                                                                                                                                                                                      | true            | True             |
++| metadata-identifier-case-sensitivity (?)               | String      | Metadata identifier case sensitivity. Available values are `AUTO`, `SENSITIVE`, and `INSENSITIVE`.                                                                                                                                    | AUTO            | False            |
++| groovy-inline-expression-parsing-cache-max-size (?)    | long        | Maximum size of the Groovy inline expression parsing cache.                                                                                                                                                                           | 1000            | True             |
+ 
+ Properties can be modified online through [DistSQL#RAL](/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/).
+ Properties that support dynamic change can take effect immediately. For the ones that do not support dynamic change, the effect will be implemented after a restart.
+ 
+ ## Sample
+ 
+-For a complete sample, please refer to `global.yaml` in ShardingSphere's repository：<https://github.com/apache/shardingsphere/blob/612cd5d8e802d0d712a3a4d89da8fdc048d23879/proxy/bootstrap/src/main/resources/conf/global.yaml#L71-L89>
++For a complete sample, please refer to `global.yaml` in ShardingSphere's repository: <https://github.com/apache/shardingsphere/blob/master/proxy/bootstrap/src/main/resources/conf/global.yaml>

@@ -359,11 +359,8 @@ XAResource1.start ## Enlist阶段执行 statement.execute(&amp;quot;sql1&amp;quo
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/common-config/props/</guid>
-      <description>背景信息 Apache ShardingSphere 提供属性配置的方式配置系统级配置。
-参数解释    名称 数据类型 说明 默认值     sql-show (?) boolean 是否在日志中打印 SQL
-打印 SQL 可以帮助开发者快速定位系统问题。日志内容包含：逻辑 SQL，真实 SQL 和 SQL 解析结果。
-如果开启配置，日志将使用 Topic org.apache.shardingsphere.sql，日志级别是 INFO false   sql-simple (?) boolean 是否在日志中打印简单风格的 SQL false   kernel-executor-size (?) int 用于设置任务处理线程池的大小
-每个 ShardingSphereDataSource 使用一个独立的线程池，同一个 JVM 的不同数据源不共享线程池 infinite   max-connections-size-per-query (?) int 一次查询请求在每个数据库实例中所能使用的最大连接数 1   max-union-size-per-datasource (?) int 每个数据源允许合并的最大 UNION ALL 数量。当路由到同一数据源的路由单元数量超过此值时，将分批合并以恢复并行执行能力 Integer.</description>
+      <description>背景信息 Apache ShardingSphere 提供属性配置来设置系统级行为。
+参数解释    名称 数据类型 说明 默认值     sql-show (?) boolean 是否在日志中打印 SQL。SQL 日志内容包含：逻辑 SQL、真实 SQL 和 SQL 解析结果。如果开启配置，日志将使用 Topic org.apache.shardingsphere.sql，日志级别为 INFO。 false   sql-simple (?) boolean 是否在日志中打印简单风格的 SQL。 false   kernel-executor-size (?) int SQL 执行工作线程池大小。每个 ShardingSphereDataSource 使用独立线程池，同一个 JVM 的不同数据源不共享线程池。0 表示不限制。 0   max-connections-size-per-query (?) int 一次查询请求在每个数据库实例中所能使用的最大连接数。 1   max-union-size-per-datasource (?) int 每个数据源允许合并的最大 UNION ALL 数量。当路由到同一数据源的路由单元数量超过此值时，将分批合并以恢复并行执行能力。 Integer.MAX_VALUE   check-table-metadata-enabled (?</description>
     </item>
     
     <item>
@@ -1101,8 +1098,7 @@ LOCAL 事务 不支持项  不支持因网络、硬件异常导致的跨库事�
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/yaml-config/props/</guid>
       <description>背景信息 Apache ShardingSphere 提供了丰富的系统配置属性，用户可通过 global.yaml 进行配置。
-参数解释    名称 数据类型 说明 默认值 动态生效     sql-show (?) boolean 是否在日志中打印 SQL。 打印 SQL 可以帮助开发者快速定位系统问题。日志内容包含：逻辑 SQL，真实 SQL 和 SQL 解析结果。
-如果开启配置，日志将使用 Topic org.apache.shardingsphere.sql，日志级别是 INFO。 false 是   sql-simple (?) boolean 是否在日志中打印简单风格的 SQL。 false 是   kernel-executor-size (?) int 用于设置任务处理线程池的大小。每个 ShardingSphereDataSource 使用一个独立的线程池，同一个 JVM 的不同数据源不共享线程池。 infinite 否   max-connections-size-per-query (?) int 一次查询请求在每个数据库实例中所能使用的最大连接数。 1 是   check-table-metadata-enabled (?</description>
+参数解释    名称 数据类型 说明 默认值 动态生效     sql-show (?) boolean 是否在日志中打印 SQL。SQL 日志内容包含：逻辑 SQL、真实 SQL 和 SQL 解析结果。如果开启配置，日志将使用 Topic org.apache.shardingsphere.sql，日志级别为 INFO。 false 是   sql-simple (?) boolean 是否在日志中打印简单风格的 SQL。 false 是   kernel-executor-size (?) int SQL 执行工作线程池大小。0 表示不限制。 0 否   max-connections-size-per-query (?) int 一次查询请求在每个数据库实例中所能使用的最大连接数。 1 是   max-union-size-per-datasource (?) int 每个数据源允许合并的最大 UNION ALL 数量。当路由到同一数据源的路由单元数量超过此值时，将分批合并以恢复并行执行能力。 Integer.</description>
     </item>
     
     <item>
@@ -2269,8 +2265,8 @@ transport: type: STREAMABLE_HTTP http: bindHost: 0.0.0.0 port: 18088 endpointPat
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/set-dist-variable/</guid>
       <description>描述 SET DIST VARIABLE 语法用于设置系统变量。
-语法 语法 铁路图  SetDistVariable ::= &amp;#39;SET&amp;#39; &amp;#39;DIST&amp;#39; &amp;#39;VARIABLE&amp;#39; (proxyPropertyName &amp;#39;=&amp;#39; proxyPropertyValue | &amp;#39;agent_plugins_enabled&amp;#39; &amp;#39;=&amp;#39; agentPluginsEnabled) proxyPropertyName ::= identifier proxyPropertyValue ::= literal agentPluginsEnabled ::= boolean       补充说明   proxy_property_name 为 PROXY 的属性配置，需使用下划线命名
-  agent_plugins_enabled 为 agent 插件的启用状态，默认值 FALSE
+语法 语法 铁路图  SetDistVariable ::= &amp;#39;SET&amp;#39; &amp;#39;DIST&amp;#39; &amp;#39;VARIABLE&amp;#39; variableName &amp;#39;=&amp;#39; variableValue variableName ::= identifier variableValue ::= literal       补充说明   variableName 为 PROXY 的属性配置，DistSQL 变量名使用下划线而非连字符
+  agent_plugins_enabled 用于设置 agent 插件的启用状态，默认值为 TRUE
   示例  设置 Proxy 属性配置  SET DIST VARIABLE sql_show = true;  设置 agent 插件启用状态  SET DIST VARIABLE agent_plugins_enabled = TRUE; 保留字 SET、DIST、VARIABLE</description>
     </item>
     
@@ -2399,7 +2395,7 @@ transport: type: STREAMABLE_HTTP http: bindHost: 0.0.0.0 port: 18088 endpointPat
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-dist-variable/</guid>
       <description>描述 SHOW DIST VARIABLE 语法用于查询 PROXY 系统变量配置。
-语法 语法 铁路图  ShowDistVariable ::= &amp;#39;SHOW&amp;#39; &amp;#39;DIST&amp;#39; (&amp;#39;VARIABLES&amp;#39; (&amp;#39;LIKE&amp;#39; likePattern)?| &amp;#39;VARIABLE&amp;#39; &amp;#39;WHERE&amp;#39; &amp;#39;NAME&amp;#39; &amp;#39;=&amp;#39; variableName) likePattern ::= string variableName ::= identifier       返回值说明    列 说明     variable_name 系统变量名称   variable_value 系统变量值    补充说明  未指定 variableName 时，默认查询所有 PROXY 系统变量配置  示例  查询所有 PROXY 系统变量配置  SHOW DIST VARIABLES; mysql&amp;gt; SHOW DIST VARIABLES; +-----------------------------------------+-----------------+ | variable_name | variable_value | +-----------------------------------------+-----------------+ | agent_plugins_enabled | true | | cached_connections | 0 | | cdc_server_port | 33071 | | check_table_metadata_enabled | false | | kernel_executor_size | 0 | | load_table_metadata_batch_size | 1000 | | max_connections_size_per_query | 1 | | proxy_backend_query_fetch_size | -1 | | proxy_default_port | 3307 | | proxy_frontend_database_protocol_type | | | proxy_frontend_executor_size | 0 | | proxy_frontend_flush_threshold | 128 | | proxy_frontend_max_connections | 0 | | proxy_frontend_ssl_cipher | | | proxy_frontend_ssl_enabled | false | | proxy_frontend_ssl_version | TLSv1.</description>
+语法 语法 铁路图  ShowDistVariable ::= &amp;#39;SHOW&amp;#39; &amp;#39;DIST&amp;#39; (&amp;#39;VARIABLES&amp;#39; (&amp;#39;LIKE&amp;#39; likePattern)?| &amp;#39;VARIABLE&amp;#39; &amp;#39;WHERE&amp;#39; &amp;#39;NAME&amp;#39; &amp;#39;=&amp;#39; variableName) likePattern ::= string variableName ::= identifier       返回值说明    列 说明     variable_name 系统变量名称   variable_value 系统变量值    补充说明  未指定 variableName 时，默认查询所有持久化 PROXY 系统变量配置和缓存连接数  示例  查询所有 PROXY 系统变量配置  SHOW DIST VARIABLES; mysql&amp;gt; SHOW DIST VARIABLES; +-------------------------------------------------------+-----------------+ | variable_name | variable_value | +-------------------------------------------------------+-----------------+ | agent_plugins_enabled | true | | cached_connections | 0 | | cdc_server_port | 33071 | | check_table_metadata_enabled | false | | groovy_inline_expression_parsing_cache_max_size | 1000 | | kernel_executor_size | 0 | | load_table_metadata_batch_size | 1000 | | max_connections_size_per_query | 1 | | max_union_size_per_datasource | 2147483647 | | metadata_identifier_case_sensitivity | AUTO | | proxy_backend_query_fetch_size | -1 | | proxy_default_port | 3307 | | proxy_frontend_connection_idle_timeout | 28800 | | proxy_frontend_database_protocol_type | | | proxy_frontend_executor_size | 0 | | proxy_frontend_flush_threshold | 128 | | proxy_frontend_max_connections | 0 | | proxy_frontend_ssl_cipher | | | proxy_frontend_ssl_enabled | false | | proxy_frontend_ssl_version | TLSv1.</description>
     </item>
     
     <item>
