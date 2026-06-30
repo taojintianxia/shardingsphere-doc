@@ -12,22 +12,22 @@
     <title>Manual :: ShardingSphere</title>
 
     
-    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1782795159" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1782795159" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1782813987" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1782813987" rel="stylesheet">
     
-    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1782795159" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1782813987" rel="stylesheet">
     
     
 
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1782795159"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1782813987"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style>
@@ -301,14 +301,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1782795159"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1782795159"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1782813987"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1782813987"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/shardingsphere.apache.org\/document\/current\/\/en";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1782795159"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1782813987"></script>
 
       
     </div>
@@ -6815,10 +6815,10 @@
    
     
       
-        <li data-nav-id="/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/check-migration/" title="CHECK MIGRATION " class="dd-item ">
+        <li data-nav-id="/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/check-migration/" title="CHECK MIGRATION" class="dd-item ">
           <a href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/check-migration/">
             <svg  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5375" width="20" height="20"></svg>
-          CHECK MIGRATION 
+          CHECK MIGRATION
           
           </a>
       </li>
@@ -11032,9 +11032,8 @@ SUCCESS
 </code></pre><h1 id="precautions">Precautions</h1>
 <h2 id="explanation-of-incremental-data-push">Explanation of incremental data push</h2>
 <ol>
-<li>The CDC incremental push is currently transactional, and the transactions of the physical database will not be split. Therefore, if there are data changes in multiple tables in a transaction, these data changes will be pushed together.
-If you want to support XA transactions (currently only supports openGauss), both openGauss and Proxy need the GLT module.</li>
-<li>The conditions for push are met when a certain amount of data is met or a certain time interval is reached (currently 300ms). When processing XA transactions, if the received multiple physical database incremental events exceed 300ms, it may cause the XA transaction to be split and pushed.</li>
+<li>The CDC incremental push is currently transactional, and the transactions of the physical database will not be split. Therefore, if there are data changes in multiple tables in a transaction, these data changes will be pushed together.</li>
+<li>The conditions for push are met when a certain amount of data is met or a certain time interval is reached (currently 300ms).</li>
 </ol>
 <h2 id="handling-of-large-transactions">Handling of large transactions</h2>
 <p>Currently, large transactions are fully parsed, which may cause the CDC Server process to OOM. In the future, forced truncation may be considered.</p>
@@ -17252,19 +17251,19 @@ If you want to support XA transactions (currently only supports openGauss), both
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1782795159"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1782795159"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1782795159"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1782795159"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1782795159"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1782795159"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1782813987"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1782813987"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1782813987"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1782813987"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1782813987"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1782813987"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1782795159"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1782795159"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1782795159"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1782813987"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1782813987"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1782813987"></script>
     
         
-            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1782795159"></script>
+            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1782813987"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });

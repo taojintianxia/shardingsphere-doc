@@ -12,22 +12,22 @@
     <title>COUNT SINGLE TABLE :: ShardingSphere</title>
 
     
-    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1782795166" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1782795166" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1782813995" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1782813995" rel="stylesheet">
     
-    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1782795166" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1782813995" rel="stylesheet">
     
     
 
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1782795166"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1782813995"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style>
@@ -301,14 +301,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1782795166"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1782795166"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1782813995"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1782813995"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/shardingsphere.apache.org\/document\/current\/\/cn";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1782795166"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1782813995"></script>
 
       
     </div>
@@ -6815,10 +6815,10 @@
    
     
       
-        <li data-nav-id="/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/check-migration/" title="CHECK MIGRATION BY" class="dd-item ">
+        <li data-nav-id="/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/check-migration/" title="CHECK MIGRATION" class="dd-item ">
           <a href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/check-migration/">
             <svg  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5375" width="20" height="20"></svg>
-          CHECK MIGRATION BY
+          CHECK MIGRATION
           
           </a>
       </li>
@@ -10767,6 +10767,10 @@ databaseName ::<span style="color:#f92672">=</span>
 </thead>
 <tbody>
 <tr>
+<td>rule_name</td>
+<td>单表规则名称</td>
+</tr>
+<tr>
 <td>database</td>
 <td>单表所在的数据库名称</td>
 </tr>
@@ -10782,11 +10786,11 @@ databaseName ::<span style="color:#f92672">=</span>
 </ul>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">COUNT</span> SINGLE <span style="color:#66d9ef">TABLE</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql">mysql<span style="color:#f92672">&gt;</span> <span style="color:#66d9ef">COUNT</span> SINGLE <span style="color:#66d9ef">TABLE</span>;
-<span style="color:#f92672">+</span><span style="color:#75715e">----------+--------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> <span style="color:#66d9ef">database</span> <span style="color:#f92672">|</span> <span style="color:#66d9ef">count</span>  <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">----------+--------+
-</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> ds       <span style="color:#f92672">|</span> <span style="color:#ae81ff">2</span>      <span style="color:#f92672">|</span>
-<span style="color:#f92672">+</span><span style="color:#75715e">----------+--------+
+<span style="color:#f92672">+</span><span style="color:#75715e">-----------+-------------+-------+
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> rule_name <span style="color:#f92672">|</span> <span style="color:#66d9ef">database</span>    <span style="color:#f92672">|</span> <span style="color:#66d9ef">count</span> <span style="color:#f92672">|</span>
+<span style="color:#f92672">+</span><span style="color:#75715e">-----------+-------------+-------+
+</span><span style="color:#75715e"></span><span style="color:#f92672">|</span> single    <span style="color:#f92672">|</span> sharding_db <span style="color:#f92672">|</span> <span style="color:#ae81ff">2</span>     <span style="color:#f92672">|</span>
+<span style="color:#f92672">+</span><span style="color:#75715e">-----------+-------------+-------+
 </span><span style="color:#75715e"></span><span style="color:#ae81ff">1</span> <span style="color:#66d9ef">row</span> <span style="color:#66d9ef">in</span> <span style="color:#66d9ef">set</span> (<span style="color:#ae81ff">0</span>.<span style="color:#ae81ff">02</span> sec)
 </code></pre></div><h3 id="保留字">保留字</h3>
 <p><code>COUNT</code>、<code>SINGLE</code>、<code>TABLE</code>、<code>FROM</code></p>
@@ -17019,19 +17023,19 @@ databaseName ::<span style="color:#f92672">=</span>
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1782795166"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1782795166"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1782795166"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1782795166"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1782795166"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1782795166"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1782813995"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1782813995"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1782813995"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1782813995"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1782813995"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1782813995"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1782795166"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1782795166"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1782795166"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1782813995"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1782813995"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1782813995"></script>
     
         
-            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1782795166"></script>
+            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1782813995"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });

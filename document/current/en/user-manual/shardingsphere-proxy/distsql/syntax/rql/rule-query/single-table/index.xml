@@ -13,7 +13,7 @@
       
       <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/single-table/show-single-table/</guid>
       <description>Description The SHOW SINGLE TABLES syntax is used to query single tables for specified database.
-Syntax Grammar Railroad diagram  ShowSingleTables ::= &amp;#39;SHOW&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLES&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? showLike? showLike ::= &amp;#39;LIKE&amp;#39; likePattern likePattern ::= string databaseName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.  Return value description    Column Description     table_name Single table name   storage_unit_name The storage unit name where the single table is located    Example  Query single tables for specified database.</description>
+Syntax Grammar Railroad diagram  ShowSingleTables ::= &amp;#39;SHOW&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLES&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? showLike? showLike ::= &amp;#39;LIKE&amp;#39; likePattern likePattern ::= string databaseName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.  Return value description    Column Description     table_name Single table name   storage_unit_name The storage unit name where the single table is located   schema_name Schema name, returned only when schema metadata exists    Example  Query single tables for specified database.</description>
     </item>
     
     <item>
@@ -22,8 +22,8 @@ Syntax Grammar Railroad diagram  ShowSingleTables ::= &amp;#39;SHOW&amp;#39; &am
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/single-table/show-default-single-table-storage-unit/</guid>
-      <description>Description The SHOW DEFAULT SINGLE TABLE STORAGE UNIT syntax is used to query storage units for specified database.
-Syntax Grammar Railroad diagram  ShowDefaultSingleTableStorageUnit::= &amp;#39;SHOW&amp;#39; &amp;#39;DEFAULT&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLE&amp;#39; &amp;#39;STORAGE&amp;#39; &amp;#39;UNIT&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? databaseName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.  Return Value Description    Column Description     storage_unit_name Storage unit name    Example  Query storage units for specified database.</description>
+      <description>Description The SHOW DEFAULT SINGLE TABLE STORAGE UNIT syntax is used to query the default single table storage unit for the specified or current database.
+Syntax Grammar Railroad diagram  ShowDefaultSingleTableStorageUnit::= &amp;#39;SHOW&amp;#39; &amp;#39;DEFAULT&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLE&amp;#39; &amp;#39;STORAGE&amp;#39; &amp;#39;UNIT&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? databaseName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.</description>
     </item>
     
     <item>
@@ -33,7 +33,7 @@ Syntax Grammar Railroad diagram  ShowDefaultSingleTableStorageUnit::= &amp;#39;S
       
       <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/single-table/count-single-table/</guid>
       <description>Description The COUNT SINGLE TABLE syntax is used to query number of single table for specified database.
-Syntax Grammar Railroad diagram  CountSingleTable::= &amp;#39;COUNT&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLE&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? databaseName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.  Return Value Description    Column Description     database The database name where the single table is located   count The count of single table    Example  Query the number of single rules for specified database.</description>
+Syntax Grammar Railroad diagram  CountSingleTable::= &amp;#39;COUNT&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLE&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? databaseName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.  Return Value Description    Column Description     rule_name Single rule name   database The database name where the single table is located   count The count of single table    Example  Query the number of single rules for specified database.</description>
     </item>
     
     <item>
