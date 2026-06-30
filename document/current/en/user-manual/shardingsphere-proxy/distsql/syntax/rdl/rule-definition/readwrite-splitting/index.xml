@@ -32,8 +32,8 @@ Syntax Grammar Railroad diagram  AlterReadwriteSplittingRule ::= &amp;#39;ALTER&
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/syntax/rdl/rule-definition/readwrite-splitting/drop-readwrite-splitting-rule/</guid>
-      <description>Description The DROP READWRITE_SPLITTING RULE syntax is used to drop readwrite-splitting rule for specified database
-Syntax Grammar Railroad diagram  DropReadwriteSplittingRule ::= &amp;#39;DROP&amp;#39; &amp;#39;READWRITE_SPLITTING&amp;#39; &amp;#39;RULE&amp;#39; ifExists? ruleName (&amp;#39;,&amp;#39; ruleName)* (&amp;#39;FROM&amp;#39; databaseName)? ifExists ::= &amp;#39;IF&amp;#39; &amp;#39;EXISTS&amp;#39; ruleName ::= identifier databaseName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted; ifExists clause is used for avoid Readwrite-splitting rule not exists error.</description>
+      <description>Description The DROP READWRITE_SPLITTING RULE syntax is used to drop readwrite-splitting rules from the current database.
+Syntax Grammar Railroad diagram  DropReadwriteSplittingRule ::= &amp;#39;DROP&amp;#39; &amp;#39;READWRITE_SPLITTING&amp;#39; &amp;#39;RULE&amp;#39; ifExists? ruleName (&amp;#39;,&amp;#39; ruleName)* ifExists ::= &amp;#39;IF&amp;#39; &amp;#39;EXISTS&amp;#39; ruleName ::= identifier       Supplement  ifExists clause is used for avoid Readwrite-splitting rule not exists error.  Example  Drop readwrite-splitting rule  DROP READWRITE_SPLITTING RULE ms_group_1;  Drop multiple readwrite-splitting rules  DROP READWRITE_SPLITTING RULE ms_group_1, ms_group_2;  Drop readwrite-splitting rule with ifExists clause  DROP READWRITE_SPLITTING RULE IF EXISTS ms_group_1; Reserved word DROP, READWRITE_SPLITTING, RULE, IF, EXISTS</description>
     </item>
     
   </channel>
