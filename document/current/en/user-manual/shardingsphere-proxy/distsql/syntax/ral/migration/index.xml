@@ -62,7 +62,7 @@ Syntax Grammar Railroad diagram  ShowMigrationSourceStorageUnits ::= &amp;#39;SH
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/migration/migrate-table-into/</guid>
-      <description>Description MIGRATE TABLE INTO syntax is used to migration table from source to target
+      <description>Description MIGRATE TABLE INTO syntax is used to migrate table from source to target
 Syntax Grammar Railroad diagram  MigrateTableInto ::= &amp;#39;MIGRATE&amp;#39; &amp;#39;TABLE&amp;#39; migrationSource &amp;#39;.&amp;#39; tableName &amp;#39;INTO&amp;#39; (databaseName &amp;#39;.&amp;#39;)? tableName migrationSource ::= identifier databaseName ::= identifier tableName ::= identifier       Supplement  When databaseName is not specified, the default is the currently used DATABASE. If DATABASE is not used, No database selected will be prompted.  Example  Migrate table from source to current database  MIGRATE TABLE ds_0.</description>
     </item>
     

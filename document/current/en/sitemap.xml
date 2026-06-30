@@ -1406,6 +1406,18 @@
                 href="https://shardingsphere.apache.org/document/current/en/quick-start/"
                 />
   </url><url>
+    <loc>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/usage/readwrite-splitting-rule/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwrite-splitting-rule/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/usage/readwrite-splitting-rule/"
+                />
+  </url><url>
     <loc>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-jdbc/special-api/readwrite-splitting/</loc>
     <xhtml:link
                 rel="alternate"
@@ -1416,18 +1428,6 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-jdbc/special-api/readwrite-splitting/"
-                />
-  </url><url>
-    <loc>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/usage/readwirte-splitting-rule/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="cn"
-                href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwirte-splitting-rule/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/usage/readwirte-splitting-rule/"
                 />
   </url><url>
     <loc>https://shardingsphere.apache.org/document/current/en/reference/sharding/route/</loc>
@@ -4106,18 +4106,6 @@
                 href="https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-jdbc/yaml-config/rules/mix/"
                 />
   </url><url>
-    <loc>https://shardingsphere.apache.org/document/current/en/reference/observability/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="cn"
-                href="https://shardingsphere.apache.org/document/current/cn/reference/observability/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://shardingsphere.apache.org/document/current/en/reference/observability/"
-                />
-  </url><url>
     <loc>https://shardingsphere.apache.org/document/current/en/features/observability/</loc>
     <xhtml:link
                 rel="alternate"
@@ -4128,6 +4116,18 @@
                 rel="alternate"
                 hreflang="en"
                 href="https://shardingsphere.apache.org/document/current/en/features/observability/"
+                />
+  </url><url>
+    <loc>https://shardingsphere.apache.org/document/current/en/reference/observability/</loc>
+    <xhtml:link
+                rel="alternate"
+                hreflang="cn"
+                href="https://shardingsphere.apache.org/document/current/cn/reference/observability/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://shardingsphere.apache.org/document/current/en/reference/observability/"
                 />
   </url><url>
     <loc>https://shardingsphere.apache.org/document/current/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/refresh-database-metadata/</loc>

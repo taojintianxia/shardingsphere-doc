@@ -12,22 +12,22 @@
     <title>分片算法 :: ShardingSphere</title>
 
     
-    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1782821047" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1782821047" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/nucleus.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/fontawesome-all.min.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hybrid.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/featherlight.min.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/perfect-scrollbar.min.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/auto-complete.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/atom-one-dark-reasonable.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/tabs.css?1782859674" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/hugo-theme.css?1782859674" rel="stylesheet">
     
-    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1782821047" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/document/current/css/theme-white.css?1782859674" rel="stylesheet">
     
     
 
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1782821047"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery-3.3.1.min.js?1782859674"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style>
@@ -301,14 +301,14 @@
     <span data-search-clear=""><i class="fas fa-times"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1782821047"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1782821047"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/lunr.min.js?1782859674"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/auto-complete.js?1782859674"></script>
 <script type="text/javascript">
     
         var baseurl = "https:\/\/shardingsphere.apache.org\/document\/current\/\/cn";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1782821047"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/document/current/js/search.js?1782859674"></script>
 
       
     </div>
@@ -7680,8 +7680,8 @@
    
     
       
-        <li data-nav-id="/cn/user-manual/shardingsphere-proxy/distsql/usage/readwirte-splitting-rule/" title="读写分离" class="dd-item ">
-          <a href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwirte-splitting-rule/">
+        <li data-nav-id="/cn/user-manual/shardingsphere-proxy/distsql/usage/readwrite-splitting-rule/" title="读写分离" class="dd-item ">
+          <a href="https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwrite-splitting-rule/">
             <svg  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5375" width="20" height="20"></svg>
           读写分离
           
@@ -10714,7 +10714,7 @@
 </nav>
 
 <h2 id="背景信息">背景信息</h2>
-<p>ShardingSphere 内置提供了多种分片算法，按照类型可以划分为自动分片算法、标准分片算法、复合分片算法和 Hint 分片算法，能够满足用户绝大多数业务场景的需要。此外，考虑到业务场景的复杂性，内置算法也提供了自定义分片算法的方式，用户可以通过编写 Java 代码来完成复杂的分片逻辑。
+<p>ShardingSphere 内置提供了多种分片算法，按照类型可以划分为自动分片算法、标准分片算法、复合分片算法和 Hint 分片算法。用户可以通过实现对应的 SPI 提供自定义分片算法，以完成复杂的分片逻辑。
 需要注意的是，自动分片算法的分片逻辑由 ShardingSphere 自动管理，需要通过配置 autoTables 分片规则进行使用。</p>
 <h2 id="参数解释">参数解释</h2>
 <h3 id="自动分片算法">自动分片算法</h3>
@@ -10866,7 +10866,7 @@
 <h4 id="行表达式分片算法">行表达式分片算法</h4>
 <p>使用 <code>InlineExpressionParser</code> SPI 的默认实现的 Groovy 的表达式，提供对 SQL 语句中的 <code>=</code> 和 <code>IN</code> 的分片操作支持，只支持单分片键。
 对于简单的分片算法，可以通过简单的配置使用，从而避免繁琐的 Java 代码开发，如: <code>t_user_$-&gt;{u_id % 8}</code> 表示 <code>t_user</code> 表根据 <code>u_id</code> 模 8，而分成 8 张表，表名称为 <code>t_user_0</code> 到 <code>t_user_7</code>。
-详情请参见<a href="https://shardingsphere.apache.org/document/current/cn/dev-manual/sharding/#implementation-classes">行表达式</a>。</p>
+详情请参见<a href="https://shardingsphere.apache.org/document/current/cn/dev-manual/sharding/#inlineexpressionparser">行表达式</a>。</p>
 <p>类型：INLINE</p>
 <p>可配置属性：</p>
 <table>
@@ -17323,19 +17323,19 @@
     <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
       <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
     </div>
-    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1782821047"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1782821047"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1782821047"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1782821047"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1782821047"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1782821047"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/clipboard.min.js?1782859674"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.min.js?1782859674"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/perfect-scrollbar.jquery.min.js?1782859674"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/jquery.sticky.js?1782859674"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/featherlight.min.js?1782859674"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/highlight.pack.js?1782859674"></script>
     <script>hljs.initHighlightingOnLoad();</script>
-    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1782821047"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1782821047"></script>
-    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1782821047"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/modernizr.custom-3.6.0.js?1782859674"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/learn.js?1782859674"></script>
+    <script src="https://shardingsphere.apache.org/document/current/js/hugo-learn.js?1782859674"></script>
     
         
-            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1782821047"></script>
+            <script src="https://shardingsphere.apache.org/document/current/mermaid/mermaid.js?1782859674"></script>
         
         <script>
             mermaid.initialize({ startOnLoad: true });

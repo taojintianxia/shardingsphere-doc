@@ -198,7 +198,7 @@ codex mcp add shardingsphere --url http://127.</description>
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/readwrite-splitting/show-readwrite-splitting-rule/</guid>
       <description>描述 SHOW READWRITE_SPLITTING RULE 语法用于查询指定逻辑库中的指定读写分离规则。
-语法 语法 铁路图  ShowReadWriteSplittingRule::= &amp;#39;SHOW&amp;#39; &amp;#39;READWRITE_SPLITTING&amp;#39; (&amp;#39;RULE&amp;#39; ruleName | &amp;#39;RULES&amp;#39;) (&amp;#39;FROM&amp;#39; databaseName)? ruleName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     name 读写分离规则名称   write_data_source_name 写数据源名称   read_data_source_names 读数据源名称列表   transactional_read_query_strategy 事务内读请求路由策略   load_balancer_type 负载均衡算法类型   load_balancer_props 负载均衡算法参数    示例  查询指定逻辑库中的读写分离规则  SHOW READWRITE_SPLITTING RULES FROM readwrite_splitting_db; mysql&amp;gt; SHOW READWRITE_SPLITTING RULES FROM readwrite_splitting_db; +------------+-------------------------+-------------------------+-----------------------------------+--------------------+---------------------+ | name | write_storage_unit_name | read_storage_unit_names | transactional_read_query_strategy | load_balancer_type | load_balancer_props | +------------+-------------------------+-------------------------+-----------------------------------+--------------------+---------------------+ | ms_group_0 | write_ds | read_ds_0,read_ds_1 | DYNAMIC | random | | +------------+-------------------------+-------------------------+-----------------------------------+--------------------+---------------------+ 1 row in set (0.</description>
+语法 语法 铁路图  ShowReadWriteSplittingRule::= &amp;#39;SHOW&amp;#39; &amp;#39;READWRITE_SPLITTING&amp;#39; (&amp;#39;RULE&amp;#39; ruleName | &amp;#39;RULES&amp;#39;) (&amp;#39;FROM&amp;#39; databaseName)? ruleName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     name 读写分离规则名称   write_storage_unit_name 写存储单元名称   read_storage_unit_names 读存储单元名称列表   transactional_read_query_strategy 事务内读请求路由策略   load_balancer_type 负载均衡算法类型   load_balancer_props 负载均衡算法参数    示例  查询指定逻辑库中的读写分离规则  SHOW READWRITE_SPLITTING RULES FROM readwrite_splitting_db; mysql&amp;gt; SHOW READWRITE_SPLITTING RULES FROM readwrite_splitting_db; +------------+-------------------------+-------------------------+-----------------------------------+--------------------+---------------------+ | name | write_storage_unit_name | read_storage_unit_names | transactional_read_query_strategy | load_balancer_type | load_balancer_props | +------------+-------------------------+-------------------------+-----------------------------------+--------------------+---------------------+ | ms_group_0 | write_ds | read_ds_0,read_ds_1 | DYNAMIC | random | | +------------+-------------------------+-------------------------+-----------------------------------+--------------------+---------------------+ 1 row in set (0.</description>
     </item>
     
     <item>
@@ -218,7 +218,7 @@ codex mcp add shardingsphere --url http://127.</description>
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-table-rule/</guid>
       <description>描述 SHOW SHARDING TABLE RULE 语法用于查询指定逻辑库中的分片规则。
-语法 语法 铁路图  ShowShardingTableRule ::= &amp;#39;SHOW&amp;#39; &amp;#39;SHARDING&amp;#39; &amp;#39;TABLE&amp;#39; (&amp;#39;RULE&amp;#39; tableName | &amp;#39;RULES&amp;#39;) (&amp;#39;FROM&amp;#39; databaseName)? tableName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     table 逻辑表名   actual_data_nodes 实际的数据节点   actual_data_sources 实际的数据源（通过 RDL 创建的规则时显示）   database_strategy_type 数据库分片策略类型   database_sharding_column 数据库分片键   database_sharding_algorithm_type 数据库分片算法类型   database_sharding_algorithm_props 数据库分片算法参数   table_strategy_type 表分片策略类型   table_sharding_column 表分片键   table_sharding_algorithm_type 表分片算法类型   table_sharding_algorithm_props 表分片算法参数   key_generate_column 分布式主键生成列   key_generator_type 分布式主键生成器类型   key_generator_props 分布式主键生成器参数   auditor_types 分片审计算法类型   allow_hint_disable 是否允许通过 Hint 禁用分片审计    示例  查询指定逻辑库的分片规则  SHOW SHARDING TABLE RULES FROM sharding_db; +--------------+-------------------+---------------------+------------------------+--------------------------+----------------------------------+-----------------------------------+---------------------+-----------------------+-------------------------------+--------------------------------+---------------------+--------------------+---------------------+---------------+--------------------+ | table | actual_data_nodes | actual_data_sources | database_strategy_type | database_sharding_column | database_sharding_algorithm_type | database_sharding_algorithm_props | table_strategy_type | table_sharding_column | table_sharding_algorithm_type | table_sharding_algorithm_props | key_generate_column | key_generator_type | key_generator_props | auditor_types | allow_hint_disable | +--------------+-------------------+---------------------+------------------------+--------------------------+----------------------------------+-----------------------------------+---------------------+-----------------------+-------------------------------+--------------------------------+---------------------+--------------------+---------------------+---------------+--------------------+ | t_order | | ds_0,ds_1 | | | | | mod | order_id | mod | sharding-count=4 | | | | | false | | t_order_item | | ds_0,ds_1 | | | | | mod | order_id | mod | sharding-count=4 | | | | | false | +--------------+-------------------+---------------------+------------------------+--------------------------+----------------------------------+-----------------------------------+---------------------+-----------------------+-------------------------------+--------------------------------+---------------------+--------------------+---------------------+---------------+--------------------+ 2 rows in set (0.</description>
+语法 语法 铁路图  ShowShardingTableRules ::= &amp;#39;SHOW&amp;#39; &amp;#39;SHARDING&amp;#39; &amp;#39;TABLE&amp;#39; (&amp;#39;RULE&amp;#39; tableName | &amp;#39;RULES&amp;#39;) (&amp;#39;FROM&amp;#39; databaseName)? tableName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     table 逻辑表名   actual_data_nodes 实际的数据节点   actual_data_sources 实际的数据源（通过 RDL 创建的规则时显示）   database_strategy_type 数据库分片策略类型   database_sharding_column 数据库分片键   database_sharding_algorithm_type 数据库分片算法类型   database_sharding_algorithm_props 数据库分片算法参数   table_strategy_type 表分片策略类型   table_sharding_column 表分片键   table_sharding_algorithm_type 表分片算法类型   table_sharding_algorithm_props 表分片算法参数   key_generate_column 分布式主键生成列   key_generator_type 分布式主键生成器类型   key_generator_props 分布式主键生成器参数   auditor_types 分片审计算法类型   allow_hint_disable 是否允许通过 Hint 禁用分片审计    示例  查询指定逻辑库的分片规则  SHOW SHARDING TABLE RULES FROM sharding_db; +--------------+-------------------+---------------------+------------------------+--------------------------+----------------------------------+-----------------------------------+---------------------+-----------------------+-------------------------------+--------------------------------+---------------------+--------------------+---------------------+---------------+--------------------+ | table | actual_data_nodes | actual_data_sources | database_strategy_type | database_sharding_column | database_sharding_algorithm_type | database_sharding_algorithm_props | table_strategy_type | table_sharding_column | table_sharding_algorithm_type | table_sharding_algorithm_props | key_generate_column | key_generator_type | key_generator_props | auditor_types | allow_hint_disable | +--------------+-------------------+---------------------+------------------------+--------------------------+----------------------------------+-----------------------------------+---------------------+-----------------------+-------------------------------+--------------------------------+---------------------+--------------------+---------------------+---------------+--------------------+ | t_order | | ds_0,ds_1 | | | | | mod | order_id | mod | sharding-count=4 | | | | | false | | t_order_item | | ds_0,ds_1 | | | | | mod | order_id | mod | sharding-count=4 | | | | | false | +--------------+-------------------+---------------------+------------------------+--------------------------+----------------------------------+-----------------------------------+---------------------+-----------------------+-------------------------------+--------------------------------+---------------------+--------------------+---------------------+---------------+--------------------+ 2 rows in set (0.</description>
     </item>
     
     <item>
@@ -261,7 +261,7 @@ SQL数据 在集成测试的部分提到过 sql-case-id，其对应的 SQL，可
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/error-code/sql-error-code/</guid>
       <description>SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，在 SQL 执行错误时返回给客户端。
 目前内容为草稿，错误码仍可能调整。
-内核异常 元数据    Vendor Code SQL State 错误信息     10000 42S02 Database is required.   10001 42S02 Schema &amp;lsquo;%s&amp;rsquo; does not exist.   10002 42S02 Table or view &amp;lsquo;%s&amp;rsquo; does not exist.   10002 42S02 Table or view &amp;lsquo;%s&amp;rsquo; does not exist in storage unit &amp;lsquo;%s&amp;rsquo;.   10003 42S02 Unknown column &amp;lsquo;%s&amp;rsquo; in &amp;lsquo;%s&amp;rsquo;.</description>
+内核异常 元数据    Vendor Code SQL State 错误信息     10000 42S02 Database is required.   10001 42S02 Schema &amp;lsquo;%s&amp;rsquo; does not exist.   10002 42S02 Table or view &amp;lsquo;%s&amp;rsquo; does not exist in storage unit &amp;lsquo;%s&amp;rsquo;.   10003 42S02 Unknown column &amp;lsquo;%s&amp;rsquo; in &amp;lsquo;%s&amp;rsquo;.   10004 42S02 Index &amp;lsquo;%s&amp;rsquo; does not exist from schema &amp;lsquo;%s&amp;rsquo;.</description>
     </item>
     
     <item>
@@ -911,7 +911,7 @@ ShardingSphere 数据分片建议 对 BenchmarkSQL 的数据分片，可以考�
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-status-from-readwrite-splitting-rule/</guid>
       <description>描述 SHOW STATUS FROM READWRITE_SPLITTING RULE 语法用于查询指定逻辑库中指定读写分离规则中读写分离存储单元状态。
-语法 语法 铁路图  ShowStatusFromReadwriteSplittingRule ::= &amp;#39;SHOW&amp;#39; &amp;#39;STATUS&amp;#39; &amp;#39;FROM&amp;#39; &amp;#39;READWRITE_SPLITTING&amp;#39; (&amp;#39;RULES&amp;#39; | &amp;#39;RULE&amp;#39; groupName) (&amp;#39;FROM&amp;#39; databaseName)? groupName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     name 读写分离规则名称   storage_unit 存储单元名称   status 存储单元状态    示例  查询指定逻辑库中指定读写分离规则中读写分离存储单元状态  SHOW STATUS FROM READWRITE_SPLITTING RULE ms_group_0 FROM sharding_db; mysql&amp;gt; SHOW STATUS FROM READWRITE_SPLITTING RULE ms_group_0 FROM sharding_db; +-------------+--------------+----------+ | name | storage_unit | status | +-------------+--------------+----------+ | ms_group_0 | ds_0 | disabled | +-------------+--------------+----------+ 1 row in set (0.</description>
+语法 语法 铁路图  ShowStatusFromReadwriteSplittingRules ::= &amp;#39;SHOW&amp;#39; &amp;#39;STATUS&amp;#39; &amp;#39;FROM&amp;#39; &amp;#39;READWRITE_SPLITTING&amp;#39; (&amp;#39;RULES&amp;#39; | &amp;#39;RULE&amp;#39; groupName) (&amp;#39;FROM&amp;#39; databaseName)? groupName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     name 读写分离规则名称   storage_unit 存储单元名称   status 存储单元状态    示例  查询指定逻辑库中指定读写分离规则中读写分离存储单元状态  SHOW STATUS FROM READWRITE_SPLITTING RULE ms_group_0 FROM sharding_db; mysql&amp;gt; SHOW STATUS FROM READWRITE_SPLITTING RULE ms_group_0 FROM sharding_db; +-------------+--------------+----------+ | name | storage_unit | status | +-------------+--------------+----------+ | ms_group_0 | ds_0 | disabled | +-------------+--------------+----------+ 1 row in set (0.</description>
     </item>
     
     <item>
@@ -1083,7 +1083,7 @@ LOCAL 事务 不支持项  不支持因网络、硬件异常导致的跨库事�
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/common-config/builtin-algorithm/sharding/</guid>
-      <description>背景信息 ShardingSphere 内置提供了多种分片算法，按照类型可以划分为自动分片算法、标准分片算法、复合分片算法和 Hint 分片算法，能够满足用户绝大多数业务场景的需要。此外，考虑到业务场景的复杂性，内置算法也提供了自定义分片算法的方式，用户可以通过编写 Java 代码来完成复杂的分片逻辑。 需要注意的是，自动分片算法的分片逻辑由 ShardingSphere 自动管理，需要通过配置 autoTables 分片规则进行使用。
+      <description>背景信息 ShardingSphere 内置提供了多种分片算法，按照类型可以划分为自动分片算法、标准分片算法、复合分片算法和 Hint 分片算法。用户可以通过实现对应的 SPI 提供自定义分片算法，以完成复杂的分片逻辑。 需要注意的是，自动分片算法的分片逻辑由 ShardingSphere 自动管理，需要通过配置 autoTables 分片规则进行使用。
 参数解释 自动分片算法 取模分片算法 类型：MOD
 可配置属性：
    属性名称 数据类型 说明 默认值     sharding-count int 分片数量 -   start-offset (?) int 提取分片值的起始偏移量 0   stop-offset (?) int 提取分片值的结束偏移量 0   zero-padding (?) boolean 是否对分片后缀补零 false    哈希取模分片算法 类型：HASH_MOD
@@ -1169,7 +1169,7 @@ dataSources: ds_0: dataSourceClassName: com.zaxxer.hikari.HikariDataSource drive
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/error-code/server-error-code/</guid>
       <description>服务器发生错误时所提供的唯一错误码，打印在 Proxy 后端或 JDBC 启动日志中。
-   错误码 错误信息     SPI-00001 No implementation class load from SPI &amp;lsquo;%s&amp;rsquo; with type &amp;lsquo;%s&amp;rsquo;.   DATA-SOURCE-00001 Data source &amp;lsquo;%s&amp;rsquo; is unavailable.   PROPS-00001 Properties convert failed, details are: %s.   PROXY-00001 Load database server info failed.    </description>
+   错误码 错误信息     SPI-00001 No implementation class load from SPI &amp;lsquo;%s&amp;rsquo; with type &amp;lsquo;%s&amp;rsquo;.   PROPS-00001 Properties convert failed, details are: %s.   PROXY-00001 Load database server info failed.    </description>
     </item>
     
     <item>
@@ -1212,10 +1212,10 @@ jar 文件下载地址  arjuna-5.12.7.Final.jar common-5.12.7.Final.jar jboss-co
     
     <item>
       <title>读写分离</title>
-      <link>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwirte-splitting-rule/</link>
+      <link>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwrite-splitting-rule/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwirte-splitting-rule/</guid>
+      <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/usage/readwrite-splitting-rule/</guid>
       <description>存储单元操作 REGISTER STORAGE UNIT write_ds ( HOST=&amp;#34;127.0.0.1&amp;#34;, PORT=3306, DB=&amp;#34;ds_0&amp;#34;, USER=&amp;#34;root&amp;#34;, PASSWORD=&amp;#34;root&amp;#34; ),read_ds ( HOST=&amp;#34;127.0.0.1&amp;#34;, PORT=3307, DB=&amp;#34;ds_0&amp;#34;, USER=&amp;#34;root&amp;#34;, PASSWORD=&amp;#34;root&amp;#34; ); 规则操作  创建读写分离规则  CREATE READWRITE_SPLITTING RULE group_0 ( WRITE_STORAGE_UNIT=write_ds, READ_STORAGE_UNITS(read_ds), TYPE(NAME=&amp;#34;random&amp;#34;) );  修改读写分离规则  ALTER READWRITE_SPLITTING RULE group_0 ( WRITE_STORAGE_UNIT=write_ds, READ_STORAGE_UNITS(read_ds), TYPE(NAME=&amp;#34;random&amp;#34;,PROPERTIES(&amp;#34;read_weight&amp;#34;=&amp;#34;2:0&amp;#34;)) );  删除读写分离规则  DROP READWRITE_SPLITTING RULE group_0;  移除数据源  UNREGISTER STORAGE UNIT write_ds,read_ds;  删除分布式数据库  DROP DATABASE readwrite_splitting_db; </description>
     </item>
     
@@ -1240,7 +1240,7 @@ String sql = &amp;#34;SELECT * FROM t_order&amp;#34;; try ( HintManager hintMana
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/global-rule/alter-transaction-rule/</guid>
       <description>描述 ALTER TRANSACTION RULE 语法用于修改事务规则。
-语法 语法 铁路图  AlterTransactionRule ::= &amp;#39;ALTER&amp;#39; &amp;#39;TRANSACTION&amp;#39; &amp;#39;RULE&amp;#39; &amp;#39;(&amp;#39; &amp;#39;DEFAULT&amp;#39; &amp;#39;=&amp;#39; defaultTransactionType &amp;#39;,&amp;#39; &amp;#39;TYPE&amp;#39; &amp;#39;(&amp;#39; &amp;#39;NAME&amp;#39; &amp;#39;=&amp;#39; transactionManager &amp;#39;,&amp;#39; propertiesDefinition &amp;#39;)&amp;#39; &amp;#39;)&amp;#39; propertiesDefinition ::= &amp;#39;PROPERTIES&amp;#39; &amp;#39;(&amp;#39; (key &amp;#39;=&amp;#39; value (&amp;#39;,&amp;#39; key &amp;#39;=&amp;#39; value)*)? &amp;#39;)&amp;#39; defaultTransactionType ::= string transactionManager ::= string key ::= string value ::= literal       补充说明   defaultTransactionType 支持 LOCAL、XA、BASE
+语法 语法 铁路图  AlterTransactionRule ::= &amp;#39;ALTER&amp;#39; &amp;#39;TRANSACTION&amp;#39; &amp;#39;RULE&amp;#39; &amp;#39;(&amp;#39; &amp;#39;DEFAULT&amp;#39; &amp;#39;=&amp;#39; defaultTransactionType (&amp;#39;,&amp;#39; transactionProvider)? &amp;#39;)&amp;#39; transactionProvider ::= &amp;#39;TYPE&amp;#39; &amp;#39;(&amp;#39; &amp;#39;NAME&amp;#39; &amp;#39;=&amp;#39; transactionManager (&amp;#39;,&amp;#39; propertiesDefinition)? &amp;#39;)&amp;#39; propertiesDefinition ::= &amp;#39;PROPERTIES&amp;#39; &amp;#39;(&amp;#39; (key &amp;#39;=&amp;#39; value (&amp;#39;,&amp;#39; key &amp;#39;=&amp;#39; value)*)? &amp;#39;)&amp;#39; defaultTransactionType ::= string transactionManager ::= string key ::= string value ::= literal       补充说明   defaultTransactionType 支持 LOCAL、XA、BASE
   transactionManager 支持 Atomikos 和 Narayana</description>
     </item>
     
@@ -1251,7 +1251,7 @@ String sql = &amp;#34;SELECT * FROM t_order&amp;#34;; try ( HintManager hintMana
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/single-table/count-single-table/</guid>
       <description>描述 COUNT SINGLE TABLE 语法用于查询指定逻辑库中的单表个数。
-语法 Grammar Railroad diagram  CountSingleTable::= &amp;#39;COUNT&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLE&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     rule_name 单表规则名称   database 单表所在的数据库名称   count 单表个数    示例  查询当前逻辑库中的单表规则个数  COUNT SINGLE TABLE mysql&amp;gt; COUNT SINGLE TABLE; +-----------+-------------+-------+ | rule_name | database | count | +-----------+-------------+-------+ | single | sharding_db | 2 | +-----------+-------------+-------+ 1 row in set (0.</description>
+语法 语法 铁路图  CountSingleTable::= &amp;#39;COUNT&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLE&amp;#39; (&amp;#39;FROM&amp;#39; databaseName)? databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     rule_name 单表规则名称   database 单表所在的数据库名称   count 单表个数    示例  查询指定逻辑库中的单表规则个数  COUNT SINGLE TABLE FROM sharding_db; mysql&amp;gt; COUNT SINGLE TABLE FROM sharding_db; +-----------+-------------+-------+ | rule_name | database | count | +-----------+-------------+-------+ | single | sharding_db | 2 | +-----------+-------------+-------+ 1 row in set (0.</description>
     </item>
     
     <item>
@@ -1416,7 +1416,7 @@ String sql = &amp;#34;SELECT * FROM t_order&amp;#34;; try ( HintManager hintMana
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/rdl/storage-unit-definition/unregister-storage-unit/</guid>
       <description>描述 UNREGISTER STORAGE UNIT 语法用于从当前逻辑库中移除存储单元。
-语法 语法 铁路图  UnregisterStorageUnit ::= &amp;#39;UNREGISTER&amp;#39; &amp;#39;STORAGE&amp;#39; &amp;#39;UNIT&amp;#39; ifExists? storageUnitName (&amp;#39;,&amp;#39; storageUnitName)* ignoreTables? ifExists ::= &amp;#39;IF&amp;#39; &amp;#39;EXISTS&amp;#39; storageUnitName ::= identifier ignoreTables ::= &amp;#39;IGNORE&amp;#39; (&amp;#39;SINGLE&amp;#39;)? (&amp;#39;,&amp;#39;)? (&amp;#39;BROADCAST&amp;#39;)? &amp;#39;TABLES&amp;#39;       补充说明  UNREGISTER STORAGE UNIT 只会移除 Proxy 中的存储单元，不会删除与存储单元对应的真实数据源； 无法移除已经被规则使用的存储单元。移除被规则使用的存储单元时会提示 Storage unit are still in used； 将要移除的存储单元中仅包含 SINGLE RULE、BROADCAST RULE，且用户确认可以忽略该限制时，可添加 IGNORE SINGLE TABLES 、 IGNORE BROADCAST TABLES 、 IGNORE SINGLE, BROADCAST TABLES 关键字移除存储单元； ifExists 子句用于避免 Storage unit not exists 错误。  示例  移除存储单元  UNREGISTER STORAGE UNIT ds_0;  移除多个存储单元  UNREGISTER STORAGE UNIT ds_0, ds_1;  忽略单表移除存储单元  UNREGISTER STORAGE UNIT ds_0 IGNORE SINGLE TABLES;  忽略广播表移除存储单元  UNREGISTER STORAGE UNIT ds_0 IGNORE BROADCAST TABLES;  忽略单表和广播表移除存储单元  UNREGISTER STORAGE UNIT ds_0 IGNORE SINGLE, BROADCAST TABLES;  使用 ifExists 子句移除存储单元  UNREGISTER STORAGE UNIT IF EXISTS ds_0; 保留字 UNREGISTER、STORAGE、UNIT、IF、EXISTS、IGNORE、SINGLE、BROADCAST、TABLES</description>
+语法 语法 铁路图  UnregisterStorageUnit ::= &amp;#39;UNREGISTER&amp;#39; &amp;#39;STORAGE&amp;#39; &amp;#39;UNIT&amp;#39; ifExists? storageUnitName (&amp;#39;,&amp;#39; storageUnitName)* ignoreTables? ifExists ::= &amp;#39;IF&amp;#39; &amp;#39;EXISTS&amp;#39; storageUnitName ::= identifier ignoreTables ::= &amp;#39;IGNORE&amp;#39; &amp;#39;SINGLE&amp;#39; &amp;#39;TABLES&amp;#39; | &amp;#39;IGNORE&amp;#39; &amp;#39;BROADCAST&amp;#39; &amp;#39;TABLES&amp;#39; | &amp;#39;IGNORE&amp;#39; (&amp;#39;SINGLE&amp;#39; &amp;#39;,&amp;#39; &amp;#39;BROADCAST&amp;#39; | &amp;#39;BROADCAST&amp;#39; &amp;#39;,&amp;#39; &amp;#39;SINGLE&amp;#39;) &amp;#39;TABLES&amp;#39;       补充说明  UNREGISTER STORAGE UNIT 只会移除 Proxy 中的存储单元，不会删除与存储单元对应的真实数据源； 无法移除已经被规则使用的存储单元。移除被规则使用的存储单元时会提示 Storage unit &#39;%s&#39; still used by &#39;%s&#39;.； 将要移除的存储单元中仅包含 SINGLE RULE、BROADCAST RULE，且用户确认可以忽略该限制时，可添加 IGNORE SINGLE TABLES、IGNORE BROADCAST TABLES、IGNORE SINGLE, BROADCAST TABLES 或 IGNORE BROADCAST, SINGLE TABLES 关键字移除存储单元； ifExists 子句用于避免 Storage unit not exists 错误。  示例  移除存储单元  UNREGISTER STORAGE UNIT ds_0;  移除多个存储单元  UNREGISTER STORAGE UNIT ds_0, ds_1;  忽略单表移除存储单元  UNREGISTER STORAGE UNIT ds_0 IGNORE SINGLE TABLES;  忽略广播表移除存储单元  UNREGISTER STORAGE UNIT ds_0 IGNORE BROADCAST TABLES;  忽略单表和广播表移除存储单元  UNREGISTER STORAGE UNIT ds_0 IGNORE SINGLE, BROADCAST TABLES;  忽略广播表和单表移除存储单元  UNREGISTER STORAGE UNIT ds_0 IGNORE BROADCAST, SINGLE TABLES;  使用 ifExists 子句移除存储单元  UNREGISTER STORAGE UNIT IF EXISTS ds_0; 保留字 UNREGISTER、STORAGE、UNIT、IF、EXISTS、IGNORE、SINGLE、BROADCAST、TABLES</description>
     </item>
     
     <item>
@@ -1807,7 +1807,7 @@ transaction: defaultType: BASE providerType: Seata  搭建 Seata Server，添加
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/common-config/builtin-algorithm/load-balance/</guid>
-      <description>背景信息 ShardingSphere 内置提供了多种负载均衡算法，具体包括了轮询算法、随机访问算法和权重访问算法，能够满足用户绝大多数业务场景的需要。此外，考虑到业务场景的复杂性，内置算法也提供了扩展方式，用户可以基于 SPI 接口实现符合自己业务需要的负载均衡算法。
+      <description>背景信息 ShardingSphere 内置提供了多种负载均衡算法，具体包括了轮询算法、随机访问算法和权重访问算法。用户可以通过实现对应的 SPI 提供自定义负载均衡算法，以适配复杂业务场景。
 参数解释 轮询负载均衡算法 类型：ROUND_ROBIN
 随机负载均衡算法 类型：RANDOM
 权重负载均衡算法 类型：WEIGHT
@@ -1874,7 +1874,7 @@ transaction: defaultType: BASE providerType: Seata  搭建 Seata Server，添加
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/label-relabel-compute-node/</guid>
       <description>描述 LABEL|RELABEL COMPUTE NODE 语法用于为 PROXY 实例添加标签。
-语法 语法 铁路图  LableRelabelComputeNodes ::= (&amp;#39;LABEL&amp;#39; | &amp;#39;RELABEL&amp;#39;) &amp;#39;COMPUTE&amp;#39; &amp;#39;NODE&amp;#39; instance_id &amp;#39;WITH&amp;#39; labelName instance_id ::= string labelName ::= identifier       补充说明   instance_id 需要通过 SHOW COMPUTE NODES 语法查询获得
+语法 语法 铁路图  LabelRelabelComputeNode ::= (&amp;#39;LABEL&amp;#39; | &amp;#39;RELABEL&amp;#39;) &amp;#39;COMPUTE&amp;#39; &amp;#39;NODE&amp;#39; instance_id &amp;#39;WITH&amp;#39; labelName (&amp;#39;,&amp;#39; labelName)* instance_id ::= string labelName ::= identifier       补充说明   instance_id 需要通过 SHOW COMPUTE NODES 语法查询获得
   RELABEL 用于为 PROXY 实例修改标签
   示例  为 PROXY 实例添加标签  LABEL COMPUTE NODE &amp;#34;0699e636-ade9-4681-b37a-65240c584bb3&amp;#34; WITH label_1;  为 PROXY 实例修改标签  RELABEL COMPUTE NODE &amp;#34;0699e636-ade9-4681-b37a-65240c584bb3&amp;#34; WITH label_2; 保留字 LABEL、RELABEL、COMPUTE、NODE 、WITH</description>
     </item>
@@ -2138,7 +2138,7 @@ ShardingSphere 在对排序的查询进行归并时，将每个结果集的当�
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/unlabel-compute-node/</guid>
       <description>描述 UNLABEL COMPUTE NODE 语法用于为 PROXY 实例去除指定标签。
-语法 语法 铁路图  UnlabelComputeNode ::= &amp;#39;UNLABEL&amp;#39; &amp;#39;COMPUTE&amp;#39; &amp;#39;NODE&amp;#39; instance_id &amp;#39;WITH&amp;#39; labelName instance_id ::= string labelName ::= identifier       补充说明  instance_id 需要通过 SHOW COMPUTE NODES 语法查询获得  示例  为 PROXY 实例去除指定标签  UNLABEL COMPUTE NODE &amp;#34;0699e636-ade9-4681-b37a-65240c584bb3&amp;#34; WITH label_1; 保留字 UNLABEL、COMPUTE、NODE、WITH
+语法 语法 铁路图  UnlabelComputeNode ::= &amp;#39;UNLABEL&amp;#39; &amp;#39;COMPUTE&amp;#39; &amp;#39;NODE&amp;#39; instance_id (&amp;#39;WITH&amp;#39; labelName (&amp;#39;,&amp;#39; labelName)*)? instance_id ::= string labelName ::= identifier       补充说明  instance_id 需要通过 SHOW COMPUTE NODES 语法查询获得  示例  为 PROXY 实例去除指定标签  UNLABEL COMPUTE NODE &amp;#34;0699e636-ade9-4681-b37a-65240c584bb3&amp;#34; WITH label_1; 保留字 UNLABEL、COMPUTE、NODE、WITH
 相关链接  保留字 SHOW COMPUTE NODES  </description>
     </item>
     
@@ -2449,7 +2449,7 @@ transport: type: STREAMABLE_HTTP http: bindHost: 0.0.0.0 port: 18088 endpointPat
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/common-config/builtin-algorithm/audit/</guid>
       <description>背景信息 分片审计功能是针对数据库分片场景下对执行的 SQL 语句进行审计操作。分片审计既可以进行拦截操作，拦截系统配置的非法 SQL 语句，也可以是对 SQL 语句进行统计操作。
 参数解释 DML_SHARDING_CONDITIONS 算法 类型：DML_SHARDING_CONDITIONS
-操作步骤  配置数据分片规则时设置分配审计生成策略  配置示例  DML_SHARDING_CONDITIONS  auditors: sharding_key_required_auditor: type: DML_SHARDING_CONDITIONS </description>
+操作步骤  配置数据分片规则时设置分片审计策略  配置示例  DML_SHARDING_CONDITIONS  auditors: sharding_key_required_auditor: type: DML_SHARDING_CONDITIONS </description>
     </item>
     
     <item>
@@ -2521,7 +2521,7 @@ transport: type: STREAMABLE_HTTP http: bindHost: 0.0.0.0 port: 18088 endpointPat
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/rql/rule-query/sharding/show-sharding-table-nodes/</guid>
       <description>描述 SHOW SHARDING TABLE NODES 语法用于查询指定逻辑库中的指定分片表的节点分布。
-语法 语法 铁路图  ShowShardingTableNode::= &amp;#39;SHOW&amp;#39; &amp;#39;SHARDING&amp;#39; &amp;#39;TABLE&amp;#39; &amp;#39;NODES&amp;#39; tableName? (&amp;#39;FROM&amp;#39; databaseName)? tableName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     name 分片规则名称   nodes 分片节点    示例  查询指定逻辑库中指定分片表的节点分布  SHOW SHARDING TABLE NODES t_order_item FROM sharding_db; mysql&amp;gt; SHOW SHARDING TABLE NODES t_order_item FROM sharding_db; +--------------+------------------------------------------------------------------------------------------------------------+ | name | nodes | +--------------+------------------------------------------------------------------------------------------------------------+ | t_order_item | resource_0.</description>
+语法 语法 铁路图  ShowShardingTableNodes::= &amp;#39;SHOW&amp;#39; &amp;#39;SHARDING&amp;#39; &amp;#39;TABLE&amp;#39; &amp;#39;NODES&amp;#39; tableName? (&amp;#39;FROM&amp;#39; databaseName)? tableName ::= identifier databaseName ::= identifier       补充说明  未指定 databaseName 时，默认是当前使用的 DATABASE。 如果也未使用 DATABASE 则会提示 No database selected。  返回值说明    列 说明     name 分片规则名称   nodes 分片节点    示例  查询指定逻辑库中指定分片表的节点分布  SHOW SHARDING TABLE NODES t_order_item FROM sharding_db; mysql&amp;gt; SHOW SHARDING TABLE NODES t_order_item FROM sharding_db; +--------------+------------------------------------------------------------------------------------------------------------+ | name | nodes | +--------------+------------------------------------------------------------------------------------------------------------+ | t_order_item | resource_0.</description>
     </item>
     
     <item>
@@ -2937,7 +2937,7 @@ HTTP 示例：
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/lock-cluster-with/</guid>
       <description>描述 LOCK CLUSTER WITH 语法用于向 CLUSTER 施加特定算法的锁。
-语法 语法 铁路图  LockClusterWith ::= &amp;#39;LOCK&amp;#39; &amp;#39;CLUSTER&amp;#39; &amp;#39;WITH&amp;#39; lockStrategy (&amp;#39;TIMEOUT&amp;#39; timeoutMillis)? timeoutmillis ::= long       补充说明  当 CLUSTER 已经处于被锁状态时，无法重复加锁，否则会抛出异常。 lockStrategy 当前支持两种锁策略，分别是排他锁 WRITE 与读写锁 READ_WRITE。 timeoutMillis 用于表明尝试加锁的超时时间，其单位为毫秒，未指定时，默认为 3000 毫秒。  示例  采用排他锁锁定 CLUSTER ，不设置超时时间  LOCK CLUSTER WITH WRITE;  采用读写锁锁定 CLUSTER ，并设置超时时间为 2000 毫秒  LOCK CLUSTER WITH READ_WRITE TIMEOUT 2000; 保留字 LOCK、CLUSTER、WITH
+语法 语法 铁路图  LockClusterWith ::= &amp;#39;LOCK&amp;#39; &amp;#39;CLUSTER&amp;#39; &amp;#39;WITH&amp;#39; lockStrategy (&amp;#39;TIMEOUT&amp;#39; timeoutMillis)? timeoutMillis ::= long       补充说明  当 CLUSTER 已经处于被锁状态时，无法重复加锁，否则会抛出异常。 lockStrategy 当前支持两种锁策略，分别是排他锁 WRITE 与读写锁 READ_WRITE。 timeoutMillis 用于表明尝试加锁的超时时间，其单位为毫秒，未指定时，默认为 3000 毫秒。  示例  采用排他锁锁定 CLUSTER ，不设置超时时间  LOCK CLUSTER WITH WRITE;  采用读写锁锁定 CLUSTER ，并设置超时时间为 2000 毫秒  LOCK CLUSTER WITH READ_WRITE TIMEOUT 2000; 保留字 LOCK、CLUSTER、WITH
 相关链接  保留字  </description>
     </item>
     
@@ -2972,7 +2972,7 @@ HTTP 示例：
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/unlock-cluster/</guid>
       <description>描述 UNLOCK CLUSTER 语法用于解除通过 LOCK CLUSTER WITH 语句施加在 CLUSTER 上的锁。
-语法 语法 铁路图  UnlockCluster ::= &amp;#39;UNLOCK&amp;#39; &amp;#39;CLUSTER&amp;#39; (&amp;#39;TIMEOUT&amp;#39; timeoutMillis)? timeoutmillis ::= long       补充说明  当 CLUSTER 不处于被锁状态时，无法解除锁，否则会抛出异常。 timeoutMillis 表明尝试解锁的超时时间，其单位为毫秒，未指定时，默认为 3000 毫秒。  示例  解锁 CLUSTER ，不设置超时时间。  UNLOCK CLUSTER;  解锁 CLUSTER ，并设置超时时间为 2000 毫秒。  UNLOCK CLUSTER TIMEOUT 2000; 保留字 UNLOCK、CLUSTER
+语法 语法 铁路图  UnlockCluster ::= &amp;#39;UNLOCK&amp;#39; &amp;#39;CLUSTER&amp;#39; (&amp;#39;TIMEOUT&amp;#39; timeoutMillis)? timeoutMillis ::= long       补充说明  当 CLUSTER 不处于被锁状态时，无法解除锁，否则会抛出异常。 timeoutMillis 表明尝试解锁的超时时间，其单位为毫秒，未指定时，默认为 3000 毫秒。  示例  解锁 CLUSTER ，不设置超时时间。  UNLOCK CLUSTER;  解锁 CLUSTER ，并设置超时时间为 2000 毫秒。  UNLOCK CLUSTER TIMEOUT 2000; 保留字 UNLOCK、CLUSTER
 相关链接  保留字  </description>
     </item>
     
