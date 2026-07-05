@@ -1,48 +1,395 @@
-commit c6f6603d68fd56189ad8710114c02c6b9116da3c
+commit afe998587e779d11e18bd87c0dfaf0ab2c4747a1
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Sun Jul 5 14:54:53 2026 +0800
+Date:   Sun Jul 5 19:20:22 2026 +0800
 
-    Refine MCP resource URI template API contract (#39003)
+    Remove useless proxy labels (#39006)
+    
+    * Remove useless proxy labels
+    
+    * Remove useless proxy labels
+    
+    * Remove useless proxy labels
+    
+    * Remove useless proxy labels
+    
+    * Remove useless proxy labels
 
-diff --git a/docs/document/content/dev-manual/mcp.cn.md b/docs/document/content/dev-manual/mcp.cn.md
-index 39fbccc344b..16ae84c2411 100644
---- a/docs/document/content/dev-manual/mcp.cn.md
-+++ b/docs/document/content/dev-manual/mcp.cn.md
-@@ -67,13 +67,15 @@ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
- - 实现 `MCPToolHandler<T extends MCPHandlerContext>`。
- - 声明 context type。
- - 声明 canonical tool name。
-+- `handle(...)` 只返回成功的 `MCPResponse`；参数非法、资源不存在、查询失败、超时、不支持等受控失败应抛出 `ShardingSphereMCPException` 子类或明确的运行时异常，由 runtime 转换为 MCP tool 错误结果。
- - 在 descriptor 中维护 input schema、output schema、annotations、相关 resources、follow-up tools 和副作用说明。
+diff --git a/docs/document/content/reference/management/_index.cn.md b/docs/document/content/reference/management/_index.cn.md
+index bd71e253714..f77b8012acc 100644
+--- a/docs/document/content/reference/management/_index.cn.md
++++ b/docs/document/content/reference/management/_index.cn.md
+@@ -85,9 +85,6 @@ namespace
+    ├    ├     ├──show_process_list_trigger
+    ├    ├     ├     ├──process_id:UUID
+    ├    ├     ├     ├──....
+-   ├    ├     ├──labels                      
+-   ├    ├     ├     ├──UUID
+-   ├    ├     ├     ├──....               
+    ├    ├──qualified_data_sources                       
+    ├    ├     ├──${databaseName.groupName.dataSourceName} 
+    ├    ├     ├──${databaseName.groupName.dataSourceName}
+diff --git a/docs/document/content/reference/management/_index.en.md b/docs/document/content/reference/management/_index.en.md
+index 6407bcaac39..936d9613f2a 100644
+--- a/docs/document/content/reference/management/_index.en.md
++++ b/docs/document/content/reference/management/_index.en.md
+@@ -85,9 +85,6 @@ namespace
+    ├    ├     ├──show_process_list_trigger
+    ├    ├     ├     ├──process_id:UUID
+    ├    ├     ├     ├──....
+-   ├    ├     ├──labels                      
+-   ├    ├     ├     ├──UUID
+-   ├    ├     ├     ├──....               
+    ├    ├──qualified_data_sources                       
+    ├    ├     ├──${databaseName.groupName.dataSourceName}
+    ├    ├     ├──${databaseName.groupName.dataSourceName}
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/label-relabel-compute-node.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/label-relabel-compute-node.cn.md
+deleted file mode 100644
+index b96b9c74857..00000000000
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/label-relabel-compute-node.cn.md
++++ /dev/null
+@@ -1,56 +0,0 @@
+-+++
+-title = "LABEL|RELABEL COMPUTE NODE"
+-weight = 5
+-+++
+-
+-### 描述
+-
+-`LABEL|RELABEL COMPUTE NODE` 语法用于为 `PROXY` 实例添加标签。
+-
+-### 语法
+-
+-{{< tabs >}}
+-{{% tab name="语法" %}}
+-```sql
+-LabelRelabelComputeNode ::=
+-  ('LABEL' | 'RELABEL') 'COMPUTE' 'NODE' instance_id 'WITH' labelName (',' labelName)*
+-
+-instance_id ::=
+-  string
+-
+-labelName ::=
+-  identifier
+-```
+-{{% /tab %}}
+-{{% tab name="铁路图" %}}
+-<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
+-{{% /tab %}}
+-{{< /tabs >}}
+-
+-### 补充说明
+-
+-- `instance_id` 需要通过 [SHOW COMPUTE NODES](/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/) 语法查询获得
+-
+-- `RELABEL` 用于为 `PROXY` 实例修改标签
+-
+-### 示例
+-
+-- 为 `PROXY` 实例添加标签
+-
+-```sql
+-LABEL COMPUTE NODE "0699e636-ade9-4681-b37a-65240c584bb3" WITH label_1;
+-```
+-
+-- 为 `PROXY` 实例修改标签
+-```sql
+-RELABEL COMPUTE NODE "0699e636-ade9-4681-b37a-65240c584bb3" WITH label_2;
+-```
+-
+-### 保留字
+-
+-`LABEL`、`RELABEL`、`COMPUTE`、`NODE` 、`WITH`
+-
+-### 相关链接
+-
+-- [保留字](/cn/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
+-- [SHOW COMPUTE NODES](/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/label-relabel-compute-node.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/label-relabel-compute-node.en.md
+deleted file mode 100644
+index be393ae1987..00000000000
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/label-relabel-compute-node.en.md
++++ /dev/null
+@@ -1,57 +0,0 @@
+-+++
+-title = "LABEL|RELABEL COMPUTE NODE"
+-weight = 5
+-+++
+-
+-### Description
+-
+-The `LABEL|RELABEL COMPUTE NODE` syntax is used to label `PROXY` instance.
+-
+-### Syntax
+-
+-{{< tabs >}}
+-{{% tab name="Grammar" %}}
+-```sql
+-LabelRelabelComputeNode ::=
+-  ('LABEL' | 'RELABEL') 'COMPUTE' 'NODE' instance_id 'WITH' labelName (',' labelName)*
+-
+-instance_id ::=
+-  string
+-
+-labelName ::=
+-  identifier
+-```
+-{{% /tab %}}
+-{{% tab name="Railroad diagram" %}}
+-<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
+-{{% /tab %}}
+-{{< /tabs >}}
+-
+-### Supplement
+-
+-- `instance_id` needs to be obtained through [SHOW COMPUTE NODES](/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/) syntax query
+-
+-- `RELABEL` is used to relabel `PROXY` instance
+-
+-### Example
+-
+-- Label `PROXY` instance
+-
+-```sql
+-LABEL COMPUTE NODE "0699e636-ade9-4681-b37a-65240c584bb3" WITH label_1;
+-```
+-
+-- Relabel `PROXY` instance
+-
+-```sql
+-RELABEL COMPUTE NODE "0699e636-ade9-4681-b37a-65240c584bb3" WITH label_2;
+-```
+-
+-### Reserved word
+-
+-`LABEL`, `RELABEL`, `COMPUTE`, `NODE`, `WITH`
+-
+-### Related links
+-
+-- [Reserved word](/en/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
+-- [SHOW COMPUTE NODES](/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.cn.md
+index 956ee425866..1f10d69645f 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.cn.md
+@@ -32,7 +32,6 @@ ShowComputeNodes ::=
+ | status        | 实例状态                |
+ | mode_type     | 模式类型                |
+ | worker_id     | worker id           |
+-| labels        | 标签                  |
+ | version       | 版本                  |
+ | database_name | 当前连接逻辑库（仅对 JDBC 生效） |
  
- 对外新增 resource：
+@@ -40,11 +39,11 @@ ShowComputeNodes ::=
  
- - 实现 `MCPResourceHandler<T extends MCPHandlerContext>`。
- - 声明 context type。
--- 声明 canonical URI template。
-+- 声明 canonical resource URI template。固定 URI 也是没有变量的 URI template。
-+- `handle(...)` 只返回成功的 `MCPResponse`；失败不要在 handler 中手工构造错误 response，由 runtime 转换为 MCP resource 读取错误。
- - 在 descriptor 中维护 URI 参数含义、对象范围、MIME type、title、description、annotations 和关系元数据。
+ ```sql
+ mysql> SHOW COMPUTE NODES;
+-+--------------------------------------+---------------+------------+------+--------+------------+-----------+--------+----------+--------------+
+-| instance_id                          | instance_type | host       | port | status | mode_type  | worker_id | labels | version  | database_name |
+-+--------------------------------------+---------------+------------+------+--------+------------+-----------+--------+----------+--------------+
+-| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | PROXY         | 127.0.0.1  | 3307 | OK     | Cluster    | -1        |        | ${latest.release.version} | logic_db      |
+-+--------------------------------------+---------------+------------+------+--------+------------+-----------+--------+----------+--------------+
+++--------------------------------------+---------------+------------+------+--------+------------+-----------+---------------------------+--------------+
++| instance_id                          | instance_type | host       | port | status | mode_type  | worker_id | version                   | database_name |
+++--------------------------------------+---------------+------------+------+--------+------------+-----------+---------------------------+--------------+
++| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | PROXY         | 127.0.0.1  | 3307 | OK     | Cluster    | -1        | ${latest.release.version} | logic_db      |
+++--------------------------------------+---------------+------------+------+--------+------------+-----------+---------------------------+--------------+
+ 1 row in set (0.01 sec)
+ ```
  
- 运行时代码需要 descriptor 时，应使用 canonical tool name 或 resource URI template，通过 `MCPDescriptorCatalogIndex` 从 catalog 解析。
-diff --git a/docs/document/content/dev-manual/mcp.en.md b/docs/document/content/dev-manual/mcp.en.md
-index 100bd4226a0..99031ea78f6 100644
---- a/docs/document/content/dev-manual/mcp.en.md
-+++ b/docs/document/content/dev-manual/mcp.en.md
-@@ -67,13 +67,15 @@ When adding a public tool:
- - Implement `MCPToolHandler<T extends MCPHandlerContext>`.
- - Declare the context type.
- - Declare the canonical tool name.
-+- `handle(...)` returns only a successful `MCPResponse`. For controlled failures such as invalid arguments, missing resources, query failure, timeout, or unsupported operations, throw a `ShardingSphereMCPException` subclass or a clear runtime exception and let runtime convert it to an MCP tool error result.
- - Maintain input schema, output schema, annotations, related resources, follow-up tools, and side-effect notes in the descriptor.
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.en.md
+index e2e8d5eb866..5e5e7f28533 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes.en.md
+@@ -31,7 +31,6 @@ ShowComputeNodes ::=
+ | status        | status           |
+ | mode_type     | mode type        |
+ | worker_id     | worker id        |
+-| labels        | labels           |
+ | version       | version          |
+ | database_name | database name (Only valid for JDBC) |
  
- When adding a public resource:
+@@ -39,11 +38,11 @@ ShowComputeNodes ::=
  
- - Implement `MCPResourceHandler<T extends MCPHandlerContext>`.
- - Declare the context type.
--- Declare the canonical URI template.
-+- Declare the canonical resource URI template. A fixed URI is also a URI template without variables.
-+- `handle(...)` returns only a successful `MCPResponse`. Do not build error responses in handlers; runtime converts failures to MCP resource read errors.
- - Maintain URI parameter meaning, object scope, MIME type, title, description, annotations, and relationship metadata in the descriptor.
+ ```sql
+ mysql> SHOW COMPUTE NODES;
+-+--------------------------------------+---------------+------------+------+--------+------------+-----------+--------+----------+--------------+
+-| instance_id                          | instance_type | host       | port | status | mode_type  | worker_id | labels | version  | database_name |
+-+--------------------------------------+---------------+------------+------+--------+------------+-----------+--------+----------+--------------+
+-| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | PROXY         | 127.0.0.1  | 3307 | OK     | Cluster    | -1        |        | ${latest.release.version} | logic_db      |
+-+--------------------------------------+---------------+------------+------+--------+------------+-----------+--------+----------+--------------+
+++--------------------------------------+---------------+------------+------+--------+------------+-----------+---------------------------+--------------+
++| instance_id                          | instance_type | host       | port | status | mode_type  | worker_id | version                   | database_name |
+++--------------------------------------+---------------+------------+------+--------+------------+-----------+---------------------------+--------------+
++| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | PROXY         | 127.0.0.1  | 3307 | OK     | Cluster    | -1        | ${latest.release.version} | logic_db      |
+++--------------------------------------+---------------+------------+------+--------+------------+-----------+---------------------------+--------------+
+ 1 row in set (0.01 sec)
+ ```
  
- When runtime code needs the descriptor for a handler, resolve it from `MCPDescriptorCatalogIndex` by canonical tool name or resource URI template.
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/unlabel-compute-node.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/unlabel-compute-node.cn.md
+deleted file mode 100644
+index 32968e03105..00000000000
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/unlabel-compute-node.cn.md
++++ /dev/null
+@@ -1,49 +0,0 @@
+-+++
+-title = "UNLABEL COMPUTE NODE"
+-weight = 6
+-+++
+-
+-### 描述
+-
+-`UNLABEL COMPUTE NODE` 语法用于为 `PROXY` 实例去除指定标签。
+-
+-### 语法
+-
+-{{< tabs >}}
+-{{% tab name="语法" %}}
+-```sql
+-UnlabelComputeNode ::=
+-  'UNLABEL' 'COMPUTE' 'NODE' instance_id ('WITH' labelName (',' labelName)*)?
+-
+-instance_id ::=
+-  string
+-
+-labelName ::=
+-  identifier
+-```
+-{{% /tab %}}
+-{{% tab name="铁路图" %}}
+-<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
+-{{% /tab %}}
+-{{< /tabs >}}
+-
+-### 补充说明
+-
+-- `instance_id` 需要通过 [SHOW COMPUTE NODES](/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/) 语法查询获得
+-
+-### 示例
+-
+-- 为 `PROXY` 实例去除指定标签
+-
+-```sql
+-UNLABEL COMPUTE NODE "0699e636-ade9-4681-b37a-65240c584bb3" WITH label_1;
+-```
+-
+-### 保留字
+-
+-`UNLABEL`、`COMPUTE`、`NODE`、`WITH`
+-
+-### 相关链接
+-
+-- [保留字](/cn/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
+-- [SHOW COMPUTE NODES](/cn/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/unlabel-compute-node.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/unlabel-compute-node.en.md
+deleted file mode 100644
+index 8ebbf629214..00000000000
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/unlabel-compute-node.en.md
++++ /dev/null
+@@ -1,49 +0,0 @@
+-+++
+-title = "UNLABEL COMPUTE NODE"
+-weight = 6
+-+++
+-
+-### Description
+-
+-The `UNLABEL COMPUTE NODE` syntax is used to remove specified labels from `PROXY` instance.
+-
+-### Syntax
+-
+-{{< tabs >}}
+-{{% tab name="Grammar" %}}
+-```sql
+-UnlabelComputeNode ::=
+-  'UNLABEL' 'COMPUTE' 'NODE' instance_id ('WITH' labelName (',' labelName)*)?
+-
+-instance_id ::=
+-  string
+-
+-labelName ::=
+-  identifier
+-```
+-{{% /tab %}}
+-{{% tab name="Railroad diagram" %}}
+-<iframe frameborder="0" name="diagram" id="diagram" width="100%" height="100%"></iframe>
+-{{% /tab %}}
+-{{< /tabs >}}
+-
+-### Supplement
+-
+-- `instance_id` needs to be obtained through [SHOW COMPUTE NODES](/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/) syntax query
+-
+-### Example
+-
+-- Remove specified label from `PROXY` instance
+-
+-```sql
+-UNLABEL COMPUTE NODE "0699e636-ade9-4681-b37a-65240c584bb3" WITH label_1;
+-```
+-
+-### Reserved word
+-
+-`UNLABEL`, `COMPUTE`, `NODE`, `WITH`
+-
+-### Related links
+-
+-- [Reserved word](/en/user-manual/shardingsphere-proxy/distsql/syntax/reserved-word/)
+-- [SHOW COMPUTE NODES](/en/user-manual/shardingsphere-proxy/distsql/syntax/ral/circuit-breaker/show-compute-nodes/)
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.cn.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.cn.md
+index ca57c29b75b..f9c45d80c94 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.cn.md
+@@ -31,7 +31,6 @@ ShowComputeNodeInfo ::=
+ | status      | proxy 实例状态 |
+ | mode_type   | proxy 实例模式 |
+ | worker_id   | worker id  |
+-| labels      | 标签         |
+ | version    | 版本                  |
+ 
+ ### 示例
+@@ -44,11 +43,11 @@ SHOW COMPUTE NODE INFO;
+ 
+ ```sql
+ mysql> SHOW COMPUTE NODE INFO;
+-+--------------------------------------+-----------+------+--------+-----------+-----------+--------+----------+
+-| instance_id                          | host      | port | status | mode_type | worker_id | labels | version  |
+-+--------------------------------------+-----------+------+--------+-----------+-----------+--------+----------+
+-| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | 127.0.0.1 | 3307 | OK     | Cluster   | -1        |        | ${latest.release.version} |
+-+--------------------------------------+-----------+------+--------+-----------+-----------+--------+----------+
+++--------------------------------------+-----------+------+--------+-----------+-----------+---------------------------+
++| instance_id                          | host      | port | status | mode_type | worker_id | version                   |
+++--------------------------------------+-----------+------+--------+-----------+-----------+---------------------------+
++| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | 127.0.0.1 | 3307 | OK     | Cluster   | -1        | ${latest.release.version} |
+++--------------------------------------+-----------+------+--------+-----------+-----------+---------------------------+
+ 1 row in set (0.01 sec)
+ ```
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.en.md b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.en.md
+index 5814b40edde..53d0fddfe59 100644
+--- a/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.en.md
++++ b/docs/document/content/user-manual/shardingsphere-proxy/distsql/syntax/ral/show-compute-node-info.en.md
+@@ -30,7 +30,6 @@ ShowComputeNodeInfo ::=
+ | status         | proxy instance status |
+ | mode_type      | proxy instance mode   |
+ | worker_id      | worker id             |
+-| labels         | labels                |
+ | version        | version               |
+ 
+ ### Example
+@@ -43,11 +42,11 @@ SHOW COMPUTE NODE INFO;
+ 
+ ```sql
+ mysql> SHOW COMPUTE NODE INFO;
+-+--------------------------------------+-----------+------+--------+-----------+-----------+--------+----------+
+-| instance_id                          | host      | port | status | mode_type | worker_id | labels | version  |
+-+--------------------------------------+-----------+------+--------+-----------+-----------+--------+----------+
+-| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | 127.0.0.1 | 3307 | OK     | Cluster   | -1        |        | ${latest.release.version} |
+-+--------------------------------------+-----------+------+--------+-----------+-----------+--------+----------+
+++--------------------------------------+-----------+------+--------+-----------+-----------+---------------------------+
++| instance_id                          | host      | port | status | mode_type | worker_id | version                   |
+++--------------------------------------+-----------+------+--------+-----------+-----------+---------------------------+
++| 3e84d33e-cb97-42f2-b6ce-f78fea0ded89 | 127.0.0.1 | 3307 | OK     | Cluster   | -1        | ${latest.release.version} |
+++--------------------------------------+-----------+------+--------+-----------+-----------+---------------------------+
+ 1 row in set (0.01 sec)
+ ```
+ 
