@@ -1,62 +1,171 @@
-commit ff78f1aab1e884a098c6173cc37aaabde8fdfeac
+commit c39dc442faa38aeae92f38886055859d6fbb6b26
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Mon Jul 6 11:56:01 2026 +0800
+Date:   Tue Jul 7 11:46:27 2026 +0800
 
-    Fix ShardingSphere-MCP model-facing contract drift (#39017)
+    Refine MCP distribution defaults and registry metadata (#39024)
     
-    * Fix ShardingSphere-MCP model-facing contract drift
-    
-    - complete storageUnit URI variables from governance metadata
-    - add planning tool annotation titles for sharding and shadow
-    - align protocol docs and registry description with the public MCP surface
-    
-    * Fix ShardingSphere-MCP model-facing contract drift
-    
-    - complete storageUnit URI variables from governance metadata
-    - add planning tool annotation titles for sharding and shadow
-    - align protocol docs and registry description with the public MCP surface
+    - Remove placeholder runtime database entries from MCP default configs
+    - Add Docker-specific HTTP config for container startup
+    - Allow empty runtimeDatabases while rejecting unresolved YAML placeholders
+    - Add streamable-http Docker runtime metadata validation
+    - Trigger MCP E2E workflow for distribution/mcp changes
+    - Update MCP docs for empty startup config and Docker defaults
 
-diff --git a/docs/document/content/reference/mcp/protocol-surface.cn.md b/docs/document/content/reference/mcp/protocol-surface.cn.md
-index f2a3ff34f64..7572cc2f70a 100644
---- a/docs/document/content/reference/mcp/protocol-surface.cn.md
-+++ b/docs/document/content/reference/mcp/protocol-surface.cn.md
-@@ -40,7 +40,7 @@ ShardingSphere-MCP 不要求 roots，也不会发送 `sampling/createMessage` 
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
+index 17708cbdbae..86e3ce4951b 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/_index.cn.md
+@@ -11,7 +11,7 @@ MCP 是连接 AI 应用与外部数据源和工具的开放协议，协议说明
+ AI 应用开发者可以将 ShardingSphere-MCP 作为受控数据库访问能力接入应用。
+ 接入后，用户可以通过自然语言查看数据库结构、执行受控查询，并规划需要审查的 ShardingSphere 规则变更。
  
- - 搜索逻辑库 metadata。
- - 可按 `database`、`schema`、`query`、`object_types` 收窄范围。
--- `object_types` 支持 `database`、`schema`、`table`、`view`、`column`、`index`、`sequence`。
-+- `object_types` 支持 `database`、`schema`、`storage_unit`、`table`、`view`、`column`、`index`、`sequence`。
+-使用前需要准备可连接的数据库，并在 `runtimeDatabases` 中配置连接信息；如果需要使用数据加密、数据脱敏等规则变更能力，连接目标应为 ShardingSphere-Proxy 逻辑库。
++使用依赖数据库的能力前，需要准备可连接的数据库，并在 `runtimeDatabases` 中配置连接信息；如果需要使用数据加密、数据脱敏等规则变更能力，连接目标应为 ShardingSphere-Proxy 逻辑库。
  
- `database_gateway_validate_runtime_database`
+ ## 面向 AI 应用的数据库访问
  
-@@ -200,7 +200,7 @@ Feature resources：
- ## Completions
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md b/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
+index 736b8374e4e..1c8a11738ee 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/_index.en.md
+@@ -11,7 +11,7 @@ MCP is an open protocol for connecting AI applications to external data sources
+ AI application developers can integrate ShardingSphere-MCP as a controlled database access capability.
+ After integration, users can inspect database structure, run controlled queries, and plan reviewable ShardingSphere rule changes through natural language.
  
- Completions 用于补全运行时名称、metadata identifier、算法和当前 session 中的 workflow `plan_id`。
--Client 应在选择不确定的 database、schema、table、column、algorithm 或 `plan_id` 前调用 `completion/complete`，或读取最近的 MCP resource。
-+Client 应在选择不确定的 database、schema、table、column、storage unit、algorithm 或 `plan_id` 前调用 `completion/complete`，或读取最近的 MCP resource。
- 当 completion 响应包含 meta `next_actions` 时，client 应先遵循这些动作，再猜测取值或切换到其他 tool。
- 重试 completion 前，可通过 `resources/templates/list` 发现最近 resource 所需的 URI 变量，并补齐上下文。
+-Before use, prepare a reachable database and configure its connection information in `runtimeDatabases`. If data encryption, data masking, or other rule change capabilities are required, the connection target should be a ShardingSphere-Proxy logical database.
++Before using database-backed capabilities, prepare a reachable database and configure its connection information in `runtimeDatabases`. If data encryption, data masking, or other rule change capabilities are required, the connection target should be a ShardingSphere-Proxy logical database.
  
-diff --git a/docs/document/content/reference/mcp/protocol-surface.en.md b/docs/document/content/reference/mcp/protocol-surface.en.md
-index 5a581e75b31..fcf02622ca9 100644
---- a/docs/document/content/reference/mcp/protocol-surface.en.md
-+++ b/docs/document/content/reference/mcp/protocol-surface.en.md
-@@ -40,7 +40,7 @@ ShardingSphere-MCP does not require roots and does not send `sampling/createMess
+ ## Database Access for AI Applications
  
- - Searches logical database metadata.
- - Narrows scope by `database`, `schema`, `query`, and `object_types`.
--- `object_types` supports `database`, `schema`, `table`, `view`, `column`, `index`, and `sequence`.
-+- `object_types` supports `database`, `schema`, `storage_unit`, `table`, `view`, `column`, `index`, and `sequence`.
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
+index cf600c698c4..e549d1aac53 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
+@@ -4,7 +4,7 @@ weight = 3
+ +++
  
- `database_gateway_validate_runtime_database`
+ ShardingSphere-MCP 使用 YAML 文件配置传输方式和 MCP Server 可以连接的数据库。
+-发行包默认读取 `conf/mcp-http.yaml`，也内置 `conf/mcp-stdio.yaml`。
++发行包默认读取 `conf/mcp-http.yaml`，也内置 `conf/mcp-stdio.yaml` 和 `conf/mcp-http-docker.yaml`。
  
-@@ -200,7 +200,7 @@ Feature resources:
- ## Completions
+ ## 传输方式
  
- Completions suggest runtime names, metadata identifiers, algorithms, and workflow `plan_id` values in the current session.
--Before choosing uncertain database, schema, table, column, algorithm, or `plan_id` values, clients should call `completion/complete` or read the nearest MCP resource.
-+Before choosing uncertain database, schema, table, column, storage unit, algorithm, or `plan_id` values, clients should call `completion/complete` or read the nearest MCP resource.
- When a completion response includes meta `next_actions`, clients should follow those actions before guessing a value or switching to another tool.
- Use `resources/templates/list` to discover URI variables for the nearest resource before retrying completion with additional context.
+@@ -62,7 +62,7 @@ transport:
  
+ ## 数据库配置
+ 
+-`runtimeDatabases` 定义 MCP Server 可以连接并对外暴露的数据库。
++`runtimeDatabases` 定义 MCP Server 可以连接并对外暴露的数据库。Server 启动时可以省略或为空，此时不提供依赖数据库的能力。
+ 每个条目的 key 是用户在自然语言任务中引用的数据库名称，通常对应 ShardingSphere-Proxy 暴露的逻辑库。
+ MCP Server 会从 `jdbcUrl` 解析数据库类型；请使用与该 JDBC URL 匹配的驱动类。
+ 
+@@ -93,6 +93,7 @@ runtimeDatabases:
+ - 数据库直连时，用户看到的是目标数据库自身的元数据，不代表 ShardingSphere 规则状态。
+ - 模式、表、视图、索引和序列等元数据依赖连接目标的 JDBC 元数据；Proxy 和数据库直连的可见结果可能不同。
+ - 如果目标 JDBC 驱动没有随发行包提供，请把驱动 jar 放入 `plugins/`。
++- `<logic-database>` 等占位值只能用于示例。运行时 YAML 文件会拒绝未替换的占位符。
+ 
+ ## 敏感值占位符
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
+index 0f079aea05e..71b7ba4d1f1 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
+@@ -4,7 +4,7 @@ weight = 3
+ +++
+ 
+ ShardingSphere-MCP uses YAML files to configure the transport and the databases that the MCP Server can connect to.
+-The packaged distribution reads `conf/mcp-http.yaml` by default and also ships `conf/mcp-stdio.yaml`.
++The packaged distribution reads `conf/mcp-http.yaml` by default and also ships `conf/mcp-stdio.yaml` and `conf/mcp-http-docker.yaml`.
+ 
+ ## Transport configuration
+ 
+@@ -62,7 +62,7 @@ Enable this only when clients cannot forge these headers directly.
+ 
+ ## Database configuration
+ 
+-`runtimeDatabases` defines the databases that the MCP Server can connect to and expose to users.
++`runtimeDatabases` defines the databases that the MCP Server can connect to and expose to users. It may be omitted or empty when the server starts without database-backed capabilities.
+ Each entry key is the database name that users reference in natural-language tasks. It usually maps to a logical database exposed by ShardingSphere-Proxy.
+ The MCP Server resolves the database type from `jdbcUrl`; use a JDBC driver class that matches the configured URL.
+ 
+@@ -93,6 +93,7 @@ Notes:
+ - With a direct database connection, users see metadata from the target database itself, not ShardingSphere rule state.
+ - Schema, table, view, index, and sequence metadata depends on JDBC metadata from the connection target. Proxy-visible metadata and direct-connection metadata may differ.
+ - If the target JDBC driver is not packaged, copy the driver jar under `plugins/`.
++- Keep placeholder values such as `<logic-database>` in examples only. Runtime YAML files reject unresolved placeholders.
+ 
+ ## Secret Placeholders
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
+index 33b08c6d095..ec7292a9f6b 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.cn.md
+@@ -31,7 +31,8 @@ OCI image 形态是：
+ ghcr.io/apache/shardingsphere-mcp:<version>
+ ```
+ 
+-使用 OCI 镜像前，应先准备自定义配置文件。
++OCI 镜像可以使用内置 `conf/mcp-http-docker.yaml` 配置和空的 `runtimeDatabases` 启动。
++使用元数据、SQL 或规则能力前，请先准备自定义配置文件。
+ HTTP 模式在容器中运行时，`bindHost` 应绑定到容器可暴露的网络接口，例如 `0.0.0.0`：
+ 
+ ```yaml
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
+index f8ca8d11dc2..7fef7281534 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/deployment.en.md
+@@ -31,7 +31,8 @@ The OCI image shape is:
+ ghcr.io/apache/shardingsphere-mcp:<version>
+ ```
+ 
+-Before using the OCI image, prepare a custom configuration file.
++The OCI image can start with its built-in `conf/mcp-http-docker.yaml` configuration and an empty `runtimeDatabases` map.
++Before using metadata, SQL, or rule capabilities, prepare a custom configuration file.
+ When HTTP mode runs in a container, `bindHost` should bind to a network interface that the container can expose, such as `0.0.0.0`:
+ 
+ ```yaml
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
+index e2e86db7a27..0d27d091432 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.cn.md
+@@ -12,7 +12,7 @@ weight = 7
+ 
+ | 现象                           | 可能原因                                                              | 处理方式                                                                                                 |
+ |------------------------------|-------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+-| MCP Server 启动失败              | Java 版本、配置文件路径、发行包目录或 YAML 必填字段不正确。                               | 查看启动终端和 `logs/mcp.log`；确认使用 Java 21 及以上版本，配置文件存在，发行包 `lib/` 目录完整，并且 `runtimeDatabases` 至少配置一项运行时数据库。 |
++| MCP Server 启动失败              | Java 版本、配置文件路径、发行包目录或 YAML 必填字段不正确。                               | 查看启动终端和 `logs/mcp.log`；确认使用 Java 21 及以上版本，配置文件存在，并且发行包 `lib/` 目录完整。 |
+ | AI 应用无法连接 ShardingSphere-MCP | 传输方式、端口、端点路径、绑定地址或 AI 应用中的 MCP Server 配置不一致。                      | 检查 `transport.type`、`port`、`endpointPath`、`bindHost`，并确认 AI 应用使用相同的连接地址。                             |
+ | HTTP 远程访问失败或请求被拒绝            | HTTP 绑定地址、Origin 请求头、反向代理、网关转发或会话归属配置不符合安全策略。                     | 本机调试使用回环地址；远程访问放在受控网关或反向代理后面；检查网关是否转发了期望的请求头；详细原因看服务端日志。                                             |
+ | STDIO 模式没有响应                 | STDIO 被当作命令行交互入口，或 AI 应用没有正确拉起 MCP 进程。                            | 由 AI 应用拉起 ShardingSphere-MCP；诊断信息看 stderr 或 `logs/mcp.log`。                                          |
+@@ -26,7 +26,7 @@ weight = 7
+ 补充说明：
+ 
+ - `username` 和 `driverClassName` 必须显式写出且不能为空；无密码账号可以省略 `password` 或写 `""`。
+-- `runtimeDatabases` 是启动必填项，至少需要配置一项运行时数据库。
++- YAML 中可以省略 `runtimeDatabases` 或将其配置为空；在元数据发现、SQL 执行或规则工作流前，至少需要配置一项运行时数据库。
+ - 查询默认最多返回 100 行，单次查询最多可请求 5000 行；查询超时最大可请求 300000 毫秒。
+ - 人工执行包中的密钥占位符应由执行人员在受控环境替换。
+ - ShardingSphere-MCP 不获取真实敏感值，真实敏感值也不应进入 AI 应用；如果规则变更需要密钥或凭证，应在 MCP 和 AI 应用之外的受控环境中替换人工执行包里的中性占位符。
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
+index 87668e2d9a2..c38a84867ea 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/troubleshooting.en.md
+@@ -12,7 +12,7 @@ If you have not completed the basic post-deployment checks yet, start with the h
+ 
+ | Symptom                                                  | Possible cause                                                                                                                                                                                                             | Action                                                                                                                                                                                                                                    |
+ |----------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+-| MCP Server startup failure                               | Java version, config file path, distribution directory, or required YAML field is wrong.                                                                                                                                   | Inspect the startup terminal and `logs/mcp.log`; use Java 21 or later, confirm that the config file exists, ensure that the distribution `lib/` directory is complete, and configure at least one runtime database in `runtimeDatabases`. |
++| MCP Server startup failure                               | Java version, config file path, distribution directory, or required YAML field is wrong.                                                                                                                                   | Inspect the startup terminal and `logs/mcp.log`; use Java 21 or later, confirm that the config file exists, and ensure that the distribution `lib/` directory is complete.                                                               |
+ | The AI application cannot connect to ShardingSphere-MCP  | Transport type, port, endpoint path, bind address, or the MCP Server configuration in the AI application is inconsistent.                                                                                                  | Check `transport.type`, `port`, `endpointPath`, `bindHost`, and the address configured in the AI application.                                                                                                                             |
+ | Remote HTTP access fails or the HTTP request is rejected | HTTP bind address, Origin header, reverse proxy, gateway forwarding, or session attribution configuration does not satisfy the security policy.                                                                            | Use loopback for local debugging; place remote access behind a controlled gateway or reverse proxy; check whether the gateway forwards the expected headers; inspect server logs for details.                                             |
+ | No response in STDIO mode                                | STDIO is used as an interactive command-line entry, or the AI application does not launch the MCP process correctly.                                                                                                       | Let the AI application launch ShardingSphere-MCP; inspect stderr or `logs/mcp.log` for diagnostics.                                                                                                                                       |
+@@ -26,7 +26,7 @@ If you have not completed the basic post-deployment checks yet, start with the h
+ Additional notes:
+ 
+ - `username` and `driverClassName` must be declared explicitly and cannot be empty; a no-password account can omit `password` or use `""`.
+-- `runtimeDatabases` is required at startup and must contain at least one runtime database.
++- `runtimeDatabases` may be omitted or empty. Configure at least one runtime database before metadata discovery, SQL execution, or rule workflows.
+ - Queries return at most 100 rows by default. A single query can request at most 5000 rows, and the maximum requested query timeout is 300000 milliseconds.
+ - Secret placeholders in manual packages should be replaced by operators in a controlled environment.
+ - ShardingSphere-MCP does not fetch real sensitive values; real sensitive values must stay outside the AI application. If a rule change needs keys or credentials, replace the neutral placeholders in the manual execution package outside MCP and the AI application in a controlled environment.

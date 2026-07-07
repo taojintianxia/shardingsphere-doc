@@ -42,7 +42,7 @@ runtimeDatabases: &amp;#34;&amp;lt;logic-database&amp;gt;&amp;#34;: jdbcUrl: &am
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-mcp/configuration/</guid>
-      <description>ShardingSphere-MCP 使用 YAML 文件配置传输方式和 MCP Server 可以连接的数据库。 发行包默认读取 conf/mcp-http.yaml，也内置 conf/mcp-stdio.yaml。
+      <description>ShardingSphere-MCP 使用 YAML 文件配置传输方式和 MCP Server 可以连接的数据库。 发行包默认读取 conf/mcp-http.yaml，也内置 conf/mcp-stdio.yaml 和 conf/mcp-http-docker.yaml。
 传输方式 每个 MCP Server 进程必须且只能选择一种传输方式。
 HTTP 示例：
 transport: type: STREAMABLE_HTTP http: bindHost: 127.0.0.1 port: 18088 endpointPath: /mcp STDIO 示例：
@@ -59,7 +59,7 @@ transport: type: STDIO    配置项 说明     transport.type 传输方式，支
 独立发行包 构建发行包：
 ./mvnw -pl distribution/mcp -am -DskipTests package 发行包目录包含：
  bin/：启动脚本。 conf/：默认配置和日志配置。 lib/：MCP Server 依赖和内置 MCP 功能插件。 plugins/：外部 JDBC 驱动或额外 MCP 功能插件 jar。 logs/：运行日志。  OCI 镜像 官方 MCP Registry 元数据位于 mcp/server.json。 公开 server name 是 io.github.apache/shardingsphere-mcp。 OCI image 形态是：
-ghcr.io/apache/shardingsphere-mcp:&amp;lt;version&amp;gt; 使用 OCI 镜像前，应先准备自定义配置文件。 HTTP 模式在容器中运行时，bindHost 应绑定到容器可暴露的网络接口，例如 0.0.0.0：
+ghcr.io/apache/shardingsphere-mcp:&amp;lt;version&amp;gt; OCI 镜像可以使用内置 conf/mcp-http-docker.yaml 配置和空的 runtimeDatabases 启动。 使用元数据、SQL 或规则能力前，请先准备自定义配置文件。 HTTP 模式在容器中运行时，bindHost 应绑定到容器可暴露的网络接口，例如 0.0.0.0：
 transport: type: STREAMABLE_HTTP http: bindHost: 0.0.0.0 port: 18088 endpointPath: /mcp runtimeDatabases: &amp;#34;&amp;lt;logic-database&amp;gt;&amp;#34;: jdbcUrl: &amp;#34;jdbc:mysql://&amp;lt;proxy-host&amp;gt;:&amp;lt;proxy-port&amp;gt;/&amp;lt;logic-database&amp;gt;&amp;#34; username: &amp;#34;&amp;lt;proxy-username&amp;gt;&amp;#34; password: &amp;#34;&amp;lt;proxy-password&amp;gt;&amp;#34; driverClassName: &amp;#34;com.</description>
     </item>
     
@@ -70,7 +70,7 @@ transport: type: STREAMABLE_HTTP http: bindHost: 0.0.0.0 port: 18088 endpointPat
       
       <guid>https://shardingsphere.apache.org/document/current/cn/user-manual/shardingsphere-mcp/troubleshooting/</guid>
       <description>本页按用户侧现象整理 ShardingSphere-MCP、AI 应用集成、数据库连接、元数据查看、查询和规则变更的排查方法。 功能插件的规则规划、执行和校验问题，请查看对应功能插件文档。 排查时先区分外部环境和 MCP 保护机制：数据库服务、账号权限、网关转发和 AI 应用配置需要在对应系统处理；MCP 会通过错误分类和运行时保护信息帮助定位问题。 如果尚未完成部署后的基础检查，请先参考部署说明中的健康检查和基础可观测入口，再继续按本页症状定位。
-问题列表    现象 可能原因 处理方式     MCP Server 启动失败 Java 版本、配置文件路径、发行包目录或 YAML 必填字段不正确。 查看启动终端和 logs/mcp.log；确认使用 Java 21 及以上版本，配置文件存在，发行包 lib/ 目录完整，并且 runtimeDatabases 至少配置一项运行时数据库。   AI 应用无法连接 ShardingSphere-MCP 传输方式、端口、端点路径、绑定地址或 AI 应用中的 MCP Server 配置不一致。 检查 transport.type、port、endpointPath、bindHost，并确认 AI 应用使用相同的连接地址。   HTTP 远程访问失败或请求被拒绝 HTTP 绑定地址、Origin 请求头、反向代理、网关转发或会话归属配置不符合安全策略。 本机调试使用回环地址；远程访问放在受控网关或反向代理后面；检查网关是否转发了期望的请求头；详细原因看服务端日志。   STDIO 模式没有响应 STDIO 被当作命令行交互入口，或 AI 应用没有正确拉起 MCP 进程。 由 AI 应用拉起 ShardingSphere-MCP；诊断信息看 stderr 或 logs/mcp.</description>
+问题列表    现象 可能原因 处理方式     MCP Server 启动失败 Java 版本、配置文件路径、发行包目录或 YAML 必填字段不正确。 查看启动终端和 logs/mcp.log；确认使用 Java 21 及以上版本，配置文件存在，并且发行包 lib/ 目录完整。   AI 应用无法连接 ShardingSphere-MCP 传输方式、端口、端点路径、绑定地址或 AI 应用中的 MCP Server 配置不一致。 检查 transport.type、port、endpointPath、bindHost，并确认 AI 应用使用相同的连接地址。   HTTP 远程访问失败或请求被拒绝 HTTP 绑定地址、Origin 请求头、反向代理、网关转发或会话归属配置不符合安全策略。 本机调试使用回环地址；远程访问放在受控网关或反向代理后面；检查网关是否转发了期望的请求头；详细原因看服务端日志。   STDIO 模式没有响应 STDIO 被当作命令行交互入口，或 AI 应用没有正确拉起 MCP 进程。 由 AI 应用拉起 ShardingSphere-MCP；诊断信息看 stderr 或 logs/mcp.</description>
     </item>
     
     <item>
