@@ -1,54 +1,62 @@
-commit 1a7d3e67b3bb628db3f43f6b1f82c1274f5b4983
+commit cb50781bc2a08ba20d7b9a66ec5e017fc2bf17c5
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Wed Jul 15 15:20:23 2026 +0800
+Date:   Thu Jul 16 05:07:58 2026 +0800
 
-    Refactor MCP success and error payload boundaries (#39128)
+    Refactor MCP request context hierarchy (#39142)
     
-    * Refactor MCP success and error payload boundaries
-    
-    * Refactor MCP success and error payload boundaries
+    - replace database and workflow contexts with MCPFeatureRequestContext
+    - rename the core implementation to MCPFeatureRuntimeRequestContext
+    - migrate handlers, providers, tests, and documentation
 
 diff --git a/docs/document/content/dev-manual/mcp.cn.md b/docs/document/content/dev-manual/mcp.cn.md
-index b4ebb416fd4..8ccb19678df 100644
+index 8ccb19678df..9f15dcdc50b 100644
 --- a/docs/document/content/dev-manual/mcp.cn.md
 +++ b/docs/document/content/dev-manual/mcp.cn.md
-@@ -66,7 +66,7 @@ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
- - 实现 `MCPToolHandler<T extends MCPRequestContext>`。
- - 声明 context type。
- - 声明 canonical tool name。
--- `handle(...)` 只返回成功的 `MCPResponse`；参数非法、资源不存在、查询失败、超时、不支持等受控失败应抛出 `ShardingSphereMCPException` 子类或明确的运行时异常，由 runtime 转换为 MCP tool 错误结果。
-+- `handle(...)` 只返回成功的 `MCPSuccessPayload`；参数非法、资源不存在、查询失败、超时、不支持等受控失败应抛出对应的 `ShardingSphereMCPException` 子类，由 runtime 转换为 MCP tool 错误结果。未预期的运行时失败会被脱敏并转换为 JSON-RPC internal error。
- - 在 descriptor 中维护 input schema、output schema、annotations、相关 resources、follow-up tools 和副作用说明。
+@@ -16,7 +16,7 @@ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
+ - `mcp/support`：database metadata、execution、capability、workflow context、模型、facade、SPI 和复用 helper。
+ - `mcp/features/encrypt`：Encrypt MCP feature。
+ - `mcp/features/mask`：Mask MCP feature。
+-- `mcp/core`：handler 发现、registry、request scope、session、SQL execution trace、metadata discovery 和 runtime context。
++- `mcp/core`：handler 发现、registry、request context、session、SQL execution trace、metadata discovery 和 runtime context。
+ - `mcp/bootstrap`：基于 MCP Java SDK 的 bootstrap、HTTP/STDIO transport、配置加载和生命周期管理。
+ - `distribution/mcp`：独立打包、启动脚本、配置和 Dockerfile。
+ - `test/e2e/mcp`：端到端契约验证。
+@@ -83,10 +83,9 @@ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
+ ## Context 选择
  
- 对外新增 resource：
-@@ -74,7 +74,7 @@ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
- - 实现 `MCPResourceHandler<T extends MCPRequestContext>`。
- - 声明 context type。
- - 声明 canonical resource URI template。固定 URI 也是没有变量的 URI template。
--- `handle(...)` 只返回成功的 `MCPResponse`；失败不要在 handler 中手工构造错误 response，由 runtime 转换为 MCP resource 读取错误。
-+- `handle(...)` 只返回成功的 `MCPSuccessPayload`；不要在 handler 中手工构造错误 payload，受控失败应抛出对应的 `ShardingSphereMCPException` 子类，由 runtime 转换为 MCP resource 读取错误。未预期的运行时失败会被脱敏并转换为 JSON-RPC internal error。
- - 在 descriptor 中维护 URI 参数含义、对象范围、MIME type、title、description、annotations 和关系元数据。
+ - 只需要 session ID、当前 transport 或 session identity 的 handler 使用 `MCPRequestContext`。
+-- database metadata 或 execution handler 使用 `MCPDatabaseRequestContext`。
+-- workflow handler 使用 `MCPWorkflowRequestContext`。
++- 需要 database metadata、execution 或 workflow 能力的 handler 和 completion provider 使用 `MCPFeatureRequestContext`。
  
- 运行时代码需要 descriptor 时，应使用 canonical tool name 或 resource URI template，通过 `MCPDescriptorCatalogIndex` 从 catalog 解析。
+-`MCPRequestScope` 是 runtime 管理的单次请求实现，名称表达的是生命周期；handler 只依赖自身所需的最小 context 接口。
++`MCPFeatureRuntimeRequestContext` 是 runtime 管理的单次请求实现。Handler 和 completion provider 只依赖 context 接口，不依赖 core 实现类。
+ 
+ Completion 请求按 session 使用 60 秒固定窗口限流，默认每分钟 600 次，可通过 Java 系统属性
+ `shardingsphere.mcp.maxCompletionRequestsPerMinute` 调整。
 diff --git a/docs/document/content/dev-manual/mcp.en.md b/docs/document/content/dev-manual/mcp.en.md
-index 065ea9b299c..d1f247865c9 100644
+index d1f247865c9..c5ebba811e8 100644
 --- a/docs/document/content/dev-manual/mcp.en.md
 +++ b/docs/document/content/dev-manual/mcp.en.md
-@@ -66,7 +66,7 @@ When adding a public tool:
- - Implement `MCPToolHandler<T extends MCPRequestContext>`.
- - Declare the context type.
- - Declare the canonical tool name.
--- `handle(...)` returns only a successful `MCPResponse`. For controlled failures such as invalid arguments, missing resources, query failure, timeout, or unsupported operations, throw a `ShardingSphereMCPException` subclass or a clear runtime exception and let runtime convert it to an MCP tool error result.
-+- `handle(...)` returns only a successful `MCPSuccessPayload`. For controlled failures such as invalid arguments, missing resources, query failure, timeout, or unsupported operations, throw the corresponding `ShardingSphereMCPException` subclass and let runtime convert it to an MCP tool error result. Unexpected runtime failures are sanitized as JSON-RPC internal errors.
- - Maintain input schema, output schema, annotations, related resources, follow-up tools, and side-effect notes in the descriptor.
+@@ -16,7 +16,7 @@ The MCP path is organized as `api + support + features + core + bootstrap`:
+ - `mcp/support`: database metadata, execution, capability, workflow contexts, models, facades, SPI, and reusable helpers.
+ - `mcp/features/encrypt`: Encrypt MCP feature.
+ - `mcp/features/mask`: Mask MCP feature.
+-- `mcp/core`: handler discovery, registry, request scope, session, SQL execution trace, metadata discovery, and runtime context.
++- `mcp/core`: handler discovery, registry, request context, session, SQL execution trace, metadata discovery, and runtime context.
+ - `mcp/bootstrap`: MCP Java SDK based bootstrap, HTTP/STDIO transport, configuration loading, and lifecycle management.
+ - `distribution/mcp`: standalone packaging, startup scripts, configuration, and Dockerfile.
+ - `test/e2e/mcp`: end-to-end contract validation.
+@@ -83,10 +83,9 @@ Do not duplicate descriptor fields inside handlers.
+ ## Context selection
  
- When adding a public resource:
-@@ -74,7 +74,7 @@ When adding a public resource:
- - Implement `MCPResourceHandler<T extends MCPRequestContext>`.
- - Declare the context type.
- - Declare the canonical resource URI template. A fixed URI is also a URI template without variables.
--- `handle(...)` returns only a successful `MCPResponse`. Do not build error responses in handlers; runtime converts failures to MCP resource read errors.
-+- `handle(...)` returns only a successful `MCPSuccessPayload`. Do not build error payloads in handlers; throw the corresponding `ShardingSphereMCPException` subclass and let runtime convert it to an MCP resource read error. Unexpected runtime failures are sanitized as JSON-RPC internal errors.
- - Maintain URI parameter meaning, object scope, MIME type, title, description, annotations, and relationship metadata in the descriptor.
+ - Use `MCPRequestContext` when a handler only needs the session ID, active transport, or session identity.
+-- Use `MCPDatabaseRequestContext` for database metadata or execution handlers.
+-- Use `MCPWorkflowRequestContext` for workflow handlers.
++- Use `MCPFeatureRequestContext` when a handler or completion provider needs database metadata, execution, or workflow capabilities.
  
- When runtime code needs the descriptor for a handler, resolve it from `MCPDescriptorCatalogIndex` by canonical tool name or resource URI template.
+-`MCPRequestScope` is the runtime-owned, per-request implementation of these capabilities. Its name describes its lifecycle; handlers depend on the smallest context interface they need.
++`MCPFeatureRuntimeRequestContext` is the runtime-owned, per-request implementation. Handlers and completion providers depend only on context interfaces, not on the core implementation class.
+ 
+ Completion requests use a per-session 60-second fixed-window rate limit. The default is 600 requests per minute and can be changed with the
+ `shardingsphere.mcp.maxCompletionRequestsPerMinute` Java system property.
