@@ -1,36 +1,60 @@
-commit 6adf33227f732ff170deae51479c508286c660f8
+commit 6bcffd52f1868c0053ccfccd83ced72097940e5e
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Sat Jul 18 19:02:03 2026 +0800
+Date:   Sat Jul 18 21:22:21 2026 +0800
 
-    Refactor MCP API package structure (#39178)
+    Refactor MCP API capability packages (#39180)
     
-    - group prompt, resource, and tool descriptors by MCP capability
-    - move MCPHandlerProvider to the MCP SPI package
-    - update ServiceLoader registrations, consumers, documentation, and E2E fixtures
+    - group tool, resource, prompt, and completion contracts by capability
+    - move the completion provider interface into the MCP SPI package
+    - update consumers, ServiceLoader registrations, tests, E2E fixtures, and docs
 
 diff --git a/docs/document/content/dev-manual/mcp.cn.md b/docs/document/content/dev-manual/mcp.cn.md
-index 46d13d61408..4d2d9578cc3 100644
+index 4d2d9578cc3..ded753fd162 100644
 --- a/docs/document/content/dev-manual/mcp.cn.md
 +++ b/docs/document/content/dev-manual/mcp.cn.md
-@@ -34,7 +34,7 @@ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
- 5. 实现 `MCPHandlerProvider`。
- 6. 通过 `getToolHandlers()` 和 `getResourceHandlers()` 返回 feature 自己暴露的 handlers。
- 7. 如果 feature 拥有 workflow definitions，在同一个 provider 上实现 `MCPWorkflowDefinitionProvider`。
--8. 在 `src/main/resources/META-INF/services/` 注册 `org.apache.shardingsphere.mcp.api.MCPHandlerProvider`。
-+8. 在 `src/main/resources/META-INF/services/` 注册 `org.apache.shardingsphere.mcp.spi.MCPHandlerProvider`。
- 9. 在 `META-INF/shardingsphere-mcp/mcp-descriptors` 下添加 descriptor。
+@@ -12,8 +12,8 @@ chapter = true
  
- 如果 feature 要作为官方默认能力随发行包提供，还需要：
+ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
+ 
+-- `mcp/api`：public tool/resource handler 契约、descriptor 类型、协议 response 和 MCP 协议异常。
+-- `mcp/support`：database metadata、execution、capability、workflow context、模型、facade、SPI 和复用 helper。
++- `mcp/api`：public MCP capability 契约、descriptor 类型、协议 response、MCP 协议异常和 SPI 入口。
++- `mcp/support`：database metadata、execution、capability、workflow context、模型、facade、database/workflow SPI 和复用 helper。
+ - `mcp/features/encrypt`：Encrypt MCP feature。
+ - `mcp/features/mask`：Mask MCP feature。
+ - `mcp/core`：handler 发现、registry、request context、session、SQL execution trace、metadata discovery 和 runtime context。
+@@ -23,6 +23,9 @@ MCP 子链路按 `api + support + features + core + bootstrap` 分层组织：
+ 
+ `mcp/bootstrap` 只负责发布聚合后的协议表面，不应硬编码具体 feature 业务。
+ 
++公开的 server capability 契约按 `org.apache.shardingsphere.mcp.api.capability.<capability>` 组织，ServiceLoader 入口接口位于
++`org.apache.shardingsphere.mcp.spi`。Request context、session、transport、payload 和 exception 是跨 capability 或基础协议契约，不归入 capability 包。
++
+ ## 新增 Feature Plugin
+ 
+ 新增 feature 的推荐路径：
 diff --git a/docs/document/content/dev-manual/mcp.en.md b/docs/document/content/dev-manual/mcp.en.md
-index 35c24ee0088..54d9420e1a1 100644
+index 54d9420e1a1..83de0ed3745 100644
 --- a/docs/document/content/dev-manual/mcp.en.md
 +++ b/docs/document/content/dev-manual/mcp.en.md
-@@ -34,7 +34,7 @@ Recommended path for a new feature:
- 5. Implement `MCPHandlerProvider`.
- 6. Return the feature's handlers from `getToolHandlers()` and `getResourceHandlers()`.
- 7. If the feature owns workflow definitions, implement `MCPWorkflowDefinitionProvider` on the same provider.
--8. Register `org.apache.shardingsphere.mcp.api.MCPHandlerProvider` under `src/main/resources/META-INF/services/`.
-+8. Register `org.apache.shardingsphere.mcp.spi.MCPHandlerProvider` under `src/main/resources/META-INF/services/`.
- 9. Add descriptors under `META-INF/shardingsphere-mcp/mcp-descriptors`.
+@@ -12,8 +12,8 @@ For installation and usage, see the [User Manual](../../user-manual/shardingsphe
  
- If the feature should be shipped as an official default capability:
+ The MCP path is organized as `api + support + features + core + bootstrap`:
+ 
+-- `mcp/api`: public tool/resource handler contracts, descriptor types, protocol responses, and MCP protocol exceptions.
+-- `mcp/support`: database metadata, execution, capability, workflow contexts, models, facades, SPI, and reusable helpers.
++- `mcp/api`: public MCP capability contracts, descriptor types, protocol responses, MCP protocol exceptions, and SPI entry points.
++- `mcp/support`: database metadata, execution, capability, workflow contexts, models, facades, database/workflow SPIs, and reusable helpers.
+ - `mcp/features/encrypt`: Encrypt MCP feature.
+ - `mcp/features/mask`: Mask MCP feature.
+ - `mcp/core`: handler discovery, registry, request context, session, SQL execution trace, metadata discovery, and runtime context.
+@@ -23,6 +23,9 @@ The MCP path is organized as `api + support + features + core + bootstrap`:
+ 
+ `mcp/bootstrap` only publishes the aggregated protocol surface. It should not hard-code concrete feature business logic.
+ 
++Public server capability contracts are organized under `org.apache.shardingsphere.mcp.api.capability.<capability>`, while ServiceLoader entry interfaces live in
++`org.apache.shardingsphere.mcp.spi`. Request contexts, sessions, transports, payloads, and exceptions are cross-capability or base-protocol contracts and stay outside capability packages.
++
+ ## Add a Feature Plugin
+ 
+ Recommended path for a new feature:
