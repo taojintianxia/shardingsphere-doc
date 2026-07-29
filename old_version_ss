@@ -1,210 +1,82 @@
-commit 33b18fe1c692706064ed5915fcbcc015fe1f9544
+commit 091ae171a7df6bb0638eb12d9ea9c0594eec9997
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Wed Jul 29 11:28:56 2026 +0800
+Date:   Wed Jul 29 21:30:58 2026 +0800
 
-    Refactor MCP E2E test suite naming (#39264)
+    Simplify MCP LLM E2E test coverage (#39271)
+    
+    * Simplify MCP LLM E2E test coverage
+    
+    - consolidate LLM validation into four autonomous HTTP scenarios
+    - remove guided and duplicated conversation harness code
+    - parallelize LLM scenarios and streamline model readiness checks
+    - add MCP transport timeouts and logging conformance coverage
+    
+    * Simplify MCP LLM E2E test coverage
+    
+    - consolidate LLM validation into four autonomous HTTP scenarios
+    - remove guided and duplicated conversation harness code
+    - parallelize LLM scenarios and streamline model readiness checks
+    - add MCP transport timeouts and logging conformance coverage
 
 diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-index 4cfa3572bce..b6f174ae485 100644
+index b6f174ae485..25f1b4ca34e 100644
 --- a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
 +++ b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-@@ -5,19 +5,15 @@ weight = 5
- chapter = true
- +++
+@@ -13,7 +13,7 @@ MCP E2E workflow 包含三个相互独立的测试套件：
  
--本章说明 ShardingSphere-MCP 的端到端契约验证和 LLM usability 验证。
-+本章说明 ShardingSphere-MCP 的 Functionality、Conformance 和 LLM 三类端到端测试。
- 
- ## 范围
- 
--`test/e2e/mcp` 覆盖：
-+MCP E2E workflow 包含三个相互独立的测试套件：
- 
--- 发行包启动和配置。
--- 基于真实 MySQL、PostgreSQL 和 Proxy 的 HTTP、STDIO runtime。
--- Tool、resource、prompt 和 completion 的跨进程发现与执行。
--- 适用于当前 server capability 的官方 MCP conformance 场景。
--- 真实模型驱动的 MCP usability。
--- 基于实时元数据和数据的 10 题自主 MCP Builder 评测。
--- Encrypt、Mask、Broadcast、Readwrite-Splitting、Shadow 和 Sharding workflow 验收。
-+- MCP Functionality E2E 验证发行包启动和配置、基于真实 MySQL、PostgreSQL 和 Proxy 的 HTTP 与 STDIO runtime、Tool、resource、prompt 和 completion 的跨进程发现与执行，以及 Encrypt、Mask、Broadcast、Readwrite-Splitting、Shadow 和 Sharding workflow。
-+- MCP Conformance E2E 使用官方 runner 验证适用于当前 server capability 的 MCP 协议场景。
-+- MCP LLM E2E 验证真实模型通过 HTTP 或 STDIO 使用 MCP 完成只读查询、元数据发现、资源导航、带副作用操作的 preview 和错误恢复。
+ - MCP Functionality E2E 验证发行包启动和配置、基于真实 MySQL、PostgreSQL 和 Proxy 的 HTTP 与 STDIO runtime、Tool、resource、prompt 和 completion 的跨进程发现与执行，以及 Encrypt、Mask、Broadcast、Readwrite-Splitting、Shadow 和 Sharding workflow。
+ - MCP Conformance E2E 使用官方 runner 验证适用于当前 server capability 的 MCP 协议场景。
+-- MCP LLM E2E 验证真实模型通过 HTTP 或 STDIO 使用 MCP 完成只读查询、元数据发现、资源导航、带副作用操作的 preview 和错误恢复。
++- MCP LLM E2E 验证真实模型通过 HTTP 使用 MCP 完成只读查询、元数据发现、带副作用操作的 preview 和无效资源恢复。
  
  不需要 Docker 的 HTTP 协议、会话和安全边界由 `mcp/bootstrap` 的 `StreamableHttpMCPServerIT` 覆盖，不属于 E2E。
  
-@@ -74,13 +70,13 @@ sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh --dry-run
- sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh
+@@ -93,7 +93,7 @@ MCP E2E 运行配置集中在 `test/e2e/mcp/src/test/resources/env/e2e-env.prope
+ ./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm
  ```
  
--## 运行 MCP Runtime E2E
-+## 运行 MCP Functionality E2E
+-`LLMHttpE2ETest` 覆盖 HTTP 场景，`LLMStdioE2ETest` 覆盖 STDIO 自主只读查询。每个场景都使用实时 `tools/list` response，并保留模型 response、MCP structured response、interaction trace 和断言报告。选中 `llm-e2e` lane 后，如果 Docker、模型、数据库或 MCP 基础设施缺失，测试直接失败，不把失败转换成 skip。
++`LLMHttpE2ETest` 覆盖四个自主 HTTP 场景：只读查询、元数据发现、带副作用操作的 preview 和无效资源恢复。每个场景都使用实时 `tools/list` response，并保留模型 response、MCP structured response、interaction trace 和断言报告。选中 `llm-e2e` lane 后，如果 Docker、模型、数据库或 MCP 基础设施缺失，测试直接失败，不把失败转换成 skip。
  
- MCP E2E 运行配置集中在 `test/e2e/mcp/src/test/resources/env/e2e-env.properties`。
- 本地运行时可以直接修改该文件，也可以使用同名 `-D` 系统参数覆盖。
+ ## MCP Conformance E2E
  
- ```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp
-+./mvnw -pl test/e2e/mcp test -Pe2e.mcp.functionality
- ```
- 
- ## 运行 MCP HTTP IT
-@@ -91,23 +87,15 @@ MCP E2E 运行配置集中在 `test/e2e/mcp/src/test/resources/env/e2e-env.prope
- ./mvnw -pl mcp/bootstrap verify
- ```
- 
--## 运行 LLM Usability Suite
-+## 运行 MCP LLM E2E
- 
- ```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=LLMUsabilitySuiteE2ETest
-+./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm
- ```
- 
--## 运行自主 MCP Builder 评测
-+`LLMHttpE2ETest` 覆盖 HTTP 场景，`LLMStdioE2ETest` 覆盖 STDIO 自主只读查询。每个场景都使用实时 `tools/list` response，并保留模型 response、MCP structured response、interaction trace 和断言报告。选中 `llm-e2e` lane 后，如果 Docker、模型、数据库或 MCP 基础设施缺失，测试直接失败，不把失败转换成 skip。
- 
--评测从 `llm/evaluation/mcp-builder-evaluation.xml` 加载 10 个相互独立的只读问题。
--每个问题都创建新的 MCP session，从实时 `tools/list` response 派生模型 function definitions，保留模型原始 response 和 MCP structured response，并且不注入纠错提示或期望答案，只对最终答案做精确比较。
--用于闭合评分的运行显式使用 32768 token context window。选中 `llm-e2e` lane 后，如果 Docker、模型、数据库或 MCP 基础设施缺失，测试直接失败，不把评分失败转换成 skip。
--
--```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=MCPBuilderEvaluationE2ETest
--```
--
--## 官方 MCP Conformance
-+## MCP Conformance E2E
- 
- CI conformance lane 将 `modelcontextprotocol/conformance` 固定在 commit `21a9a2febd7100d7c17ac1021ee7f2ed9f66a1e0`，传入 protocol version `2025-11-25`，并且只运行 workflow 中声明的适用通用 server 场景。
- 上游固定使用 `test_*` tool/resource 的产品无关调用、未声明的可选能力和固定 HTTP 传输面以外的场景不适用于本项目，产品能力继续由确定性 E2E 覆盖；不会为了上游 fixture 添加生产测试钩子。
-@@ -118,24 +106,24 @@ CI conformance lane 将 `modelcontextprotocol/conformance` 固定在 commit `21a
- 仅本地调试时，可以连接已经运行的 OpenAI-compatible endpoint：
- 
- ```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=LLMUsabilitySuiteE2ETest -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:8080/v1
-+./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=LLMHttpE2ETest -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:8080/v1
- ```
- 
- External debug endpoint 不能作为 score-closing evidence。
- 
- ## 产物
- 
--LLM usability 和 MCP Builder evaluation artifact 写入：
-+MCP LLM E2E artifact 写入：
- 
- ```text
+@@ -119,7 +119,7 @@ MCP LLM E2E artifact 写入：
  test/e2e/mcp/target/llm-e2e/
  ```
  
--每个自主评测 case 都记录问题、期望与实际答案、原始模型 response、MCP interaction trace、实时 tool definitions、runtime evidence 和 assertion report。Artifact 写入会脱敏 secret-shaped 值；如果发现未脱敏 secret pattern 或已知模型 API key，评分运行直接失败。
-+每个场景都记录问题、期望与实际答案、原始模型 response、MCP interaction trace、实时 tool definitions、runtime evidence 和 assertion report。Artifact 写入会脱敏 secret-shaped 值；如果发现未脱敏 secret pattern 或已知模型 API key，测试直接失败。
+-每个场景都记录问题、期望与实际答案、原始模型 response、MCP interaction trace、实时 tool definitions、runtime evidence 和 assertion report。Artifact 写入会脱敏 secret-shaped 值；如果发现未脱敏 secret pattern 或已知模型 API key，测试直接失败。
++每个场景都记录问题、实际答案、原始模型 response、MCP interaction trace、实时 tool definitions、runtime evidence 和 assertion report。Artifact 写入会脱敏 secret-shaped 值；如果发现未脱敏 secret pattern 或已知模型 API key，测试直接失败。
  
  GitHub Actions 入口：
  
- - `.github/workflows/e2e-mcp.yml`
- 
--这条 workflow 是 MCP runtime E2E 的必跑入口。
-+这条 workflow 是三类 MCP E2E 的统一入口。
- 如果超大 PR 因 path filter 限制漏触发，可以使用 `workflow_dispatch` 手动补充 evidence。
 diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-index fc7b062cf61..8b47c4555ac 100644
+index 8b47c4555ac..5625bb0d7e3 100644
 --- a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
 +++ b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-@@ -5,19 +5,15 @@ weight = 5
- chapter = true
- +++
+@@ -13,7 +13,7 @@ The MCP E2E workflow contains three independent test suites:
  
--This chapter describes ShardingSphere-MCP end-to-end contract validation and LLM usability validation.
-+This chapter describes the ShardingSphere-MCP Functionality, Conformance, and LLM end-to-end test suites.
- 
- ## Scope
- 
--`test/e2e/mcp` covers:
-+The MCP E2E workflow contains three independent test suites:
- 
--- Distribution startup and configuration.
--- HTTP and STDIO runtimes backed by real MySQL, PostgreSQL, and Proxy processes.
--- Cross-process discovery and execution of tools, resources, prompts, and completions.
--- Official MCP conformance scenarios applicable to the published server capabilities.
--- Real-model MCP usability.
--- Autonomous 10-question MCP Builder evaluation against live metadata and data.
--- Encrypt, Mask, Broadcast, Readwrite-Splitting, Shadow, and Sharding workflow validation.
-+- MCP Functionality E2E validates distribution startup and configuration, HTTP and STDIO runtimes backed by real MySQL, PostgreSQL, and Proxy processes, cross-process discovery and execution of tools, resources, prompts, and completions, and the Encrypt, Mask, Broadcast, Readwrite-Splitting, Shadow, and Sharding workflows.
-+- MCP Conformance E2E uses the official runner to validate MCP protocol scenarios applicable to the published server capabilities.
-+- MCP LLM E2E validates that a real model can use MCP over HTTP or STDIO for read-only queries, metadata discovery, resource navigation, side-effect previews, and error recovery.
+ - MCP Functionality E2E validates distribution startup and configuration, HTTP and STDIO runtimes backed by real MySQL, PostgreSQL, and Proxy processes, cross-process discovery and execution of tools, resources, prompts, and completions, and the Encrypt, Mask, Broadcast, Readwrite-Splitting, Shadow, and Sharding workflows.
+ - MCP Conformance E2E uses the official runner to validate MCP protocol scenarios applicable to the published server capabilities.
+-- MCP LLM E2E validates that a real model can use MCP over HTTP or STDIO for read-only queries, metadata discovery, resource navigation, side-effect previews, and error recovery.
++- MCP LLM E2E validates that a real model can use MCP over HTTP for read-only queries, metadata discovery, side-effect previews, and invalid-resource recovery.
  
  The `StreamableHttpMCPServerIT` in `mcp/bootstrap` covers HTTP protocol, session, and security boundaries that require neither Docker nor an external service.
  
-@@ -74,13 +70,13 @@ Build the local runtime image:
- sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh
+@@ -93,7 +93,7 @@ This test starts the real HTTP server without connecting to Docker, a database,
+ ./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm
  ```
  
--## Run MCP Runtime E2E
-+## Run MCP Functionality E2E
+-`LLMHttpE2ETest` covers the HTTP scenarios, and `LLMStdioE2ETest` covers an autonomous read-only query over STDIO. Each scenario uses the live `tools/list` response and preserves the model response, structured MCP response, interaction trace, and assertion report. Missing Docker, model, database, or MCP infrastructure fails the selected `llm-e2e` lane instead of converting the failure into a skipped case.
++`LLMHttpE2ETest` covers four autonomous HTTP scenarios: read-only query, metadata discovery, side-effect preview, and invalid-resource recovery. Each scenario uses the live `tools/list` response and preserves the model response, structured MCP response, interaction trace, and assertion report. Missing Docker, model, database, or MCP infrastructure fails the selected `llm-e2e` lane instead of converting the failure into a skipped case.
  
- MCP E2E runtime configuration is centralized in `test/e2e/mcp/src/test/resources/env/e2e-env.properties`.
- For local runs, edit that file or override the same keys with `-D` system properties.
+ ## MCP Conformance E2E
  
- ```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp
-+./mvnw -pl test/e2e/mcp test -Pe2e.mcp.functionality
- ```
- 
- ## Run MCP HTTP IT
-@@ -91,23 +87,15 @@ This test starts the real HTTP server without connecting to Docker, a database,
- ./mvnw -pl mcp/bootstrap verify
- ```
- 
--## Run LLM Usability Suite
-+## Run MCP LLM E2E
- 
- ```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=LLMUsabilitySuiteE2ETest
-+./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm
- ```
- 
--## Run Autonomous MCP Builder Evaluation
-+`LLMHttpE2ETest` covers the HTTP scenarios, and `LLMStdioE2ETest` covers an autonomous read-only query over STDIO. Each scenario uses the live `tools/list` response and preserves the model response, structured MCP response, interaction trace, and assertion report. Missing Docker, model, database, or MCP infrastructure fails the selected `llm-e2e` lane instead of converting the failure into a skipped case.
- 
--The evaluation loads ten independent read-only questions from `llm/evaluation/mcp-builder-evaluation.xml`.
--Each question starts a fresh MCP session, derives model function definitions from the live `tools/list` response, preserves raw model responses and structured MCP responses, and compares the final answer exactly without correction prompts or expected-answer injection.
--Score-closing runs use an explicit 32768-token context window. Missing Docker, model, database, or MCP infrastructure fails the selected `llm-e2e` lane instead of converting a score failure into a skipped case.
--
--```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=MCPBuilderEvaluationE2ETest
--```
--
--## Official MCP Conformance
-+## MCP Conformance E2E
- 
- The CI conformance lane pins `modelcontextprotocol/conformance` to commit `21a9a2febd7100d7c17ac1021ee7f2ed9f66a1e0`, passes protocol version `2025-11-25`, and executes only the applicable generic server scenarios declared in the workflow.
- Upstream calls tied to fixed `test_*` tools or resources, unadvertised optional capabilities, and scenarios outside the fixed HTTP transport surface do not apply to this project. Product capabilities remain covered by deterministic E2E tests, and no production test hooks are added for upstream fixtures.
-@@ -118,24 +106,24 @@ The packaged server runs with its loopback HTTP configuration so the DNS rebindi
- For local debugging only, connect to an already running OpenAI-compatible endpoint:
- 
- ```bash
--./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=LLMUsabilitySuiteE2ETest -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:8080/v1
-+./mvnw -pl test/e2e/mcp test -Pe2e.mcp.llm -Dtest=LLMHttpE2ETest -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:8080/v1
- ```
- 
- External debug endpoints cannot be used as score-closing evidence.
- 
- ## Artifacts
- 
--LLM usability and MCP Builder evaluation artifacts are written under:
-+MCP LLM E2E artifacts are written under:
- 
- ```text
+@@ -119,7 +119,7 @@ MCP LLM E2E artifacts are written under:
  test/e2e/mcp/target/llm-e2e/
  ```
  
--Each autonomous evaluation case records the question, expected and actual answer, raw model response, MCP interaction trace, live tool definitions, runtime evidence, and assertion report. Artifact writing redacts secret-shaped values, and scoring runs fail if an unredacted secret pattern or the known model API key is present.
-+Each scenario records the question, expected and actual answer, raw model response, MCP interaction trace, live tool definitions, runtime evidence, and assertion report. Artifact writing redacts secret-shaped values, and the test fails if an unredacted secret pattern or the known model API key is present.
+-Each scenario records the question, expected and actual answer, raw model response, MCP interaction trace, live tool definitions, runtime evidence, and assertion report. Artifact writing redacts secret-shaped values, and the test fails if an unredacted secret pattern or the known model API key is present.
++Each scenario records the question, actual answer, raw model response, MCP interaction trace, live tool definitions, runtime evidence, and assertion report. Artifact writing redacts secret-shaped values, and the test fails if an unredacted secret pattern or the known model API key is present.
  
  GitHub Actions entry points:
  
- - `.github/workflows/e2e-mcp.yml`
- 
--This workflow is the mandatory MCP runtime E2E entry point.
-+This workflow is the shared entry point for all three MCP E2E suites.
- If a very large PR misses a path-filter match, use `workflow_dispatch` to add manual evidence.
