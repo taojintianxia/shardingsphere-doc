@@ -1,30 +1,33 @@
-commit a78522c59c59a9fea32da0439065d02ecc320442
-Author: Liang Zhang <zhangliang@apache.org>
-Date:   Wed Aug 5 12:08:04 2026 +0800
+commit c7bf30fc66598831afe237f71f8a0e8e7f93146b
+Author: ZhangCheng <chengzhang@apache.org>
+Date:   Wed Aug 12 11:23:01 2026 +0800
 
-    Handle unavailable read data sources in readwrite-splitting (#39343)
+    Correct JDBC transaction type selection description (#39411)
 
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.cn.md b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-index bb0cf35bb08..62dce0de3ee 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-@@ -213,6 +213,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 20203       | 42S02     | Can not find readwrite-splitting [READ/WRITE] data source '%s' in %s.       |
- | 20204       | 42S01     | Readwrite-splitting [READ/WRITE] data source '%s' is duplicated in %s.      |
- | 20205       | 44000     | Readwrite-splitting [READ/WRITE] data source inline expression error in %s. |
-+| 20206       | 42S02     | No available read data source in readwrite-splitting data source rule '%s'. |
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md
+index a56960ffdb9..8b37bdd8aee 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md
+@@ -5,5 +5,4 @@ chapter = true
+ +++
  
- ### SQL 方言转换
+ 通过 Apache ShardingSphere 使用分布式事务，与本地事务并无区别。
+-除了透明化分布式事务的使用之外，Apache ShardingSphere 还能够在每次数据库访问时切换分布式事务类型。
+-支持的事务类型包括：本地事务、XA 事务和柔性事务。可在创建数据库连接之前设置，缺省为 Apache ShardingSphere 启动时的默认事务类型。
++Apache ShardingSphere 支持 LOCAL、XA 和 BASE 事务，事务类型由事务规则中的 `defaultType` 确定。事务开始后，其类型在提交或回滚前保持不变。
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md
+index 1616c3ce25b..7fd97ea1334 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md
+@@ -4,8 +4,6 @@ weight = 3
+ chapter = true
+ +++
  
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.en.md b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-index 7d35fa94657..13b63c224d7 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.en.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-@@ -213,6 +213,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 20203       | 42S02     | Can not find readwrite-splitting [READ/WRITE] data source '%s' in %s.       |
- | 20204       | 42S01     | Readwrite-splitting [READ/WRITE] data source '%s' is duplicated in %s.      |
- | 20205       | 44000     | Readwrite-splitting [READ/WRITE] data source inline expression error in %s. |
-+| 20206       | 42S02     | No available read data source in readwrite-splitting data source rule '%s'. |
- 
- ### SQL Dialect Translator
- 
+-Using distributed transaction through Apache ShardingSphere is no different from local transaction.
+-In addition to transparent use of distributed transaction, Apache ShardingSphere can switch distributed transaction types every time the database accesses.
+-
+-Supported transaction types include local, XA and BASE. 
+-It can be set before creating a database connection, and default value can be set when Apache ShardingSphere startup.
++Using distributed transactions through Apache ShardingSphere is no different from using local transactions.
++Apache ShardingSphere supports LOCAL, XA, and BASE transactions. The transaction type is determined by `defaultType` in the transaction rule.
++Once a transaction begins, its type remains unchanged until it is committed or rolled back.
