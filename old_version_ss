@@ -1,33 +1,126 @@
-commit c7bf30fc66598831afe237f71f8a0e8e7f93146b
+commit 26461f306ab0b7ae2b9983f2c0ac203b1d7b89e9
 Author: ZhangCheng <chengzhang@apache.org>
-Date:   Wed Aug 12 11:23:01 2026 +0800
+Date:   Wed Aug 12 19:43:05 2026 +0800
 
-    Correct JDBC transaction type selection description (#39411)
+    Correct JDBC transaction YAML examples (#39427)
+    
+    * Correct JDBC transaction YAML examples
+    
+    * Remove Atomikos dependency instruction
 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md
-index a56960ffdb9..8b37bdd8aee 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.cn.md
-@@ -5,5 +5,4 @@ chapter = true
- +++
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.cn.md
+index ca12ed48de0..6f4ed3e592c 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.cn.md
+@@ -19,7 +19,7 @@ transaction:
  
- 通过 Apache ShardingSphere 使用分布式事务，与本地事务并无区别。
--除了透明化分布式事务的使用之外，Apache ShardingSphere 还能够在每次数据库访问时切换分布式事务类型。
--支持的事务类型包括：本地事务、XA 事务和柔性事务。可在创建数据库连接之前设置，缺省为 Apache ShardingSphere 启动时的默认事务类型。
-+Apache ShardingSphere 支持 LOCAL、XA 和 BASE 事务，事务类型由事务规则中的 `defaultType` 确定。事务开始后，其类型在提交或回滚前保持不变。
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md
-index 1616c3ce25b..7fd97ea1334 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/special-api/transaction/_index.en.md
-@@ -4,8 +4,6 @@ weight = 3
- chapter = true
- +++
+ ### 使用 LOCAL 模式
  
--Using distributed transaction through Apache ShardingSphere is no different from local transaction.
--In addition to transparent use of distributed transaction, Apache ShardingSphere can switch distributed transaction types every time the database accesses.
--
--Supported transaction types include local, XA and BASE. 
--It can be set before creating a database connection, and default value can be set when Apache ShardingSphere startup.
-+Using distributed transactions through Apache ShardingSphere is no different from using local transactions.
-+Apache ShardingSphere supports LOCAL, XA, and BASE transactions. The transaction type is determined by `defaultType` in the transaction rule.
-+Once a transaction begins, its type remains unchanged until it is committed or rolled back.
+-global.yaml 配置文件内容如下：
++JDBC YAML 配置如下：
+ 
+ ```yaml
+ transaction:
+@@ -28,14 +28,25 @@ transaction:
+ 
+ ### 使用 XA 模式
+ 
+-global.yaml 配置文件内容如下：
++JDBC YAML 配置如下。`providerType` 必须设置为一个 XA provider 的 SPI 类型。
++
++使用 Narayana：
++
++```yaml
++transaction:
++  defaultType: XA
++  providerType: Narayana
++```
++
++使用 Atomikos：
+ 
+ ```yaml
+ transaction:
+   defaultType: XA
+-  providerType: Narayana/Atomikos 
++  providerType: Atomikos
+ ```
+-手动添加 Narayana 相关依赖：
++
++使用 Narayana 时，需要添加 `org.apache.shardingsphere:shardingsphere-transaction-xa-narayana` 及其依赖。手动添加 JAR 时包括：
+ 
+ ```
+ jta-5.12.7.Final.jar
+@@ -51,12 +62,12 @@ shardingsphere-transaction-xa-narayana-x.x.x-SNAPSHOT.jar
+ 
+ ### 使用 BASE 模式
+ 
+-global.yaml 配置文件内容如下：
++JDBC YAML 配置如下：
+ 
+ ```yaml
+ transaction:
+   defaultType: BASE
+-  providerType: Seata 
++  providerType: Seata
+ ```
+ 
+ 搭建 Seata Server，添加相关配置文件，和 Seata 依赖，具体步骤参考 [ShardingSphere 集成 Seata 柔性事务](https://community.sphere-ex.com/t/topic/404)
+diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.en.md
+index ae1894ac244..e92bea0edf4 100644
+--- a/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.en.md
++++ b/docs/document/content/user-manual/shardingsphere-jdbc/yaml-config/rules/transaction.en.md
+@@ -19,7 +19,7 @@ transaction:
+ 
+ ### Use LOCAL Mode
+ 
+-The content of the global.yaml configuration file is as follows:
++Configure the JDBC YAML file as follows:
+ 
+ ```yaml
+ transaction:
+@@ -28,14 +28,25 @@ transaction:
+ 
+ ### Use XA Mode
+ 
+-The content of the global.yaml configuration file is as follows:
++Configure the JDBC YAML file as follows. `providerType` must be set to the SPI type of a single XA provider.
++
++To use Narayana:
++
++```yaml
++transaction:
++  defaultType: XA
++  providerType: Narayana
++```
++
++To use Atomikos:
+ 
+ ```yaml
+ transaction:
+   defaultType: XA
+-  providerType: Narayana/Atomikos 
++  providerType: Atomikos
+ ```
+-To manually add Narayana-related dependencies:
++
++When using Narayana, add `org.apache.shardingsphere:shardingsphere-transaction-xa-narayana` and its dependencies. When adding JARs manually, this includes:
+ 
+ ```
+ jta-5.12.7.Final.jar
+@@ -51,12 +62,12 @@ shardingsphere-transaction-xa-narayana-x.x.x-SNAPSHOT.jar
+ 
+ ### Use BASE Mode
+ 
+-The content of the global.yaml configuration file is as follows:
++Configure the JDBC YAML file as follows:
+ 
+ ```yaml
+ transaction:
+   defaultType: BASE
+-  providerType: Seata 
++  providerType: Seata
+ ```
+ 
+-Build a Seata Server, add relevant configuration files and Seata dependencies, see [ShardingSphere Integrates Seata Flexible Transactions](https://community.sphere-ex.com/t/topic/404)
+\ No newline at end of file
++Build a Seata Server, add relevant configuration files and Seata dependencies, see [ShardingSphere Integrates Seata Flexible Transactions](https://community.sphere-ex.com/t/topic/404)
