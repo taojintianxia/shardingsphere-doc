@@ -1,30 +1,46 @@
-commit 6da1738092a15a29e516e0b99ace340b1ce64697
+commit 1227726d1d2435318c0fc9ffe2dfe66ecd5bff44
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Wed Sep 2 20:33:18 2026 +0800
+Date:   Thu Sep 3 13:03:35 2026 +0800
 
-    Enforce non-nested ternary expressions with Checkstyle (#39699)
+    Remove checker-covered coding standard rules (#39705)
 
 diff --git a/docs/community/content/involved/conduct/code.cn.md b/docs/community/content/involved/conduct/code.cn.md
-index 588c2afa31b..2ce2dadf67b 100644
+index a58a43f1ffa..301e2dd73dc 100644
 --- a/docs/community/content/involved/conduct/code.cn.md
 +++ b/docs/community/content/involved/conduct/code.cn.md
-@@ -70,7 +70,6 @@ chapter = true
+@@ -54,7 +54,6 @@ chapter = true
+  - 需要注释解释的代码应提取为小方法，并通过方法名称表达意图。
+  - `equals` 和 `==` 条件表达式中，常量在左，变量在右；大于小于等条件表达式中，变量在左，常量在右。
+  - 除了构造器入参与全局变量名称相同的赋值语句外，避免使用 `this` 修饰符。
+- - 对参数使用 `final` 时，仅用于方法入参、构造器入参以及 `catch` 参数。
+  - 局部变量不应设置为 `final`，包括普通局部变量声明、循环变量、增强 `for` 变量和 try-with-resources 资源变量，Checkstyle 明确要求的情况除外。
+  - Lambda 参数不应标记为 `final`。
+  - 除用于继承的抽象类外，所有类都应声明为 `final`。
+@@ -66,7 +65,6 @@ chapter = true
+  - 方法入参和返回值不允许为 `null`。
+  - 方法入参禁止使用 `Optional`；应传递普通值（必要时允许为 `null`）。
+  - 优先使用 lombok 代替构造器，getter, setter 方法和 log 变量。
+- - 禁止内联全限定类名，必须通过 import 引入。
   - 优先考虑使用 `LinkedList`，只有在需要通过下标获取集合中元素值时再使用 `ArrayList`。
   - `ArrayList`，`HashMap` 等可能产生扩容的集合类型必须指定集合初始大小，避免扩容。
   - 优先使用三目运算符代替 if else 的返回和赋值语句。
-- - 禁止嵌套使用三目运算符。
-  - 条件表达式中，优先使用正向语义，以便于理解代码逻辑。例如：`if (null == param) {} else {}`。
-  - 合理使用 `@HighFrequencyInvocation` 注解，用于聚焦关键方法性能的优化。
-    - 使用 `@HighFrequencyInvocation` 注解的时机：
 diff --git a/docs/community/content/involved/conduct/code.en.md b/docs/community/content/involved/conduct/code.en.md
-index 5644db87076..f27dfa10b6f 100644
+index dbc8f9a6b5d..7b71f6a6653 100644
 --- a/docs/community/content/involved/conduct/code.en.md
 +++ b/docs/community/content/involved/conduct/code.en.md
-@@ -70,7 +70,6 @@ The following code of conduct is based on full compliance with the [Apache Softw
+@@ -54,7 +54,6 @@ The following code of conduct is based on full compliance with the [Apache Softw
+ - Extract code that requires explanatory comments into small methods, and use method names to express the intent.
+ - In `equals` and `==` conditional expressions, constants on the left, variables on the right; in conditional expressions like greater than or less than, variables on the left, constants on the right.
+ - Avoid using `this` modifier except for assignment statements where constructor parameters have the same name as global variables.
+-- For parameters, use `final` only on method parameters, constructor parameters and `catch` parameters.
+ - Local variables should not be set as `final`, including ordinary local declarations, loop variables, enhanced `for` variables and try-with-resources resources, unless required by Checkstyle.
+ - Lambda parameters should not be marked as `final`.
+ - Declare every class `final` unless it is an abstract class intended for inheritance.
+@@ -66,7 +65,6 @@ The following code of conduct is based on full compliance with the [Apache Softw
+ - Method parameters and return values are not allowed to be `null`.
+ - Method parameters must not use `Optional`; pass plain values (nullable when needed).
+ - Prefer using lombok instead of constructors, getter, setter methods and log variables.
+-- Do not leave fully-qualified class names inline; add import statements instead.
  - Consider using `LinkedList` first, only use `ArrayList` when you need to get element values from the collection by index.
  - Collection types that may cause expansion like `ArrayList`, `HashMap` must specify initial collection size to avoid expansion.
  - Prefer using ternary operators instead of if else return and assignment statements.
--- Nested use of ternary operators is forbidden.
- - In conditional expressions, prefer positive semantics for easier code logic understanding. For example: `if (null == param) {} else {}`.
- - Use `@HighFrequencyInvocation` annotation reasonably to focus on performance optimization of key methods.
-     - When to use `@HighFrequencyInvocation` annotation:

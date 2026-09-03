@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="generator" content="Hugo 0.83.1" />
     <meta name="description" content="">
-    <meta name="buildDate" content="2026-09-02 22:45:02">
+    <meta name="buildDate" content="2026-09-03 13:12:52">
 
 
     <link rel="shortcut icon" href="https://shardingsphere.apache.org/document/current/img/favicon.png" type="image/x-icon" />
@@ -13,19 +13,19 @@
     <title>Code of Conduct :: ShardingSphere</title>
     
     
-    <link href="https://shardingsphere.apache.org/community/css/nucleus.css?1788360302" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/font-awesome.min.css?1788360302" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/hybrid.css?1788360302" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/featherlight.min.css?1788360302" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/perfect-scrollbar.min.css?1788360302" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/auto-complete.css?1788360302" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/theme.css?1788360302" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/hugo-theme.css?1788360302" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/nucleus.css?1788412372" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/font-awesome.min.css?1788412372" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/hybrid.css?1788412372" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/featherlight.min.css?1788412372" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/perfect-scrollbar.min.css?1788412372" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/auto-complete.css?1788412372" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/theme.css?1788412372" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/hugo-theme.css?1788412372" rel="stylesheet">
     
-      <link href="https://shardingsphere.apache.org/community/css/theme-white.css?1788360302" rel="stylesheet">
+      <link href="https://shardingsphere.apache.org/community/css/theme-white.css?1788412372" rel="stylesheet">
     
 
-    <script src="https://shardingsphere.apache.org/community/js/jquery-2.x.min.js?1788360302"></script>
+    <script src="https://shardingsphere.apache.org/community/js/jquery-2.x.min.js?1788412372"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style type="text/css">
@@ -144,14 +144,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/lunr.min.js?1788360302"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/auto-complete.js?1788360302"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/lunr.min.js?1788412372"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/auto-complete.js?1788412372"></script>
 <script type="text/javascript">
     
         var baseurl = "\/en";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/search.js?1788360302"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/search.js?1788412372"></script>
 
       
     </div>
@@ -982,7 +982,6 @@
 <li>Extract code that requires explanatory comments into small methods, and use method names to express the intent.</li>
 <li>In <code>equals</code> and <code>==</code> conditional expressions, constants on the left, variables on the right; in conditional expressions like greater than or less than, variables on the left, constants on the right.</li>
 <li>Avoid using <code>this</code> modifier except for assignment statements where constructor parameters have the same name as global variables.</li>
-<li>For parameters, use <code>final</code> only on method parameters, constructor parameters and <code>catch</code> parameters.</li>
 <li>Local variables should not be set as <code>final</code>, including ordinary local declarations, loop variables, enhanced <code>for</code> variables and try-with-resources resources, unless required by Checkstyle.</li>
 <li>Lambda parameters should not be marked as <code>final</code>.</li>
 <li>Declare every class <code>final</code> unless it is an abstract class intended for inheritance.</li>
@@ -994,7 +993,6 @@
 <li>Method parameters and return values are not allowed to be <code>null</code>.</li>
 <li>Method parameters must not use <code>Optional</code>; pass plain values (nullable when needed).</li>
 <li>Prefer using lombok instead of constructors, getter, setter methods and log variables.</li>
-<li>Do not leave fully-qualified class names inline; add import statements instead.</li>
 <li>Consider using <code>LinkedList</code> first, only use <code>ArrayList</code> when you need to get element values from the collection by index.</li>
 <li>Collection types that may cause expansion like <code>ArrayList</code>, <code>HashMap</code> must specify initial collection size to avoid expansion.</li>
 <li>Prefer using ternary operators instead of if else return and assignment statements.</li>
@@ -1045,6 +1043,7 @@
 </li>
 <li>Use <code>assert</code> prefix for all test method names.</li>
 <li>Unit tests must exercise behavior through public APIs only. Reflection-based invocation of private members is forbidden. If tests must access fields via reflection, use <code>Plugins.getMemberAccessor()</code> and limit reflection to <code>Field</code> access only.</li>
+<li>Tests that modify static state must restore the original state after each test.</li>
 <li>Obtain SPI implementations through the project loader by default. If the class under test implements <code>TypedSPI</code> or <code>DatabaseTypedSPI</code>, instantiate it through <code>TypedSPILoader</code> or <code>DatabaseTypedSPILoader</code>, not with <code>new</code>.</li>
 <li>Every unit-test class must directly test a corresponding production class and be named <code>&lt;ProductionClassName&gt;Test</code>, using the exact simple name of the production class. This class-name rule is mandatory and is independent of scenario-focused test-method naming.</li>
 <li>Except for simple <code>getter /setter</code> methods, unit tests need full coverage.</li>
@@ -1052,7 +1051,6 @@
 <li>For parameterized tests, provide display names via parameters and use <code>&quot;{0}&quot;</code> as the display-name template.</li>
 <li>Keep test names concise and scenario-focused; avoid <code>ReturnsXXX</code> and wording that restates the expected result instead of naming the scenario.</li>
 <li>Assertions must directly express the tested contract. Use <code>not</code> or <code>containsString</code> only when the contract requires inequality or substring matching; do not use them when an exact value or a more specific matcher is available.</li>
-<li>Use JUnit 5 and Mockito. Keep environment preparation, test action, and assertions distinct; reset static state between scenarios and reuse existing swappers or helpers for complex configuration.</li>
 <li>Default to direct Mockito mocks. Use a private helper only for repeated local setup and a standalone fixture only for a stable external or packaged test boundary. Give fixtures the narrowest practical visibility, keep them in the nearest owning test package or module, and do not create cross-module test APIs for convenience. Delete or inline thin mock wrappers.</li>
 <li>Data assertion standards should follow:
 <ul>
@@ -1630,17 +1628,17 @@ Usually branch databases will directly use the SQL parsing logic of the trunk da
 <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
 </div>
 
-<script src="https://shardingsphere.apache.org/community/js/clipboard.min.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.min.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.jquery.min.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/jquery.sticky.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/featherlight.min.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/html5shiv-printshiv.min.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/highlight.pack.js?1788360302"></script>
+<script src="https://shardingsphere.apache.org/community/js/clipboard.min.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.min.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.jquery.min.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/jquery.sticky.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/featherlight.min.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/html5shiv-printshiv.min.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/highlight.pack.js?1788412372"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script src="https://shardingsphere.apache.org/community/js/modernizr.custom.71422.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/learn.js?1788360302"></script>
-<script src="https://shardingsphere.apache.org/community/js/hugo-learn.js?1788360302"></script>
+<script src="https://shardingsphere.apache.org/community/js/modernizr.custom.71422.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/learn.js?1788412372"></script>
+<script src="https://shardingsphere.apache.org/community/js/hugo-learn.js?1788412372"></script>
 <script>
 try{
 
