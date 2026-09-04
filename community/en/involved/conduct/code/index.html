@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="generator" content="Hugo 0.83.1" />
     <meta name="description" content="">
-    <meta name="buildDate" content="2026-09-04 16:57:59">
+    <meta name="buildDate" content="2026-09-04 21:01:14">
 
 
     <link rel="shortcut icon" href="https://shardingsphere.apache.org/document/current/img/favicon.png" type="image/x-icon" />
@@ -13,19 +13,19 @@
     <title>Code of Conduct :: ShardingSphere</title>
     
     
-    <link href="https://shardingsphere.apache.org/community/css/nucleus.css?1788512279" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/font-awesome.min.css?1788512279" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/hybrid.css?1788512279" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/featherlight.min.css?1788512279" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/perfect-scrollbar.min.css?1788512279" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/auto-complete.css?1788512279" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/theme.css?1788512279" rel="stylesheet">
-    <link href="https://shardingsphere.apache.org/community/css/hugo-theme.css?1788512279" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/nucleus.css?1788526874" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/font-awesome.min.css?1788526874" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/hybrid.css?1788526874" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/featherlight.min.css?1788526874" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/perfect-scrollbar.min.css?1788526874" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/auto-complete.css?1788526874" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/theme.css?1788526874" rel="stylesheet">
+    <link href="https://shardingsphere.apache.org/community/css/hugo-theme.css?1788526874" rel="stylesheet">
     
-      <link href="https://shardingsphere.apache.org/community/css/theme-white.css?1788512279" rel="stylesheet">
+      <link href="https://shardingsphere.apache.org/community/css/theme-white.css?1788526874" rel="stylesheet">
     
 
-    <script src="https://shardingsphere.apache.org/community/js/jquery-2.x.min.js?1788512279"></script>
+    <script src="https://shardingsphere.apache.org/community/js/jquery-2.x.min.js?1788526874"></script>
       
     <script src="https://shardingsphere.apache.org/js/kapa-widget.js"></script>
     <style type="text/css">
@@ -144,14 +144,14 @@
     <span data-search-clear=""><i class="fa fa-close"></i></span>
 </div>
 
-<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/lunr.min.js?1788512279"></script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/auto-complete.js?1788512279"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/lunr.min.js?1788526874"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/auto-complete.js?1788526874"></script>
 <script type="text/javascript">
     
         var baseurl = "\/en";
     
 </script>
-<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/search.js?1788512279"></script>
+<script type="text/javascript" src="https://shardingsphere.apache.org/community/js/search.js?1788526874"></script>
 
       
     </div>
@@ -934,7 +934,6 @@
 </ul>
 <h2 id="code-submission-guidelines">Code Submission Guidelines</h2>
 <ul>
-<li>Ensure compliance with coding standards.</li>
 <li>Ensure all steps in the build process complete successfully, including: Apache license header check, Checkstyle check, compilation, unit tests, etc. Build process command: <code>./mvnw clean install -B -T1C -Pcheck</code>.</li>
 <li>Unify code style through Spotless, execute <code>./mvnw spotless:apply -Pcheck</code> to format code.</li>
 <li>Ensure coverage is not lower than the master branch, except for simple <code>getter /setter</code> methods, unit tests need full coverage.</li>
@@ -1052,7 +1051,6 @@
 <li>Tests that modify static state must restore the original state after each test.</li>
 <li>Obtain SPI implementations through the project loader by default. If the class under test implements <code>TypedSPI</code> or <code>DatabaseTypedSPI</code>, instantiate it through <code>TypedSPILoader</code> or <code>DatabaseTypedSPILoader</code>, not with <code>new</code>.</li>
 <li>Every unit-test class must directly test a corresponding production class and be named <code>&lt;ProductionClassName&gt;Test</code>, using the exact simple name of the production class. This class-name rule is mandatory and is independent of scenario-focused test-method naming.</li>
-<li>Except for simple <code>getter /setter</code> methods, unit tests need full coverage.</li>
 <li>When a production method is covered by only one test case, name that test method <code>assert&lt;MethodName&gt;</code> without extra suffixes, and prefer isolating one public production method per dedicated test method; when practical, keep test method ordering aligned with the corresponding production methods.</li>
 <li>For parameterized tests, provide display names via parameters and use <code>&quot;{0}&quot;</code> as the display-name template.</li>
 <li>Keep test names concise and scenario-focused; avoid <code>ReturnsXXX</code> and wording that restates the expected result instead of naming the scenario.</li>
@@ -1633,17 +1631,17 @@ Usually branch databases will directly use the SQL parsing logic of the trunk da
 <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
 </div>
 
-<script src="https://shardingsphere.apache.org/community/js/clipboard.min.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.min.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.jquery.min.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/jquery.sticky.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/featherlight.min.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/html5shiv-printshiv.min.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/highlight.pack.js?1788512279"></script>
+<script src="https://shardingsphere.apache.org/community/js/clipboard.min.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.min.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/perfect-scrollbar.jquery.min.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/jquery.sticky.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/featherlight.min.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/html5shiv-printshiv.min.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/highlight.pack.js?1788526874"></script>
 <script>hljs.initHighlightingOnLoad();</script>
-<script src="https://shardingsphere.apache.org/community/js/modernizr.custom.71422.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/learn.js?1788512279"></script>
-<script src="https://shardingsphere.apache.org/community/js/hugo-learn.js?1788512279"></script>
+<script src="https://shardingsphere.apache.org/community/js/modernizr.custom.71422.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/learn.js?1788526874"></script>
+<script src="https://shardingsphere.apache.org/community/js/hugo-learn.js?1788526874"></script>
 <script>
 try{
 
