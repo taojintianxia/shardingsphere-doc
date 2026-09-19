@@ -1,40 +1,36 @@
-commit 38061048399e662211b65bd8424d79e6c76fc0fb
-Author: Hengqian Ling <linghengqian@outlook.com>
-Date:   Sun Sep 13 21:25:53 2026 +0800
+commit 956868bd8b29547a0474e02aaaa0bd9aa87d6393
+Author: Liang Zhang <zhangliang@apache.org>
+Date:   Sat Sep 19 13:26:51 2026 +0800
 
-    Fix nativeTest failures under GraalVM Native Image caused by refactoring (#39775)
+    Fix rule configuration validation error handling (#39894)
+    
+    * Remove redundant encryptor validation from create executor
+    
+    * Fix rule configuration validation error handling
+    
+    * Fix rule configuration validation error handling
 
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.cn.md b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.cn.md
-index 0ff80f87786..93fc0289d03 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.cn.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.cn.md
-@@ -50,12 +50,6 @@ ShardingSphere 对 HiveServer2 JDBC Driver 的支持位于可选模块中。
-         <groupId>io.github.linghengqian</groupId>
-         <artifactId>hive-server2-jdbc-driver-thin</artifactId>
-         <version>1.8.2</version>
--        <exclusions>
--            <exclusion>
--                <groupId>com.fasterxml.woodstox</groupId>
--                <artifactId>woodstox-core</artifactId>
--            </exclusion>
--        </exclusions>
-     </dependency>
- </dependencies>
- ```
-diff --git a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.en.md b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.en.md
-index fa8710f90a6..4134808b231 100644
---- a/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.en.md
-+++ b/docs/document/content/user-manual/shardingsphere-jdbc/optional-plugins/hiveserver2/_index.en.md
-@@ -52,12 +52,6 @@ The following is an example of a possible configuration,
-         <groupId>io.github.linghengqian</groupId>
-         <artifactId>hive-server2-jdbc-driver-thin</artifactId>
-         <version>1.8.2</version>
--        <exclusions>
--            <exclusion>
--                <groupId>com.fasterxml.woodstox</groupId>
--                <artifactId>woodstox-core</artifactId>
--            </exclusion>
--        </exclusions>
-     </dependency>
- </dependencies>
- ```
+diff --git a/docs/document/content/user-manual/error-code/sql-error-code.cn.md b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
+index c32042360ae..c29ba1350f2 100644
+--- a/docs/document/content/user-manual/error-code/sql-error-code.cn.md
++++ b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
+@@ -43,6 +43,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
+ | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
+ | 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
+ | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
++| 10205       | HY000     | Can not validate '%s' rule configuration.                                           |
+ | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
+ | 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
+ | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s.%s' with JDBC '%s'.       |
+diff --git a/docs/document/content/user-manual/error-code/sql-error-code.en.md b/docs/document/content/user-manual/error-code/sql-error-code.en.md
+index 6adec94bdf0..dae92ada4f9 100644
+--- a/docs/document/content/user-manual/error-code/sql-error-code.en.md
++++ b/docs/document/content/user-manual/error-code/sql-error-code.en.md
+@@ -43,6 +43,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
+ | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
+ | 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
+ | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
++| 10205       | HY000     | Can not validate '%s' rule configuration.                                           |
+ | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
+ | 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
+ | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s.%s' with JDBC '%s'.       |
