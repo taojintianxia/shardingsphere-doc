@@ -1,36 +1,62 @@
-commit 956868bd8b29547a0474e02aaaa0bd9aa87d6393
+commit 950492fc1b7acaf26761f5c34f24c1ec1be74091
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Sat Sep 19 13:26:51 2026 +0800
+Date:   Sat Sep 19 16:26:15 2026 +0800
 
-    Fix rule configuration validation error handling (#39894)
-    
-    * Remove redundant encryptor validation from create executor
-    
-    * Fix rule configuration validation error handling
-    
-    * Fix rule configuration validation error handling
+    Add MCP distribution license notices (#39896)
 
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.cn.md b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-index c32042360ae..c29ba1350f2 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
-@@ -43,6 +43,7 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
- | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
- | 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
- | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
-+| 10205       | HY000     | Can not validate '%s' rule configuration.                                           |
- | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
- | 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
- | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s.%s' with JDBC '%s'.       |
-diff --git a/docs/document/content/user-manual/error-code/sql-error-code.en.md b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-index 6adec94bdf0..dae92ada4f9 100644
---- a/docs/document/content/user-manual/error-code/sql-error-code.en.md
-+++ b/docs/document/content/user-manual/error-code/sql-error-code.en.md
-@@ -43,6 +43,7 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
- | 10202       | 42S02     | %s rules '%s' do not exist in database '%s'.                                        |
- | 10203       | 44000     | %s rules '%s' in database '%s' are still in used by %s.                             |
- | 10204       | 42S01     | Duplicate %s rule names '%s' in database '%s'.                                      |
-+| 10205       | HY000     | Can not validate '%s' rule configuration.                                           |
- | 10210       | 42S02     | %s strategies '%s' do not exist.                                                    |
- | 10300       | HY000     | Invalid format for data node '%s', reason is: %s.                                   |
- | 10301       | 0A000     | Can not support 3-tier structure for actual data node '%s.%s' with JDBC '%s'.       |
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
+index 373d13d92b8..b40b7189a5c 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.cn.md
+@@ -125,8 +125,8 @@ runtimeDatabases:
+ ## 连接目标选择
+ 
+ 只有当前发行包同时包含匹配的 ShardingSphere 数据库类型连接器和 JDBC 驱动时，`runtimeDatabases` 才能使用对应的可连接 JDBC URL。
+-默认发行包包含 MySQL、PostgreSQL、Oracle、SQL Server 和 openGauss 数据库类型连接器，以及 MySQL、PostgreSQL 和 openGauss JDBC 驱动。
+-Oracle、SQL Server 或其他未随包提供 JDBC 驱动的目标，需要把匹配的驱动 jar 放入 `plugins/`；只添加驱动并不能支持一个尚无数据库类型连接器的目标。
++默认发行包包含 MySQL、PostgreSQL、Oracle、SQL Server 和 openGauss 数据库类型连接器，以及 PostgreSQL 和 openGauss JDBC 驱动。
++MySQL、Oracle、SQL Server 或其他未随包提供 JDBC 驱动的目标，需要把匹配的驱动 jar 放入 `plugins/`；只添加驱动并不能支持一个尚无数据库类型连接器的目标。
+ 用户能看到的数据库对象和可执行的治理任务取决于连接目标。
+ 
+ ### 连接 ShardingSphere-Proxy 逻辑库
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
+index 9dc01c7bc1d..062d669f5ff 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/configuration.en.md
+@@ -125,8 +125,8 @@ Notes:
+ ## Choose a Connection Target
+ 
+ `runtimeDatabases` can use a reachable JDBC URL only when the running distribution contains both the matching ShardingSphere database-type connector and JDBC driver.
+-The default distribution includes MySQL, PostgreSQL, Oracle, SQL Server, and openGauss database-type connectors, plus MySQL, PostgreSQL, and openGauss JDBC drivers.
+-For Oracle, SQL Server, or another target whose JDBC driver is not packaged, add the matching driver jar under `plugins/`; a driver alone does not add an unsupported database type.
++The default distribution includes MySQL, PostgreSQL, Oracle, SQL Server, and openGauss database-type connectors, plus PostgreSQL and openGauss JDBC drivers.
++For MySQL, Oracle, SQL Server, or another target whose JDBC driver is not packaged, add the matching driver jar under `plugins/`; a driver alone does not add an unsupported database type.
+ The database objects users can see and the governance tasks they can perform depend on the connection target.
+ 
+ ### Connecting to a ShardingSphere-Proxy logical database
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
+index 0f4b825adce..16db9e56f6f 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.cn.md
+@@ -45,7 +45,7 @@ runtimeDatabases:
+ 
+ 根据 ShardingSphere-Proxy 的实际连接信息调整 `logic_db`、`127.0.0.1`、`3307`、`root` 和空密码。
+ MCP Server 会从 `jdbcUrl` 解析数据库类型。
+-如果目标数据库驱动没有随发行包提供，请在启动前把对应 JDBC 驱动 jar 放入 `plugins/`。
++发行包不包含 MySQL Connector/J，请在启动前把兼容的 MySQL Connector/J jar 放入 `plugins/`。
+ 
+ ## 启动 HTTP MCP Server
+ 
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
+index 40d446736a7..963b25bb479 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/quick-start.en.md
+@@ -45,7 +45,7 @@ runtimeDatabases:
+ 
+ Adjust `logic_db`, `127.0.0.1`, `3307`, `root`, and the empty password according to the actual ShardingSphere-Proxy connection information.
+ The MCP Server resolves the database type from `jdbcUrl`.
+-If the target database driver is not provided with the distribution, put the corresponding JDBC driver jar under `plugins/` before startup.
++The distribution does not include MySQL Connector/J. Put a compatible MySQL Connector/J jar under `plugins/` before startup.
+ 
+ ## Start the HTTP MCP Server
+ 
