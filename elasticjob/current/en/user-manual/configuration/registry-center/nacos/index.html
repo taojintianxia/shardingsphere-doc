@@ -10,7 +10,7 @@
 
     <link rel="shortcut icon" href="https://shardingsphere.apache.org/elasticjob/images/favicon.png" type="image/x-icon" />
 
-    <title>Spring Namespace :: ElasticJob</title>
+    <title>Nacos Configuration :: ElasticJob</title>
     
     
     <link href="https://shardingsphere.apache.org/elasticjob/current/css/nucleus.css?1790662113" rel="stylesheet">
@@ -57,7 +57,7 @@
     
 
   </head>
-  <body class="" data-url="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/spring-namespace/">
+  <body class="" data-url="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/registry-center/nacos/">
     <div class="change-theme">
     <div class="wrap">
         
@@ -119,7 +119,7 @@
                       
                         
                         
-<option id="en" value="/elasticjob/current/en/user-manual/configuration/spring-namespace/" selected>English</option>
+<option id="en" value="/elasticjob/current/en/user-manual/configuration/registry-center/nacos/" selected>English</option>
                         
                       
                   
@@ -133,7 +133,7 @@
                       
                         
                         
-<option id="cn" value="/elasticjob/current/cn/user-manual/configuration/spring-namespace/">简体中文</option>
+<option id="cn" value="/elasticjob/current/cn/user-manual/configuration/registry-center/nacos/">简体中文</option>
                         
                       
                   
@@ -945,7 +945,7 @@
   
     
     <li data-nav-id="/en/user-manual/configuration/registry-center/" title="Registry Center Configuration" class="dd-item 
-        
+        parent
         
         
         ">
@@ -954,12 +954,12 @@
          <i class="collapse" style="display:inline; font-family:'courier';">
          
              <svg  class="icon icon-down" 
-              style="display: none;"
+              style="display: inline-block;"
               viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"   width="20" height="20" fill="#777">
               <path d="M500.8 604.778667L267.306667 371.392l-45.226667 45.269333 278.741333 278.613334 278.485334-278.613334-45.248-45.248z" p-id="5376" ></path>
             </svg>
             <svg  class="icon icon-right" 
-              style="display: inline-block;"
+              style="display: none;"
               viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"  width="20" height="20" fill="#777">
               <path d="M593.450667 512.128L360.064 278.613333l45.290667-45.226666 278.613333 278.762666L405.333333 790.613333l-45.226666-45.269333z" p-id="5605" ></path>
             </svg>
@@ -1024,7 +1024,7 @@
  
   
     
-      <li data-nav-id="/en/user-manual/configuration/registry-center/nacos/" title="Nacos Configuration" class="dd-item ">
+      <li data-nav-id="/en/user-manual/configuration/registry-center/nacos/" title="Nacos Configuration" class="dd-item active">
         <a href="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/registry-center/nacos/">
           <svg  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5375" width="20" height="20"></svg>
         Nacos Configuration
@@ -1093,7 +1093,7 @@
  
   
     
-      <li data-nav-id="/en/user-manual/configuration/spring-namespace/" title="Spring Namespace" class="dd-item active">
+      <li data-nav-id="/en/user-manual/configuration/spring-namespace/" title="Spring Namespace" class="dd-item ">
         <a href="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/spring-namespace/">
           <svg  viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5375" width="20" height="20"></svg>
         Spring Namespace
@@ -1767,7 +1767,7 @@
                   
                   
                   <div id="top-github-link">
-                    <a class="github-link" title='Edit this page' href="https://github.com/apache/shardingsphere-elasticjob/tree/master/docs/content/user-manual/configuration/spring-namespace.en.md" target="blank">
+                    <a class="github-link" title='Edit this page' href="https://github.com/apache/shardingsphere-elasticjob/tree/master/docs/content/user-manual/configuration/registry-center/nacos.en.md" target="blank">
                       <i class="fa fa-code-fork"></i>
                       <span id="top-github-link-text">Edit this page</span>
                     </a>
@@ -1781,6 +1781,8 @@
                           <i class="fa fa-bars"></i>
                         </a>
                     </span>
+                  
+                  <span id="toc-menu"><i class="fa fa-list-alt"></i></span>
                   
                   <span class="links">
                     
@@ -1798,7 +1800,13 @@
             
           
           
-            <a href='https://shardingsphere.apache.org/elasticjob/current/en/'>ElasticJob</a> > <a href='https://shardingsphere.apache.org/elasticjob/current/en/user-manual/'>User Manual</a> > <a href='https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/'>Configuration</a> > Spring Namespace
+            
+            
+          
+          
+            <a href='https://shardingsphere.apache.org/elasticjob/current/en/'>ElasticJob</a> > <a href='https://shardingsphere.apache.org/elasticjob/current/en/user-manual/'>User Manual</a> > <a href='https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/'>Configuration</a> > <a href='https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/registry-center/'>Registry Center Configuration</a> > Nacos Configuration
+          
+         
           
          
           
@@ -1810,14 +1818,16 @@
                   </span>
                 </div>
                 
+                    
+                
               </div>
             </div>
             
 
         
-          <div id="chapter">
-        
         <div id="body-inner">
+          
+            <h1>Nacos Configuration</h1>
           
 
         
@@ -1825,246 +1835,140 @@
 
 <nav id="TableOfContents">
   <ul>
-    <li><a href="#registry-center-configuration">Registry Center Configuration</a></li>
-    <li><a href="#job-configuration">Job Configuration</a></li>
-    <li><a href="#event-tracing-configuration">Event Tracing Configuration</a></li>
-    <li><a href="#job-dump-configuration">Job Dump Configuration</a></li>
+    <li><a href="#maven-dependency">Maven Dependency</a></li>
+    <li><a href="#configuration">Configuration</a>
+      <ul>
+        <li><a href="#configuration-properties">Configuration Properties</a></li>
+        <li><a href="#core-configuration-description">Core Configuration Description</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage-examples">Usage Examples</a>
+      <ul>
+        <li><a href="#java-api">Java API</a></li>
+        <li><a href="#registrycenterfactory-spi">RegistryCenterFactory (SPI)</a></li>
+      </ul>
+    </li>
   </ul>
 </nav>
 
-<p>To use the Spring namespace, user need to add the dependency of the <code>elasticjob-spring</code> module in the <code>pom.xml</code> file.</p>
+<p>Nacos is a dynamic service discovery, configuration and service management platform. ElasticJob supports using Nacos 3.x as a registry center.</p>
+<p>Each ElasticJob key (for example <code>/my-job/config</code>) is stored as one Nacos config. The ElasticJob namespace is mapped to the Nacos config group.
+Because a Nacos <code>dataId</code> only accepts letters, digits and <code>_-.:</code>, every path segment is encoded with Base64URL and joined with <code>.</code>.</p>
+<blockquote>
+<p>Requires <code>com.alibaba.nacos:nacos-client:3.2.4</code> (pulled in automatically by the artifact below).</p>
+</blockquote>
+<h2 id="maven-dependency">Maven Dependency</h2>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
     <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.shardingsphere.elasticjob<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId&gt;</span>elasticjob-spring-namespace<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version&gt;</span>${latest.release.version}<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>elasticjob-registry-center-nacos<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>${elasticjob.version}<span style="color:#f92672">&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
-</code></pre></div><p>Spring namespace: <a href="http://shardingsphere.apache.org/schema/elasticjob/elasticjob.xsd">http://shardingsphere.apache.org/schema/elasticjob/elasticjob.xsd</a></p>
-<h2 id="registry-center-configuration">Registry Center Configuration</h2>
-<p>&lt;elasticjob:zookeeper /&gt;</p>
-<p>Configuration:</p>
+</code></pre></div><h2 id="configuration">Configuration</h2>
+<h3 id="configuration-properties">Configuration Properties</h3>
 <table>
 <thead>
 <tr>
 <th>Name</th>
-<th style="text-align:left">Required</th>
+<th style="text-align:left">Data Type</th>
+<th style="text-align:left">Default Value</th>
+<th style="text-align:left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>id</td>
-<td style="text-align:left">Yes</td>
-</tr>
-<tr>
-<td>server-lists</td>
-<td style="text-align:left">Yes</td>
+<td>serverLists</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">Nacos server address list</td>
 </tr>
 <tr>
 <td>namespace</td>
-<td style="text-align:left">Yes</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">ElasticJob namespace, mapped to the Nacos config group</td>
 </tr>
 <tr>
-<td>base-sleep-time-milliseconds</td>
-<td style="text-align:left">No</td>
+<td>nacosNamespace</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">Nacos tenant (namespace id), empty means <code>public</code></td>
 </tr>
 <tr>
-<td>max-sleep-time-milliseconds</td>
-<td style="text-align:left">No</td>
+<td>username</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">Authentication username</td>
 </tr>
 <tr>
-<td>max-retries</td>
-<td style="text-align:left">No</td>
+<td>password</td>
+<td style="text-align:left">String</td>
+<td style="text-align:left"></td>
+<td style="text-align:left">Authentication password</td>
 </tr>
 <tr>
-<td>session-timeout-milliseconds</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>connection-timeout-milliseconds</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>digest</td>
-<td style="text-align:left">No</td>
+<td>timeoutMs</td>
+<td style="text-align:left">long</td>
+<td style="text-align:left">3000</td>
+<td style="text-align:left">Timeout of config operations in milliseconds</td>
 </tr>
 </tbody>
 </table>
-<h2 id="job-configuration">Job Configuration</h2>
-<p>&lt;elasticjob:job /&gt;</p>
-<p>Configuration:</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th style="text-align:left">Required</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>id</td>
-<td style="text-align:left">Yes</td>
-</tr>
-<tr>
-<td>class</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>job-ref</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>registry-center-ref</td>
-<td style="text-align:left">Yes</td>
-</tr>
-<tr>
-<td>tracing-ref</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>cron</td>
-<td style="text-align:left">Yes</td>
-</tr>
-<tr>
-<td>timeZone</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>sharding-total-count</td>
-<td style="text-align:left">Yes</td>
-</tr>
-<tr>
-<td>sharding-item-parameters</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>job-parameter</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>monitor-execution</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>failover</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>misfire</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>max-time-diff-seconds</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>reconcile-interval-minutes</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>job-sharding-strategy-type</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>job-executor-service-handler-type</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>job-error-handler-type</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>description</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>props</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>disabled</td>
-<td style="text-align:left">No</td>
-</tr>
-<tr>
-<td>overwrite</td>
-<td style="text-align:left">No</td>
-</tr>
-</tbody>
-</table>
-<h2 id="event-tracing-configuration">Event Tracing Configuration</h2>
-<p>&lt;elasticjob:rdb-tracing /&gt;</p>
-<p>Configuration:</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th style="text-align:left">Data Type</th>
-<th style="text-align:left">Required</th>
-<th style="text-align:left">Default Value</th>
-<th style="text-align:left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>id</td>
-<td style="text-align:left">String</td>
-<td style="text-align:left">Yes</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">The bean&rsquo;s identify of the event tracing</td>
-</tr>
-<tr>
-<td>data-source-ref</td>
-<td style="text-align:left">DataSource</td>
-<td style="text-align:left">No</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">The bean&rsquo;s name of the event tracing DataSource</td>
-</tr>
-</tbody>
-</table>
-<h2 id="job-dump-configuration">Job Dump Configuration</h2>
-<p>&lt;elasticjob:snapshot /&gt;</p>
-<p>Configuration:</p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th style="text-align:left">Data Type</th>
-<th style="text-align:left">Required</th>
-<th style="text-align:left">Default Value</th>
-<th style="text-align:left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>id</td>
-<td style="text-align:left">String</td>
-<td style="text-align:left">Yes</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">The identify of the monitoring service in the Spring container</td>
-</tr>
-<tr>
-<td>registry-center-ref</td>
-<td style="text-align:left">String</td>
-<td style="text-align:left">Yes</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">Registry center bean&rsquo;s reference, need to the statement of the <code>reg:zookeeper</code></td>
-</tr>
-<tr>
-<td>dump-port</td>
-<td style="text-align:left">String</td>
-<td style="text-align:left">Yes</td>
-<td style="text-align:left"></td>
-<td style="text-align:left">Job dump port<br />usage: echo &ldquo;dump@jobName&rdquo; | nc 127.0.0.1 9888</td>
-</tr>
-</tbody>
-</table>
+<h3 id="core-configuration-description">Core Configuration Description</h3>
+<p><strong>serverLists:</strong></p>
+<p>Include IP and port, multiple addresses are separated by commas, such as: <code>127.0.0.1:8848,127.0.0.2:8848</code>.
+The <code>nacos://</code> prefix is optional and will be stripped automatically, so both <code>nacos://127.0.0.1:8848</code> and <code>127.0.0.1:8848</code> work.
+When using <code>RegistryCenterFactory</code> (SPI), the <code>nacos://</code> prefix is required so the Nacos creator can be selected:
+<code>RegistryCenterFactory.createCoordinatorRegistryCenter(&quot;nacos://127.0.0.1:8848&quot;, &quot;elasticjob&quot;, null)</code>.</p>
+<p><strong>namespace:</strong></p>
+<p>ElasticJob namespace, mapped to the Nacos config group for isolating different job clusters. It is recommended to use meaningful names, such as: <code>elasticjob</code>.</p>
+<p><strong>username and password:</strong></p>
+<p>Nacos authentication information. They can also be passed as the <code>digest</code> argument (<code>username:password</code>) of <code>RegistryCenterFactory</code>.</p>
+<p><strong>Notes and limitations:</strong></p>
+<ul>
+<li>Ephemeral nodes are emulated: they behave like persistent configs and are removed when the current registry center instance is closed.</li>
+<li>Leader election is JVM-local. In a multi-node deployment only one thread per JVM is guaranteed to execute the callback.</li>
+</ul>
+<h2 id="usage-examples">Usage Examples</h2>
+<h3 id="java-api">Java API</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.shardingsphere.elasticjob.reg.nacos.NacosConfiguration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.shardingsphere.elasticjob.reg.nacos.NacosRegistryCenter<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.shardingsphere.elasticjob.reg.base.CoordinatorRegistryCenter<span style="color:#f92672">;</span>
 
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NacosRegistryCenterExample</span> <span style="color:#f92672">{</span>
+    
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        NacosConfiguration nacosConfig <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NacosConfiguration<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nacos://127.0.0.1:8848&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;elasticjob&#34;</span><span style="color:#f92672">);</span>
+        nacosConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setUsername</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nacos&#34;</span><span style="color:#f92672">);</span>
+        nacosConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setPassword</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nacos&#34;</span><span style="color:#f92672">);</span>
+        nacosConfig<span style="color:#f92672">.</span><span style="color:#a6e22e">setTimeoutMs</span><span style="color:#f92672">(</span>3000L<span style="color:#f92672">);</span>
+        
+        CoordinatorRegistryCenter registryCenter <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> NacosRegistryCenter<span style="color:#f92672">(</span>nacosConfig<span style="color:#f92672">);</span>
+        registryCenter<span style="color:#f92672">.</span><span style="color:#a6e22e">init</span><span style="color:#f92672">();</span>
+        
+        <span style="color:#75715e">// Use registry center...
+</span><span style="color:#75715e"></span>        
+        registryCenter<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="registrycenterfactory-spi">RegistryCenterFactory (SPI)</h3>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.shardingsphere.elasticjob.lifecycle.internal.reg.RegistryCenterFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.apache.shardingsphere.elasticjob.reg.base.CoordinatorRegistryCenter<span style="color:#f92672">;</span>
+
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NacosFactoryExample</span> <span style="color:#f92672">{</span>
+    
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">[]</span> args<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        CoordinatorRegistryCenter registryCenter <span style="color:#f92672">=</span> RegistryCenterFactory<span style="color:#f92672">.</span><span style="color:#a6e22e">createCoordinatorRegistryCenter</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;nacos://127.0.0.1:8848&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;elasticjob&#34;</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
+        
+        <span style="color:#75715e">// Use registry center...
+</span><span style="color:#75715e"></span>    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div>
 
 <footer class=" footline" >
 	
 </footer>
 
 
-        
-            </div> 
         
         </div> 
         
@@ -2539,6 +2443,7 @@
             
                 
                     
+                    
                 
                 
 
@@ -2552,37 +2457,8 @@
             
                 
                     
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
-                    
                         
-            
-            
-                
                     
                 
                 
@@ -2591,25 +2467,6 @@
                     
                     
 
-                    
-            
-        
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
                     
             
         
@@ -2663,6 +2520,12 @@
                     
 
                     
+            
+        
+                    
+            
+        
+                    
                         
             
             
@@ -2708,12 +2571,6 @@
                     
 
                     
-            
-        
-                    
-            
-        
-                    
                         
             
             
@@ -2726,22 +2583,6 @@
                     
                     
 
-                    
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
-            
-        
                     
             
         
@@ -2810,19 +2651,6 @@
             
         
                     
-                        
-            
-            
-                
-                    
-                
-                
-
-                    
-                    
-                    
-
-                    
             
         
                     
@@ -2854,9 +2682,6 @@
                     
                     
 
-                    
-            
-        
                     
             
         
@@ -2941,6 +2766,89 @@
             
         
                     
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
                         
             
             
@@ -3032,12 +2940,12 @@
 
         
         
-            <a class="nav nav-prev" href="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/spring-boot-starter/" title="Spring Boot Starter"> <i class="fa fa-long-arrow-left fa-lg"></i> Previous</a>
+            <a class="nav nav-prev" href="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/registry-center/etcd/" title="etcd Configuration"> <i class="fa fa-long-arrow-left fa-lg"></i> Previous</a>
         
         
         
         
-            <a class="nav nav-next" href="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/built-in-strategy/" title="Built-in Strategy" style="margin-right: 0px;">Next<i class="fa fa-long-arrow-right fa-lg"></i></a>
+            <a class="nav nav-next" href="https://shardingsphere.apache.org/elasticjob/current/en/user-manual/configuration/registry-center/memory/" title="Memory Configuration" style="margin-right: 0px;">Next<i class="fa fa-long-arrow-right fa-lg"></i></a>
         
         
     </div>
