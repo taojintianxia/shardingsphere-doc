@@ -1,148 +1,34 @@
-commit 75e80b4ca74d6d4cc6d7541f37e3b061a610d1c2
+commit c87252791f88992aabe04ab0bfe76876629219cb
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Sun Oct 4 17:20:54 2026 +0800
+Date:   Sun Oct 4 22:55:58 2026 +0800
 
-    Move build manual before test manual in documentation navigation (#40046)
+    Move encrypt table name uniqueness checks to Bean Validation (#40054)
+    
+    * Align DistSQL executor tests with production SPIs
+    
+    * Move encrypt table name uniqueness checks to Bean Validation
 
-diff --git a/docs/document/content/build-manual/_index.cn.md b/docs/document/content/build-manual/_index.cn.md
-index d2fa5d36657..1e8275d69d4 100644
---- a/docs/document/content/build-manual/_index.cn.md
-+++ b/docs/document/content/build-manual/_index.cn.md
-@@ -1,8 +1,8 @@
- +++
- title = "构建手册"
--weight = 10
-+weight = 6
- chapter = true
--pre = "<b>10. </b>"
-+pre = "<b>6. </b>"
- +++
+diff --git a/docs/document/content/user-manual/error-code/sql-error-code.cn.md b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
+index 8957f63747b..aa93f19a1fd 100644
+--- a/docs/document/content/user-manual/error-code/sql-error-code.cn.md
++++ b/docs/document/content/user-manual/error-code/sql-error-code.cn.md
+@@ -230,7 +230,6 @@ SQL 错误码以标准的 SQL State，Vendor Code 和详细错误信息提供，
  
- 本章节介绍 Apache ShardingSphere 各制品的源码构建与打包方法。
-diff --git a/docs/document/content/build-manual/_index.en.md b/docs/document/content/build-manual/_index.en.md
-index 929d50fc0f5..f942c999ab3 100644
---- a/docs/document/content/build-manual/_index.en.md
-+++ b/docs/document/content/build-manual/_index.en.md
-@@ -1,8 +1,8 @@
- +++
- title = "Build Manual"
--weight = 10
-+weight = 6
- chapter = true
--pre = "<b>10. </b>"
-+pre = "<b>6. </b>"
- +++
+ | Vendor Code | SQL State | 错误信息                                                                                         |
+ |-------------|-----------|----------------------------------------------------------------------------------------------|
+-| 21000       | 42S02     | %s column is required in %s.                                                                 |
+ | 21001       | 42S02     | Can not find encrypt table '%s'.                                                             |
+ | 21002       | 42S02     | Can not find logic encrypt column by '%s'.                                                   |
+ | 21003       | 42S02     | Can not find encrypt column '%s' from table '%s'.                                            |
+diff --git a/docs/document/content/user-manual/error-code/sql-error-code.en.md b/docs/document/content/user-manual/error-code/sql-error-code.en.md
+index 7fbf94c6617..e8d16b584da 100644
+--- a/docs/document/content/user-manual/error-code/sql-error-code.en.md
++++ b/docs/document/content/user-manual/error-code/sql-error-code.en.md
+@@ -230,7 +230,6 @@ SQL error codes provide by standard `SQL State`, `Vendor Code` and `Reason`, whi
  
- This chapter describes how to build and package Apache ShardingSphere artifacts from source.
-diff --git a/docs/document/content/downloads/_index.cn.md b/docs/document/content/downloads/_index.cn.md
-index 880c815351a..9816df42ab2 100644
---- a/docs/document/content/downloads/_index.cn.md
-+++ b/docs/document/content/downloads/_index.cn.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>9. </b>"
-+pre = "<b>10. </b>"
- title = "下载"
--weight = 9
-+weight = 10
- chapter = true
- extracss = true
- +++
-diff --git a/docs/document/content/downloads/_index.en.md b/docs/document/content/downloads/_index.en.md
-index 280acf27cbb..05f466a1284 100644
---- a/docs/document/content/downloads/_index.en.md
-+++ b/docs/document/content/downloads/_index.en.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>9. </b>"
-+pre = "<b>10. </b>"
- title = "Downloads"
--weight = 9
-+weight = 10
- chapter = true
- extracss = true
- +++
-diff --git a/docs/document/content/faq/_index.cn.md b/docs/document/content/faq/_index.cn.md
-index f5542b95e66..2e5c4417c14 100644
---- a/docs/document/content/faq/_index.cn.md
-+++ b/docs/document/content/faq/_index.cn.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>8. </b>"
-+pre = "<b>9. </b>"
- title = "FAQ"
--weight = 8
-+weight = 9
- chapter = true
- +++
- 
-diff --git a/docs/document/content/faq/_index.en.md b/docs/document/content/faq/_index.en.md
-index 9226f01b5b1..1169d4151ba 100644
---- a/docs/document/content/faq/_index.en.md
-+++ b/docs/document/content/faq/_index.en.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>8. </b>"
-+pre = "<b>9. </b>"
- title = "FAQ"
--weight = 8
-+weight = 9
- chapter = true
- +++
- 
-diff --git a/docs/document/content/reference/_index.cn.md b/docs/document/content/reference/_index.cn.md
-index a66e30de3dd..c6005d7fbcb 100644
---- a/docs/document/content/reference/_index.cn.md
-+++ b/docs/document/content/reference/_index.cn.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>7. </b>"
-+pre = "<b>8. </b>"
- title = "技术参考"
--weight = 7
-+weight = 8
- chapter = true
- +++
- 
-diff --git a/docs/document/content/reference/_index.en.md b/docs/document/content/reference/_index.en.md
-index 5f7c9c67093..e3a7619955e 100644
---- a/docs/document/content/reference/_index.en.md
-+++ b/docs/document/content/reference/_index.en.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>7. </b>"
-+pre = "<b>8. </b>"
- title = "Reference"
--weight = 7
-+weight = 8
- chapter = true
- +++
- 
-diff --git a/docs/document/content/test-manual/_index.cn.md b/docs/document/content/test-manual/_index.cn.md
-index 6b8f103e010..b6d03596f29 100644
---- a/docs/document/content/test-manual/_index.cn.md
-+++ b/docs/document/content/test-manual/_index.cn.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>6. </b>"
-+pre = "<b>7. </b>"
- title = "测试手册"
--weight = 6
-+weight = 7
- chapter = true
- +++
- 
-diff --git a/docs/document/content/test-manual/_index.en.md b/docs/document/content/test-manual/_index.en.md
-index af3b451137c..b9b69b20580 100644
---- a/docs/document/content/test-manual/_index.en.md
-+++ b/docs/document/content/test-manual/_index.en.md
-@@ -1,7 +1,7 @@
- +++
--pre = "<b>6. </b>"
-+pre = "<b>7. </b>"
- title = "Test Manual"
--weight = 6
-+weight = 7
- chapter = true
- +++
- 
+ | Vendor Code | SQL State | Reason                                                                                       |
+ |-------------|-----------|----------------------------------------------------------------------------------------------|
+-| 21000       | 42S02     | %s column is required in %s.                                                                 |
+ | 21001       | 42S02     | Can not find encrypt table '%s'.                                                             |
+ | 21002       | 42S02     | Can not find logic encrypt column by '%s'.                                                   |
+ | 21003       | 42S02     | Can not find encrypt column '%s' from table '%s'.                                            |
