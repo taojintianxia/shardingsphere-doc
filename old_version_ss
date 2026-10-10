@@ -1,140 +1,60 @@
-commit ccf56990d75830c7804cc6063963a6f0b37c19e7
+commit b1e09e9444f95b39449bdf5a2569de460f185896
 Author: Liang Zhang <zhangliang@apache.org>
-Date:   Wed Oct 7 17:13:55 2026 +0800
+Date:   Sat Oct 10 21:27:34 2026 +0800
 
-    Clarify MCP metadata discovery before update previews (#40093)
+    Fix broken GitHub and OpenAI documentation links (#40143)
     
-    * Refactor DataSourcePoolCreatorTest
+    * Normalize GraalVM CI workflow
     
-    * Skip cancellation of closed Statements during proxy cleanup
+    * Align Codex changes with repository context
     
-    * Remove obsolete Wagon HTTP options from workflows
-    
-    * Fix RAL E2E lifecycle exception handling
-    
-    * Clarify MCP metadata discovery before update previews
+    * Fix broken GitHub and OpenAI documentation links
 
-diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-index 37e0f67ed36..8807e52b76c 100644
---- a/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-+++ b/docs/document/content/test-manual/mcp-e2e-test/_index.cn.md
-@@ -51,23 +51,28 @@ docker build --platform "$(docker version --format '{{.Server.Os}}/{{.Server.Arc
+diff --git a/docs/community/content/involved/contribute/document.cn.md b/docs/community/content/involved/contribute/document.cn.md
+index 4c7353b0823..c16580b156d 100644
+--- a/docs/community/content/involved/contribute/document.cn.md
++++ b/docs/community/content/involved/contribute/document.cn.md
+@@ -11,8 +11,8 @@ chapter = true
+ ## 前置条件
  
- ## LLM Runtime
+ - 熟悉 [官方网站](https://shardingsphere.apache.org/index_zh.html)。
+-- 熟悉 [GitHub 协同开发流程](https://help.github.com/cn/github/collaborating-with-issues-and-pull-requests)。
+-- 熟练掌握 [Markdown](https://help.github.com/cn/github/writing-on-github/basic-writing-and-formatting-syntax)。
++- 熟悉 [GitHub 协同开发流程](https://docs.github.com/zh/pull-requests)。
++- 熟练掌握 [Markdown](https://docs.github.com/zh/get-started/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax)。
+ - 熟悉 [Hugo](https://gohugo.io/)。
  
--MCP LLM lane 默认使用本地 Docker image 承载 OpenAI-compatible endpoint。
--构建前建议先查看 Docker 占用：
-+按 [Docker 官方说明](https://docs.docker.com/ai/model-runner/get-started/)安装 Docker Model Runner。
-+Docker Desktop 启用主机 TCP 访问：
+ ## Fork 文档项目
+diff --git a/docs/community/content/involved/contribute/document.en.md b/docs/community/content/involved/contribute/document.en.md
+index ac0c1795277..53ea82cddca 100644
+--- a/docs/community/content/involved/contribute/document.en.md
++++ b/docs/community/content/involved/contribute/document.en.md
+@@ -10,7 +10,7 @@ In the contributor guide, we have mentioned how to submit Issues and pull reques
+ ## Precondition
  
- ```bash
--docker system df
-+docker desktop enable model-runner --tcp 12434
- ```
+ - Familiar with [Official website](https://shardingsphere.apache.org).
+-- Familiar with [Collaborating with issues and pull requests](https://help.github.com/categories/collaborating-with-issues-and-pull-requests/).
++- Familiar with [Collaborating with issues and pull requests](https://docs.github.com/en/pull-requests).
+ - Familiar with [Markdown](https://www.markdownguide.org/getting-started).
+ - Familiar with [Hugo](https://gohugo.io/).
  
--只校验本机架构选择，不下载模型：
-+Docker Engine 安装并启动 CPU runner：
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md
+index 7ee97e9fdaf..52ef5962027 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.cn.md
+@@ -76,4 +76,4 @@ weight = 4
  
- ```bash
--sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh --dry-run
-+MODEL_RUNNER_CONTROLLER_VERSION=v1.2.8@sha256:5bdc2bac71c1b70453f7dec5b527031bc6d8d99b8d1b2a10a8bcca073ae257a3 \
-+MODEL_RUNNER_CONTROLLER_VARIANT=cpu docker model install-runner --gpu none
- ```
+ ### 官方参考
  
--构建本地 runtime image：
-+拉取、配置并启动模型：
+-- [ChatGPT Developer mode](https://platform.openai.com/docs/guides/developer-mode)
++- [Connect and test your plugin](https://developers.openai.com/plugins/deploy/connect-chatgpt)
+diff --git a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md
+index 81b30a0247f..5baabb509ce 100644
+--- a/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md
++++ b/docs/document/content/user-manual/shardingsphere-mcp/client-integration/chatgpt-developer-mode.en.md
+@@ -76,4 +76,4 @@ If the integration fails, check these items first:
  
- ```bash
--sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh
-+docker model pull ai/qwen3.5:9b-q4_K_XL
-+docker model configure --context-size 8192 ai/qwen3.5:9b-q4_K_XL -- \
-+  --jinja --reasoning-budget 0 --reasoning-format deepseek --chat-template-kwargs '{"enable_thinking":false}' \
-+  --parallel 1 -b 256 -ub 128 --cache-ram 0 --no-cache-prompt
-+docker model run --detach ai/qwen3.5:9b-q4_K_XL
- ```
+ ### Official references
  
- ## 运行 MCP Functionality E2E
-@@ -106,10 +111,10 @@ CI conformance lane 将 `modelcontextprotocol/conformance` 固定在 commit `21a
- 仅本地调试时，可以连接已经运行的 OpenAI-compatible endpoint：
- 
- ```bash
--./mvnw -pl test/e2e/mcp verify -Pe2e.mcp.llm -De2e.run.type=DOCKER -Dit.test=LLMHttpE2EIT -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:8080/v1
-+./mvnw -pl test/e2e/mcp verify -Pe2e.mcp.llm -De2e.run.type=DOCKER -Dit.test=LLMHttpE2EIT -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:12434/engines/v1
- ```
- 
--External debug endpoint 不能作为 score-closing evidence。
-+External debug endpoint 仅用于本地调试；正式 `LLMHttpE2EIT` 场景要求 Docker 和已经准备好的 Docker Model Runner。
- 
- ## 产物
- 
-@@ -119,7 +124,7 @@ MCP LLM E2E artifact 写入：
- test/e2e/mcp/target/llm-e2e/
- ```
- 
--每个场景都记录问题、实际答案、原始模型 response、MCP interaction trace、实时 tool definitions、runtime evidence 和 assertion report。Artifact 写入会脱敏 secret-shaped 值；如果发现未脱敏 secret pattern 或已知模型 API key，测试直接失败。
-+每个场景都记录问题、实际答案、原始模型 response、MCP interaction trace、实时 tool definitions 和 assertion report。Artifact 写入会脱敏 secret-shaped 值；如果发现未脱敏 secret pattern 或已知模型 API key，测试直接失败。
- 
- GitHub Actions 入口：
- 
-diff --git a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-index 6063098463f..611f48ef7e9 100644
---- a/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-+++ b/docs/document/content/test-manual/mcp-e2e-test/_index.en.md
-@@ -51,23 +51,28 @@ docker build --platform "$(docker version --format '{{.Server.Os}}/{{.Server.Arc
- 
- ## LLM Runtime
- 
--The MCP LLM lane uses a local Docker image to host an OpenAI-compatible endpoint.
--Before building, inspect Docker usage:
-+Install Docker Model Runner following the [official Docker instructions](https://docs.docker.com/ai/model-runner/get-started/).
-+For Docker Desktop, enable host TCP access:
- 
- ```bash
--docker system df
-+docker desktop enable model-runner --tcp 12434
- ```
- 
--Check host architecture selection without downloading the model:
-+For Docker Engine, install and start the CPU runner:
- 
- ```bash
--sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh --dry-run
-+MODEL_RUNNER_CONTROLLER_VERSION=v1.2.8@sha256:5bdc2bac71c1b70453f7dec5b527031bc6d8d99b8d1b2a10a8bcca073ae257a3 \
-+MODEL_RUNNER_CONTROLLER_VARIANT=cpu docker model install-runner --gpu none
- ```
- 
--Build the local runtime image:
-+Pull, configure, and start the model:
- 
- ```bash
--sh test/e2e/mcp/src/test/resources/docker/llm-runtime/build-local.sh
-+docker model pull ai/qwen3.5:9b-q4_K_XL
-+docker model configure --context-size 8192 ai/qwen3.5:9b-q4_K_XL -- \
-+  --jinja --reasoning-budget 0 --reasoning-format deepseek --chat-template-kwargs '{"enable_thinking":false}' \
-+  --parallel 1 -b 256 -ub 128 --cache-ram 0 --no-cache-prompt
-+docker model run --detach ai/qwen3.5:9b-q4_K_XL
- ```
- 
- ## Run MCP Functionality E2E
-@@ -106,10 +111,10 @@ The packaged server runs with its loopback HTTP configuration so the DNS rebindi
- For local debugging only, connect to an already running OpenAI-compatible endpoint:
- 
- ```bash
--./mvnw -pl test/e2e/mcp verify -Pe2e.mcp.llm -De2e.run.type=DOCKER -Dit.test=LLMHttpE2EIT -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:8080/v1
-+./mvnw -pl test/e2e/mcp verify -Pe2e.mcp.llm -De2e.run.type=DOCKER -Dit.test=LLMHttpE2EIT -Dmcp.llm.runtime-mode=external-debug -Dmcp.llm.base-url=http://127.0.0.1:12434/engines/v1
- ```
- 
--External debug endpoints cannot be used as score-closing evidence.
-+External debug endpoints are only for local debugging; formal `LLMHttpE2EIT` scenarios require Docker and a prepared Docker Model Runner.
- 
- ## Artifacts
- 
-@@ -119,7 +124,7 @@ MCP LLM E2E artifacts are written under:
- test/e2e/mcp/target/llm-e2e/
- ```
- 
--Each scenario records the question, actual answer, raw model response, MCP interaction trace, live tool definitions, runtime evidence, and assertion report. Artifact writing redacts secret-shaped values, and the test fails if an unredacted secret pattern or the known model API key is present.
-+Each scenario records the question, actual answer, raw model response, MCP interaction trace, live tool definitions, and assertion report. Artifact writing redacts secret-shaped values, and the test fails if an unredacted secret pattern or the known model API key is present.
- 
- GitHub Actions entry points:
- 
+-- [ChatGPT Developer mode](https://platform.openai.com/docs/guides/developer-mode)
++- [Connect and test your plugin](https://developers.openai.com/plugins/deploy/connect-chatgpt)
